@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: GAE
+
+logging:
+  level:
+    org.fh.gae: debug
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss}: [%t] - [%level] %c{40} - %m%n"
+
+
+gae:
+  server:
+    port: 9000
+    host: 0.0.0.0
