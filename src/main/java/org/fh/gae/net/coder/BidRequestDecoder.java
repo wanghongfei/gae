@@ -47,5 +47,6 @@ public class BidRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> 
         log.error(cause.getMessage());
 
         ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error()));
+        ctx.close();
     }
 }

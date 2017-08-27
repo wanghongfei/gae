@@ -82,6 +82,8 @@ public class GaeAuthHandler extends ChannelInboundHandlerAdapter {
 
             FullHttpResponse http = NettyUtils.buildResponse(response);
             ctx.writeAndFlush(http);
+        } else {
+            ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error()));
         }
 
         ctx.close();
