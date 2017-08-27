@@ -43,7 +43,7 @@ public class IndexLoader {
         loadIndex();
     }
 
-    public void loadIndex() throws IOException {
+    private void loadIndex() throws IOException {
         try (FileInputStream fis = new FileInputStream(idxPath + File.separator + idxName + ".0")) {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(fis)
@@ -60,7 +60,7 @@ public class IndexLoader {
         }
     }
 
-    private void processLine(String line) {
+    public void processLine(String line) {
         try {
             String[] tokens = line.split(TOKEN_SEPARATOR);
 

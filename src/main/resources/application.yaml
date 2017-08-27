@@ -16,3 +16,6 @@ gae:
   index:
     path: /Users/whf/projects/open/gae/src/main/resources/mock
     name: gae.idx
+    incr-path: /Users/whf/projects/open/gae/src/main/resources/mock
+    incr-name: gae.idx.incr
+    incr-interval: 500
