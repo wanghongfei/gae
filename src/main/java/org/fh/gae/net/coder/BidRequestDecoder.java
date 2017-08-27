@@ -25,7 +25,7 @@ public class BidRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> 
     @Override
     protected void decode(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest, List<Object> list) throws Exception {
         // 只允许POST请求
-        boolean isPost = fullHttpRequest.method().equals("POST");
+        boolean isPost = fullHttpRequest.method().name().equals("POST");
         if (false == isPost) {
             ctx.writeAndFlush(NettyUtils.buildResponse(HttpResponseStatus.METHOD_NOT_ALLOWED));
             ctx.close();
