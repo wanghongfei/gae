@@ -81,7 +81,10 @@ public class GaeAuthHandler extends ChannelInboundHandlerAdapter {
         }
 
         for (AdSlot slot : slotList) {
-            if (StringUtils.isEmpty(slot.getSlotId()) || slot.getSlotType() == null) {
+            if (StringUtils.isEmpty(slot.getSlotId())
+                    || slot.getSlotType() == null
+                    || slot.getH() == null
+                    || slot.getW() == null) {
                 throw new GaeException(ErrCode.INVALID_ARG);
             }
         }
