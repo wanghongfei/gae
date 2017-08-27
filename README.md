@@ -7,8 +7,9 @@ netty + SpringBoot
 ## 构建运行
 ```
 mvn clean package
-java -jar target/gae.jar --gae.server.port=9000
+java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.name=gae.idx
 ```
+其中gae.idx为索引文件名
 
 ## 测试
 ```
@@ -18,8 +19,8 @@ curl -X POST \
   -d '{
 	"requestId": "hello",
 	"auth": {
-		"tid": "test",
-		"token": "test"
+		"tid": "tid",
+		"token": "token"
 	}
 }'
 ```

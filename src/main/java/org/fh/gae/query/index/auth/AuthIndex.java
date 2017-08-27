@@ -16,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AuthIndex implements GaeIndex<String, AuthInfo> {
     private Map<String, AuthInfo> authInfoMap;
 
+    public static final int LEVEL = 0;
+
 
     @PostConstruct
     public void init() {
@@ -72,5 +74,26 @@ public class AuthIndex implements GaeIndex<String, AuthInfo> {
     @Override
     public void delete(String s, AuthInfo authInfo) {
         authInfoMap.remove(s);
+    }
+
+    @Override
+    public int getLevel() {
+        return LEVEL;
+    }
+
+    @Override
+    public int getLength() {
+        return 4;
+    }
+
+    @Override
+    public AuthInfo packageInfo(String[] tokens) {
+        AuthInfo info = new AuthInfo();
+        info.setTid(tokens[2]);
+        info.setToken(tokens[3]);
+        info.setType(Integer.valueOf(tokens[4]));
+        info.setStatus(AuthStatus.valueOf(tokens[5]));
+
+        return info;
     }
 }

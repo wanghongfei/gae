@@ -13,3 +13,6 @@ gae:
   server:
     port: 9000
     host: 0.0.0.0
+  index:
+    path: /Users/whf/projects/open/gae/src/main/resources/mock
+    name: gae.idx
