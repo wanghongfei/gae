@@ -13,7 +13,10 @@ java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.
 
 ## 测试
 ```
-{
+curl -X POST \
+  http://127.0.0.1:9000/ \
+  -H 'content-type: application/json' \
+  -d '{
 	"requestId": "hello",
 	"auth": {
 		"tid": "tid",
@@ -34,5 +37,5 @@ java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.
 			"h": 1080
 		}
 	]
-}
+}'
 ```
