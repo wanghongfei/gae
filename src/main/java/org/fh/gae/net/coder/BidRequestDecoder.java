@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.utils.NettyUtils;
 import org.fh.gae.net.vo.BidRequest;
@@ -23,6 +24,14 @@ import java.util.List;
 public class BidRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> {
     @Override
     protected void decode(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest, List<Object> list) throws Exception {
+        // 只允许POST请求
+        boolean isPost = fullHttpRequest.method().equals("POST");
+        if (false == isPost) {
+            ctx.writeAndFlush(NettyUtils.buildResponse(HttpResponseStatus.METHOD_NOT_ALLOWED));
+            ctx.close();
+            return;
+        }
+
         // 取出body
         byte[] body = fullHttpRequest.content().copy().array();
 
@@ -37,6 +46,6 @@ public class BidRequestDecoder extends MessageToMessageDecoder<FullHttpRequest> 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error(cause.getMessage());
 
-        ctx.write(NettyUtils.buildResponse(BidResponse.error()));
+        ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error()));
     }
 }

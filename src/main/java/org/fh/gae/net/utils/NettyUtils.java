@@ -30,4 +30,13 @@ public class NettyUtils {
 
         return response;
     }
+
+    public static FullHttpResponse buildResponse(HttpResponseStatus status) {
+        FullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1,
+                status
+        );
+
+        return response;
+    }
 }
