@@ -2,10 +2,13 @@ package org.fh.gae.net.error;
 
 public enum ErrCode {
     SUCCESS(0, "success"),
+
     NO_AUTH(1001, "authentication info requreid"),
     BLOCKED(1002, "blocked"),
     NONE_EXIST(1003, "none exist"),
-    INVALID_TOKEN(1004, "invalid token");
+    INVALID_TOKEN(1004, "invalid token"),
+
+    INVALID_ARG(2004, "invalid args");
 
     private int code;
     private String msg;

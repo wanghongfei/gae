@@ -21,6 +21,17 @@ curl -X POST \
 	"auth": {
 		"tid": "tid",
 		"token": "token"
-	}
+	},
+	
+	"slots": [
+		{
+			"slotId": "广告位id",
+			"slotType": 1
+		},
+		{
+			"slotId": "广告位id2",
+			"slotType": 1
+		}
+	]
 }'
 ```

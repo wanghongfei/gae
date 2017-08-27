@@ -11,9 +11,9 @@ public class BidResponse {
     private int code = 0;
     private String msg;
 
-    private Object result;
+    private BidResult result;
 
-    public BidResponse(Object result) {
+    public BidResponse(BidResult result) {
         this.result = result;
     }
 

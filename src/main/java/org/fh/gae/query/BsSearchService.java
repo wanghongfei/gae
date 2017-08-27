@@ -2,19 +2,41 @@ package org.fh.gae.query;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.vo.BidRequest;
+import org.fh.gae.net.vo.BidResult;
 import org.fh.gae.query.vo.Ad;
+import org.fh.gae.query.vo.AdSlot;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Component
 @Slf4j
 public class BsSearchService {
-    public List<Ad> fetchAds(BidRequest request) {
-        return Arrays.asList(
-                new Ad("ad1", "http://www.baidu.com"),
-                new Ad("ad2", "http://www.sina.com.cn")
-        );
+    public BidResult bid(BidRequest request) {
+        List<Ad> adList = fetchAds(request);
+
+        BidResult result = new BidResult();
+        result.setRequestId(request.getRequestId());
+        result.setAds(adList);
+
+        return result;
+    }
+
+    private List<Ad> fetchAds(BidRequest request) {
+        List<Ad> adList = new ArrayList<>();
+
+        for (AdSlot slot : request.getSlots()) {
+            Ad ad = new Ad();
+            ad.setAdId("ad1");
+            ad.setUrl("http://www.baidu.com");
+            ad.setShowUrls(Arrays.asList("http://gae.com/a.gif?x=y").toArray(new String[0]));
+            ad.setSlotId(slot.getSlotId());
+
+            adList.add(ad);
+        }
+
+        return adList;
     }
 }

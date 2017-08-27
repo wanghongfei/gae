@@ -16,10 +16,12 @@ import org.fh.gae.query.index.auth.AuthIndex;
 import org.fh.gae.query.index.auth.AuthInfo;
 import org.fh.gae.query.index.auth.AuthStatus;
 import org.fh.gae.query.index.auth.AuthTriggerCondition;
+import org.fh.gae.query.vo.AdSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -65,6 +67,23 @@ public class GaeAuthHandler extends ChannelInboundHandlerAdapter {
         // 检查token
         if (false == StringUtils.equals(token, info.getToken())) {
             throw new GaeException(ErrCode.INVALID_TOKEN);
+        }
+
+        // 检查请求参数
+        if (StringUtils.isEmpty(bidRequest.getRequestId())) {
+            throw new GaeException(ErrCode.INVALID_ARG);
+        }
+
+        // 检查请求广告位信息
+        List<AdSlot> slotList = bidRequest.getSlots();
+        if (CollectionUtils.isEmpty(slotList)) {
+            throw new GaeException(ErrCode.INVALID_ARG);
+        }
+
+        for (AdSlot slot : slotList) {
+            if (StringUtils.isEmpty(slot.getSlotId()) || slot.getSlotType() == null) {
+                throw new GaeException(ErrCode.INVALID_ARG);
+            }
         }
 
         ctx.fireChannelRead(bidRequest);
