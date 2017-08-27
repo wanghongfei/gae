@@ -27,8 +27,4 @@ public class GaeBidHandler extends ChannelInboundHandlerAdapter {
         pool.execute(request, ctx);
 
     }
-
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-    }
 }

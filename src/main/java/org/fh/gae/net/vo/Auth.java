@@ -5,12 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class BidRequest {
-    private String requestId;
+@NoArgsConstructor
+public class Auth {
+    private String tid;
 
-    private Auth auth;
-
-    private AdSlot slot;
+    private String token;
 }

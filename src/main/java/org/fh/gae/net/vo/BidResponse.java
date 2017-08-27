@@ -17,6 +17,11 @@ public class BidResponse {
         this.result = result;
     }
 
+    public BidResponse(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     private static final BidResponse errorResp = new BidResponse(-1, "error", null);
 
     public static BidResponse error() {

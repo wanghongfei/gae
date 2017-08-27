@@ -12,6 +12,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeServerProps;
 import org.fh.gae.net.coder.BidRequestDecoder;
+import org.fh.gae.net.handler.GaeAuthHandler;
 import org.fh.gae.net.handler.GaeBidHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ public class GaeHttpServer {
 
     @Autowired
     private GaeBidHandler bidHandler;
+
+    @Autowired
+    private GaeAuthHandler authHandler;
 
     @Autowired
     private BidRequestDecoder bidRequestDecoder;
@@ -47,7 +51,8 @@ public class GaeHttpServer {
                             socketChannel.pipeline().addLast("codec", new HttpServerCodec());
                             socketChannel.pipeline().addLast("aggregator", new HttpObjectAggregator(512 * 1024));
                             socketChannel.pipeline().addLast("bidDeocder", bidRequestDecoder);
-                            socketChannel.pipeline().addLast("handler", bidHandler);
+                            socketChannel.pipeline().addLast("auth", authHandler);
+                            socketChannel.pipeline().addLast("bid", bidHandler);
                         }
                     });
 
