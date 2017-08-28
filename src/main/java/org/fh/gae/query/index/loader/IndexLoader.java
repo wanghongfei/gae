@@ -3,6 +3,10 @@ package org.fh.gae.query.index.loader;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.query.index.GaeIndex;
 import org.fh.gae.query.index.auth.AuthIndex;
+import org.fh.gae.query.index.plan.PlanIndex;
+import org.fh.gae.query.index.plan.PlanInfo;
+import org.fh.gae.query.index.unit.AdUnitIndex;
+import org.fh.gae.query.index.user.UserIndex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,6 +30,12 @@ public class IndexLoader {
 
     @Autowired
     private AuthIndex authIndex;
+    @Autowired
+    private UserIndex userIndex;
+    @Autowired
+    private PlanIndex planIndex;
+    @Autowired
+    private AdUnitIndex unitIndex;
 
     @Value("${gae.index.path}")
     private String idxPath;
@@ -39,6 +49,9 @@ public class IndexLoader {
     public void init() throws IOException {
         idxMap = new HashMap<>();
         idxMap.put(AuthIndex.LEVEL, authIndex);
+        idxMap.put(UserIndex.LEVEL, userIndex);
+        idxMap.put(PlanIndex.LEVEL, planIndex);
+        idxMap.put(AdUnitIndex.LEVEL, unitIndex);
 
         loadIndex();
     }
@@ -51,7 +64,6 @@ public class IndexLoader {
 
             String line;
             while ( (line = reader.readLine()) != null ) {
-                log.info("loading: {}", line);
                 processLine(line);
             }
 
@@ -62,8 +74,17 @@ public class IndexLoader {
 
     public void processLine(String line) {
         try {
+            if (0 == line.length()) {
+                log.info("skip empty line");
+                return;
+            }
+            
+            log.info("{}", line);
+
             String[] tokens = line.split(TOKEN_SEPARATOR);
 
+            // 取出操作类型
+            Integer op = Integer.valueOf(tokens[1]);
             // 取出层级
             Integer level = Integer.valueOf(tokens[0]);
             GaeIndex index = idxMap.get(level);
@@ -73,19 +94,16 @@ public class IndexLoader {
                 return;
             }
 
-            // 取出key
-            String key = tokens[2];
-
             Object info = index.packageInfo(tokens);
-            switch (level) {
+            switch (op) {
                 case 0:
-                    index.add(key, info);
+                    index.add(info);
                     break;
                 case 1:
-                    index.update(key, info);
+                    index.update(info);
                     break;
                 case 2:
-                    index.delete(key, info);
+                    index.delete(info);
                     break;
 
                 default:

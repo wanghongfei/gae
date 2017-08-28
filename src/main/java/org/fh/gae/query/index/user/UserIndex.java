@@ -1,6 +1,7 @@
 package org.fh.gae.query.index.user;
 
 import org.fh.gae.query.index.GaeIndex;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -9,7 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 广告主账户信息索引
  */
-public class UserIndex implements GaeIndex<Long, UserInfo> {
+@Component
+public class UserIndex implements GaeIndex<UserInfo> {
     public static final int LEVEL = 1;
 
     /**
@@ -41,17 +43,17 @@ public class UserIndex implements GaeIndex<Long, UserInfo> {
     }
 
     @Override
-    public void add(Long key, UserInfo userInfo) {
-        userInfoMap.put(key, userInfo);
+    public void add(UserInfo userInfo) {
+        userInfoMap.put(userInfo.getUserId(), userInfo);
     }
 
     @Override
-    public void update(Long key, UserInfo userInfo) {
-        add(key, userInfo);
+    public void update(UserInfo userInfo) {
+        add(userInfo);
     }
 
     @Override
-    public void delete(Long key, UserInfo userInfo) {
-        userInfoMap.remove(key);
+    public void delete(UserInfo userInfo) {
+        userInfoMap.remove(userInfo.getUserId());
     }
 }

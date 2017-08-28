@@ -1,16 +1,14 @@
 package org.fh.gae.query.index.unit;
 
 import org.fh.gae.query.index.GaeIndex;
-import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class AdUnitIndex implements GaeIndex<Integer, AdUnitInfo> {
+public class AdUnitIndex implements GaeIndex<AdUnitInfo> {
     public static final int LEVEL = 3;
 
     private Map<Integer, AdUnitInfo> adUnitInfoMap;
@@ -49,17 +47,17 @@ public class AdUnitIndex implements GaeIndex<Integer, AdUnitInfo> {
     }
 
     @Override
-    public void add(Integer key, AdUnitInfo adUnitInfo) {
-        adUnitInfoMap.put(key, adUnitInfo);
+    public void add(AdUnitInfo adUnitInfo) {
+        adUnitInfoMap.put(adUnitInfo.getUnitId(), adUnitInfo);
     }
 
     @Override
-    public void update(Integer key, AdUnitInfo adUnitInfo) {
-        add(key, adUnitInfo);
+    public void update(AdUnitInfo adUnitInfo) {
+        add(adUnitInfo);
     }
 
     @Override
-    public void delete(Integer key, AdUnitInfo adUnitInfo) {
-        adUnitInfoMap.remove(key);
+    public void delete(AdUnitInfo adUnitInfo) {
+        adUnitInfoMap.remove(adUnitInfo.getUnitId());
     }
 }

@@ -2,17 +2,15 @@ package org.fh.gae.query.index.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.query.index.GaeIndex;
-import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
-public class AuthIndex implements GaeIndex<String, AuthInfo> {
+public class AuthIndex implements GaeIndex<AuthInfo> {
     private Map<String, AuthInfo> authInfoMap;
 
     public static final int LEVEL = 0;
@@ -31,18 +29,18 @@ public class AuthIndex implements GaeIndex<String, AuthInfo> {
     }
 
     @Override
-    public void add(String s, AuthInfo authInfo) {
-        authInfoMap.put(s, authInfo);
+    public void add(AuthInfo authInfo) {
+        authInfoMap.put(authInfo.getTid(), authInfo);
     }
 
     @Override
-    public void update(String s, AuthInfo authInfo) {
-        add(s, authInfo);
+    public void update(AuthInfo authInfo) {
+        add(authInfo);
     }
 
     @Override
-    public void delete(String s, AuthInfo authInfo) {
-        authInfoMap.remove(s);
+    public void delete(AuthInfo authInfo) {
+        authInfoMap.remove(authInfo.getTid());
     }
 
     @Override
