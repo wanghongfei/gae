@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.query.index.GaeIndex;
 import org.fh.gae.query.index.auth.AuthIndex;
 import org.fh.gae.query.index.plan.PlanIndex;
-import org.fh.gae.query.index.plan.PlanInfo;
 import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.query.index.user.UserIndex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +63,13 @@ public class IndexLoader {
 
             String line;
             while ( (line = reader.readLine()) != null ) {
+                // 跳过空行
+                if (0 == line.length()) {
+                    log.info("skip empty line");
+                    return;
+                }
+
+                log.info("{}", line);
                 processLine(line);
             }
 
@@ -74,12 +80,6 @@ public class IndexLoader {
 
     public void processLine(String line) {
         try {
-            if (0 == line.length()) {
-                log.info("skip empty line");
-                return;
-            }
-            
-            log.info("{}", line);
 
             String[] tokens = line.split(TOKEN_SEPARATOR);
 
