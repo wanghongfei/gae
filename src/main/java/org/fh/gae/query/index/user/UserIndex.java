@@ -4,7 +4,6 @@ import org.fh.gae.query.index.GaeIndex;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -39,16 +38,6 @@ public class UserIndex implements GaeIndex<Long, UserInfo> {
         Integer status = Integer.valueOf(tokens[3]);
 
         return new UserInfo(userId, status);
-    }
-
-    @Override
-    public Set<UserInfo> trigger(int amount) {
-        return null;
-    }
-
-    @Override
-    public Set<UserInfo> trigger(Object condition) {
-        return null;
     }
 
     @Override

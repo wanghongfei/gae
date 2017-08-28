@@ -1,6 +1,7 @@
 package org.fh.gae.query.index.plan;
 
 import org.fh.gae.query.index.GaeIndex;
+import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -40,16 +41,6 @@ public class PlanIndex implements GaeIndex<Integer, PlanInfo> {
         String timeBit = tokens[5];
 
         return new PlanInfo(planId, userId, status, timeBit);
-    }
-
-    @Override
-    public Set<PlanInfo> trigger(int amount) {
-        return null;
-    }
-
-    @Override
-    public Set<PlanInfo> trigger(Object condition) {
-        return null;
     }
 
     @Override

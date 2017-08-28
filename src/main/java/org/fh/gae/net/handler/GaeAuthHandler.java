@@ -53,13 +53,12 @@ public class GaeAuthHandler extends ChannelInboundHandlerAdapter {
         }
 
         // 检查tid是否存在
-        Set<AuthInfo> infoSet = authIndex.trigger(new AuthTriggerCondition(tid));
-        if (CollectionUtils.isEmpty(infoSet)) {
+        AuthInfo info = authIndex.fetch(tid);
+        if (null == info) {
             throw new GaeException(ErrCode.NONE_EXIST);
         }
 
         // 检查是否黑
-        AuthInfo info = infoSet.iterator().next();
         if (AuthStatus.NORMAL != info.getStatus()) {
             throw new GaeException(ErrCode.BLOCKED);
         }

@@ -2,11 +2,10 @@ package org.fh.gae.query.index.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.query.index.GaeIndex;
+import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,38 +26,8 @@ public class AuthIndex implements GaeIndex<String, AuthInfo> {
         authInfoMap.put("test2", new AuthInfo("test2", "test2", 0, AuthStatus.BLOCKED));
     }
 
-    @Override
-    public Set<AuthInfo> trigger(int amount) {
-        if (amount <= 0) {
-            return Collections.emptySet();
-        }
-
-        Set<AuthInfo> infoSet = new HashSet<>();
-        for (AuthInfo info : authInfoMap.values()) {
-            if (amount-- <= 0) {
-                break;
-            }
-
-            infoSet.add(info);
-        }
-
-        return infoSet;
-    }
-
-    @Override
-    public Set<AuthInfo> trigger(Object condition) {
-
-        AuthTriggerCondition authCon = (AuthTriggerCondition) condition;
-        AuthInfo info = authInfoMap.get(authCon.getTid());
-
-        if (null != info) {
-            Set<AuthInfo> infoSet = new HashSet<>();
-            infoSet.add(info);
-
-            return infoSet;
-        }
-
-        return Collections.emptySet();
+    public AuthInfo fetch(String tid) {
+        return authInfoMap.get(tid);
     }
 
     @Override
