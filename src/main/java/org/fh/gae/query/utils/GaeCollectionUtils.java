@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class GaeCollectionUtils {
     private GaeCollectionUtils() {
@@ -28,13 +28,22 @@ public class GaeCollectionUtils {
         return infoSet;
     }
 
-    public static <K, V> Set<V> getAndCreateIfNeed(K key, Map<K, Set<V>> map) {
-        Set<V> set = map.get(key);
-        if (null == set) {
-            set = new ConcurrentSkipListSet<>();
-            map.put(key, set);
+    /**
+     * 从Map中按key取值, 如果不存在则创建,入map, 并返回创建的对象
+     * @param key
+     * @param map
+     * @param factory
+     * @param <T_RET>
+     * @param <T_KEY>
+     * @return
+     */
+    public static <T_RET, T_KEY> T_RET getAndCreateIfNeed(T_KEY key, Map<T_KEY, T_RET> map, Supplier<T_RET> factory) {
+        T_RET ret = map.get(key);
+        if (null == ret) {
+            ret = factory.get();
+            map.put(key, ret);
         }
 
-        return set;
+        return ret;
     }
 }
