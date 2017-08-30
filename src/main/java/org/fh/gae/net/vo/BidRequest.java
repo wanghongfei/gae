@@ -15,5 +15,7 @@ public class BidRequest {
 
     private Auth auth;
 
+    private Device device;
+
     private List<AdSlot> slots;
 }
