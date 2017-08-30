@@ -18,4 +18,6 @@ public class AdUnitInfo {
     private Integer status;
 
     private Long bid;
+
+    private Integer priority;
 }

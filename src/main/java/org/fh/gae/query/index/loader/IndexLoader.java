@@ -73,6 +73,11 @@ public class IndexLoader {
                     continue;
                 }
 
+                if (line.startsWith("#")) {
+                    log.info("skip comment line");
+                    continue;
+                }
+
                 log.info("{}", line);
                 processLine(line);
             }

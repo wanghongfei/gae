@@ -35,6 +35,7 @@ public class AdUnitIndex implements GaeIndex<AdUnitInfo> {
         Integer planId = Integer.valueOf(tokens[4]);
         Integer status = Integer.valueOf(tokens[5]);
         Long bid = Long.valueOf(6);
+        Integer priority = Integer.valueOf(7);
 
         AdUnitInfo info = new AdUnitInfo();
         info.setUserId(userId);
@@ -42,6 +43,7 @@ public class AdUnitIndex implements GaeIndex<AdUnitInfo> {
         info.setPlanId(planId);
         info.setStatus(status);
         info.setBid(bid);
+        info.setPriority(priority);
 
         return info;
     }
