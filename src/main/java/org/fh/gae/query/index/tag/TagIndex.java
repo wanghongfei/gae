@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  */
 @Component
 public class TagIndex implements GaeIndex<TagInfo> {
-    public static final int LELVE = 7;
+    public static final int LEVEL = 7;
 
     /**
      * [tag类型] -> [[单元id] -> [tag id]]
@@ -42,7 +42,7 @@ public class TagIndex implements GaeIndex<TagInfo> {
 
     @Override
     public int getLevel() {
-        return LELVE;
+        return LEVEL;
     }
 
     @Override
