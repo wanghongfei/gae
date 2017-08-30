@@ -91,6 +91,7 @@ public class TagIndex implements GaeIndex<TagInfo> {
         );
         unitSet.add(unitId);
 
+        int i = 0;
     }
 
     @Override

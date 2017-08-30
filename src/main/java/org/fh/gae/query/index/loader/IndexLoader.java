@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.query.index.GaeIndex;
 import org.fh.gae.query.index.auth.AuthIndex;
 import org.fh.gae.query.index.plan.PlanIndex;
+import org.fh.gae.query.index.tag.TagIndex;
 import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.query.index.user.UserIndex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class IndexLoader {
     private PlanIndex planIndex;
     @Autowired
     private AdUnitIndex unitIndex;
+    @Autowired
+    private TagIndex tagIndex;
 
     @Value("${gae.index.path}")
     private String idxPath;
@@ -51,6 +54,7 @@ public class IndexLoader {
         idxMap.put(UserIndex.LEVEL, userIndex);
         idxMap.put(PlanIndex.LEVEL, planIndex);
         idxMap.put(AdUnitIndex.LEVEL, unitIndex);
+        idxMap.put(TagIndex.LELVE, tagIndex);
 
         loadIndex();
     }
@@ -66,7 +70,7 @@ public class IndexLoader {
                 // 跳过空行
                 if (0 == line.length()) {
                     log.info("skip empty line");
-                    return;
+                    continue;
                 }
 
                 log.info("{}", line);
