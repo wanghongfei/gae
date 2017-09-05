@@ -3,6 +3,8 @@ package org.fh.gae.query;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.net.vo.BidResult;
+import org.fh.gae.query.index.DataTable;
+import org.fh.gae.query.index.plan.PlanIndex;
 import org.fh.gae.query.vo.Ad;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,9 @@ import java.util.List;
 @Slf4j
 public class BsSearchService {
     public BidResult bid(BidRequest request) {
+        int level = DataTable.of(PlanIndex.class).getLevel();
+        System.out.println(level);
+
         List<Ad> adList = fetchAds(request);
 
         BidResult result = new BidResult();
