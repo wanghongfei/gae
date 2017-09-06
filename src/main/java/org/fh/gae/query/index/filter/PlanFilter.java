@@ -10,6 +10,9 @@ import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Collection;
 
+/**
+ * 推广计划过虑器
+ */
 @Component
 @DependsOn("filterTable")
 public class PlanFilter implements GaeFilter<PlanInfo> {
@@ -25,6 +28,15 @@ public class PlanFilter implements GaeFilter<PlanInfo> {
         traverse(elems, plan -> plan.getStauts() == PlanStatus.NORMAL && isTimeBitFit(plan.getTimeBit()));
     }
 
+    /**
+     * 判断当前时间是否符合投放计划中选择的时间段;
+     *
+     * timeBit是168位二进制数转为10进制数的值, 168位中的每一位对应于周1到周7每小时的时间段，如,
+     * 第1位表示周一0~1点是否投放广告, 为0表示不投, 1表示投; 第25位表示周二0~1点是否投放广告
+     *
+     * @param timeBit
+     * @return
+     */
     public boolean isTimeBitFit(String timeBit) {
         Calendar calendar = Calendar.getInstance();
 
