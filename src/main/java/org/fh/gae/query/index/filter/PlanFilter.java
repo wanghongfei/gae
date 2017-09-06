@@ -1,7 +1,9 @@
 package org.fh.gae.query.index.filter;
 
+import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.query.index.plan.PlanInfo;
 import org.fh.gae.query.index.plan.PlanStatus;
+import org.fh.gae.query.profile.AudienceProfile;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ public class PlanFilter implements GaeFilter<PlanInfo> {
     }
 
     @Override
-    public void filter(Collection<PlanInfo> elems) {
+    public void filter(Collection<PlanInfo> elems, BidRequest request, AudienceProfile profile) {
         traverse(elems, plan -> plan.getStauts() == PlanStatus.NORMAL && isTimeBitFit(plan.getTimeBit()));
     }
 
