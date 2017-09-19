@@ -50,6 +50,10 @@ public class TagIndex implements GaeIndex<TagInfo> {
         return 3;
     }
 
+    public Map<Integer, Set<Long>> byType(Integer type) {
+        return this.typeUnitTagMap.get(type);
+    }
+
     @Override
     public TagInfo packageInfo(String[] tokens) {
         Long tagId = Long.valueOf(tokens[2]);
