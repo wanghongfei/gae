@@ -27,7 +27,7 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
 
     @Override
     public int getLength() {
-        return 6;
+        return 7;
     }
 
     @Override
@@ -38,6 +38,7 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
         Integer w = Integer.valueOf(5);
         Integer h = Integer.valueOf(6);
         String landUrl = tokens[7];
+        Integer st = Integer.valueOf(8);
 
         IdeaInfo info = new IdeaInfo();
         info.setIdeaId(ideaId);
@@ -46,6 +47,7 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
         info.setW(w);
         info.setH(h);
         info.setLandUrl(landUrl);
+        info.setStatus(st);
 
         return info;
     }

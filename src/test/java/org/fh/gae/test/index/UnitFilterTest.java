@@ -6,7 +6,6 @@ import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.index.unit.AdUnitStatus;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.test.BaseTestClass;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

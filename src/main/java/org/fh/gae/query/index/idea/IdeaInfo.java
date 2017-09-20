@@ -37,4 +37,9 @@ public class IdeaInfo {
      * 落地页地址
      */
     private String landUrl;
+
+    /**
+     * 创意状态
+     */
+    private Integer status;
 }

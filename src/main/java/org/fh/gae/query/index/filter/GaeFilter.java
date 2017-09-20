@@ -1,6 +1,6 @@
 package org.fh.gae.query.index.filter;
 
-import org.fh.gae.net.vo.BidRequest;
+import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.profile.AudienceProfile;
 
 import java.util.Collection;
@@ -18,7 +18,7 @@ public interface GaeFilter<T> {
      * @param request 广告请求对象
      * @param profile 用户画像
      */
-    void filter(Collection<T> elems, BidRequest request, AudienceProfile profile);
+    void filter(Collection<T> elems, RequestInfo request, AudienceProfile profile);
 
     /**
      * 遍历要过虑的集合, 通过predicate判断是否保留当前元素

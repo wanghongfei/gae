@@ -18,8 +18,8 @@
 3	0	200	2001	3500	0	500	0
 
 # 创意
-4	0	idea1	1	http://www.baidu.com/xxx.jpg	1920	1080	http://www.163.com
-4	0	idea2	2	http://www.baidu.com/xxx.jpg	1280	720	http://www.126.com
+4	0	idea1	1	http://www.baidu.com/xxx.jpg	1920	1080	http://www.163.com	0
+4	0	idea2	2	http://www.baidu.com/xxx.jpg	1280	720	http://www.126.com	0
 
 # 单元 - 创意关联
 5	0	2000	idea1

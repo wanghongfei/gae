@@ -1,6 +1,7 @@
 package org.fh.gae.query.index.filter;
 
 import org.fh.gae.net.vo.BidRequest;
+import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.DataTable;
 import org.fh.gae.query.index.tag.TagIndex;
 import org.fh.gae.query.index.tag.TagType;
@@ -26,7 +27,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
     }
 
     @Override
-    public void filter(Collection<AdUnitInfo> infos, BidRequest request, AudienceProfile profile) {
+    public void filter(Collection<AdUnitInfo> infos, RequestInfo request, AudienceProfile profile) {
         traverse(infos, info -> isStatusFit(info) && isTagFit(info, profile));
     }
 
