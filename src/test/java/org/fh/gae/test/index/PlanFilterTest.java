@@ -14,6 +14,8 @@ public class PlanFilterTest {
             sb.append('1');
         }
 
+        System.out.println(sb.toString());
+
         String bit = sb.toString();
         bit = new BigInteger(bit, 2).toString(10);
 

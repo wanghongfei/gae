@@ -3,6 +3,8 @@ package org.fh.gae.query.index.filter;
 import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.DataTable;
+import org.fh.gae.query.index.plan.PlanIndex;
+import org.fh.gae.query.index.plan.PlanInfo;
 import org.fh.gae.query.index.tag.TagIndex;
 import org.fh.gae.query.index.tag.TagType;
 import org.fh.gae.query.index.unit.AdUnitInfo;
@@ -15,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +32,25 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
 
     @Override
     public void filter(Collection<AdUnitInfo> infos, RequestInfo request, AudienceProfile profile) {
-        traverse(infos, info -> isStatusFit(info) && isTagFit(info, profile));
+        traverse(infos, info -> {
+            boolean ok = isStatusFit(info) && isTagFit(info, profile);
+            ok = ok && isPlanFit(info.getPlanId(), request, profile);
+
+            return ok;
+        });
+
+
+    }
+
+    private boolean isPlanFit(Integer planId, RequestInfo request, AudienceProfile profile) {
+        PlanInfo planInfo = DataTable.of(PlanIndex.class).byId(planId);
+
+        Set<PlanInfo> infoSet = new HashSet<>(3);
+        infoSet.add(planInfo);
+
+        FilterTable.getFilter(PlanInfo.class).filter(infoSet, request, profile);
+
+        return !infoSet.isEmpty();
     }
 
     /**

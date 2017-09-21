@@ -26,6 +26,10 @@ public class PlanIndex implements GaeIndex<PlanInfo> {
         return LEVEL;
     }
 
+    public PlanInfo byId(Integer planId) {
+        return planInfoMap.get(planId);
+    }
+
     @Override
     public int getLength() {
         return 4;
