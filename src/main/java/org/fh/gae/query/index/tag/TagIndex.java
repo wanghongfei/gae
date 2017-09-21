@@ -1,11 +1,16 @@
 package org.fh.gae.query.index.tag;
 
 import org.fh.gae.query.index.GaeIndex;
+import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,6 +57,29 @@ public class TagIndex implements GaeIndex<TagInfo> {
 
     public Map<Integer, Set<Long>> byType(Integer type) {
         return this.typeUnitTagMap.get(type);
+    }
+
+    /**
+     * 根据画像中的标签触发单元
+     * @param profile
+     * @return
+     */
+    public Set<Integer> triggerUnit(AudienceProfile profile) {
+        if (CollectionUtils.isEmpty(profile.getTagMap())) {
+            return Collections.EMPTY_SET;
+        }
+
+        Set<Integer> resultSet = new HashSet<>();
+
+        Collection<Set<Long>> typedTagSet = profile.getTagMap().values();
+        for (Set<Long> profileTags : typedTagSet) {
+            for (Long profileTag : profileTags) {
+                Set<Integer> unitSet = tagUnitMap.get(profileTag);
+                resultSet.addAll(unitSet);
+            }
+        }
+
+        return resultSet;
     }
 
     @Override

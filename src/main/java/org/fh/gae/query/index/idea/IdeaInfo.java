@@ -3,6 +3,7 @@ package org.fh.gae.query.index.idea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.fh.gae.query.vo.Ad;
 
 @Data
 @AllArgsConstructor
@@ -42,4 +43,18 @@ public class IdeaInfo {
      * 创意状态
      */
     private Integer status;
+
+    public Ad toAd(String slotId) {
+        Ad ad = new Ad();
+
+        ad.setAdId(ideaId);
+        ad.setMaterialType(materialType);
+        ad.setUrl(url);
+        ad.setW(w);
+        ad.setH(h);
+        ad.setLandUrl(landUrl);
+        ad.setSlotId(slotId);
+
+        return ad;
+    }
 }

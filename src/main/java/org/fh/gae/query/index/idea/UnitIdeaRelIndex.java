@@ -1,10 +1,13 @@
 package org.fh.gae.query.index.idea;
 
 import org.fh.gae.query.index.GaeIndex;
+import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +32,19 @@ public class UnitIdeaRelIndex implements GaeIndex<UnitIdeaRelInfo> {
     @Override
     public int getLength() {
         return 2;
+    }
+
+    public Set<String> fetchIdeaIds(Set<AdUnitInfo> unitInfoSet) {
+        Set<String> resultSet = new HashSet<>(unitInfoSet.size() + unitInfoSet.size() / 3);
+
+        for (AdUnitInfo unitInfo : unitInfoSet ) {
+            Set<String> idSet = unitIdeaMap.get(unitInfo.getUnitId());
+            if (!CollectionUtils.isEmpty(idSet)) {
+                resultSet.addAll(idSet);
+            }
+        }
+
+        return resultSet;
     }
 
     @Override

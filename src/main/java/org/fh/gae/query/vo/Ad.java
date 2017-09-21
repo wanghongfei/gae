@@ -21,6 +21,8 @@ public class Ad {
      */
     private String slotId;
 
+    private Integer materialType;
+
     /**
      * 物料地址
      */

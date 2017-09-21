@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
      */
     private boolean isTagFit(AdUnitInfo info, AudienceProfile profile) {
         TagIndex tagIndex = DataTable.of(TagIndex.class);
-        Map<Integer, Set<Long>> profileTagMap = profile.getTagMap();
+        Map<Integer, Set<Long>> profileTagMap = profile == null ? Collections.emptyMap() : profile.getTagMap();
 
         Integer unitId = info.getUnitId();
         // 匹配性别, 或
@@ -92,6 +93,10 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
         Set<Long> selectedTags = typeTags.get(unitId);
         // 画像中的标签
         Set<Long> profileTags = profileTagMap.get(tagType);
+
+        if (CollectionUtils.isEmpty(profileTags) && !CollectionUtils.isEmpty(selectedTags)) {
+            return false;
+        }
 
         // 标记变量, 表示画像中的标签是否被单元选择的标签完全包含
         boolean allIncluded = true;

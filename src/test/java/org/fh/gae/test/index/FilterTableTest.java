@@ -1,6 +1,6 @@
 package org.fh.gae.test.index;
 
-import org.fh.gae.net.vo.BidRequest;
+import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.filter.FilterTable;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.index.unit.AdUnitStatus;
@@ -22,7 +22,7 @@ public class FilterTableTest extends BaseTestClass {
                 new AdUnitInfo(1L, 1, 1, AdUnitStatus.PAUSE, 1L, 1)
         ));
 
-        FilterTable.getFilter(AdUnitInfo.class).filter(infos, new BidRequest(), new AudienceProfile());
+        FilterTable.getFilter(AdUnitInfo.class).filter(infos, new RequestInfo(), new AudienceProfile());
         Assert.assertEquals(1, infos.size());
     }
 }

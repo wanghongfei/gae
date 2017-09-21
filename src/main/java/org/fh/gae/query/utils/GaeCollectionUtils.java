@@ -3,6 +3,7 @@ package org.fh.gae.query.utils;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -45,5 +46,30 @@ public class GaeCollectionUtils {
         }
 
         return ret;
+    }
+
+    public static Set<Integer> randomNumbers(int max, int count) {
+        if (max < 1) {
+            return Collections.emptySet();
+        }
+
+        if (count >= max - 1) {
+            Set<Integer> set = new HashSet<>(count + count / 3);
+            for (int ix = 0; ix <= max; ++ix) {
+                set.add(ix);
+            }
+
+            return set;
+        }
+
+        Set<Integer> set = new HashSet<>(count + count / 3);
+        Random random = new Random();
+
+        while (set.size() < count) {
+            int n = random.nextInt(max + 1);
+            set.add(n);
+        }
+
+        return set;
     }
 }

@@ -1,11 +1,19 @@
 package org.fh.gae.query.index.unit;
 
 import org.fh.gae.query.index.GaeIndex;
+import org.fh.gae.query.profile.AudienceProfile;
+import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Component
 public class AdUnitIndex implements GaeIndex<AdUnitInfo> {
@@ -25,8 +33,33 @@ public class AdUnitIndex implements GaeIndex<AdUnitInfo> {
 
     @Override
     public int getLength() {
-        return 5;
+        return 6;
     }
+
+    public Set<AdUnitInfo> fetchInfo(Set<Integer> idSet) {
+        Set<AdUnitInfo> resultSet = new HashSet<>(idSet.size() + idSet.size() / 3);
+
+        idSet.forEach(id -> resultSet.add(adUnitInfoMap.get(id)));
+
+        return resultSet;
+    }
+
+    public Set<Integer> fetchRandom(int amount) {
+        if (amount <= 0) {
+            return Collections.emptySet();
+        }
+
+        List<Integer> unitIdList = adUnitInfoMap.keySet().stream().collect(Collectors.toList());
+        Set<Integer> randomIndex = GaeCollectionUtils.randomNumbers(unitIdList.size() - 1, amount);
+
+        Set<Integer> resultSet = new HashSet<>(randomIndex.size() + randomIndex.size() / 3);
+        for (Integer ix : randomIndex) {
+            resultSet.add(unitIdList.get(ix));
+        }
+
+        return resultSet;
+    }
+
 
     @Override
     public AdUnitInfo packageInfo(String[] tokens) {
@@ -34,8 +67,8 @@ public class AdUnitIndex implements GaeIndex<AdUnitInfo> {
         Long userId = Long.valueOf(tokens[3]);
         Integer planId = Integer.valueOf(tokens[4]);
         Integer status = Integer.valueOf(tokens[5]);
-        Long bid = Long.valueOf(6);
-        Integer priority = Integer.valueOf(7);
+        Long bid = Long.valueOf(tokens[6]);
+        Integer priority = Integer.valueOf(tokens[7]);
 
         AdUnitInfo info = new AdUnitInfo();
         info.setUserId(userId);

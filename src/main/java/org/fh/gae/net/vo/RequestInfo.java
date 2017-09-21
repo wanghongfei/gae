@@ -18,10 +18,10 @@ public class RequestInfo {
 
     private AdSlot slot;
 
-    public RequestInfo(BidRequest req, int slotIndex) {
+    public RequestInfo(BidRequest req, AdSlot slot) {
         this.requestId = req.getRequestId();
         this.auth = req.getAuth();
         this.device = req.getDevice();
-        this.slot = req.getSlots().get(slotIndex);
+        this.slot = slot;
     }
 }
