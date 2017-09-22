@@ -19,6 +19,17 @@ java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.
 未完成:
 日志,前端反作弊
 
+## 模块说明 org.fh.gae.*
+- net
+
+HTTP网络通讯逻辑, netty启动入口`net.GaeHttpServer`
+
+- query
+
+广告检索逻辑
+
+
+
 ## 测试
 一次可请求多个广告位:
 ```

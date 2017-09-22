@@ -101,20 +101,4 @@ public class BsSearchService {
 
         return unitIdSet;
     }
-
-    private List<Ad> fetchAds(BidRequest request) {
-        List<Ad> adList = new ArrayList<>();
-
-        for (AdSlot slot : request.getSlots()) {
-            Ad ad = new Ad();
-            ad.setAdId("ad1");
-            ad.setUrl("http://www.baidu.com");
-            ad.setShowUrls(Arrays.asList("http://gae.com/a.gif?x=y").toArray(new String[0]));
-            ad.setSlotId(slot.getSlotId());
-
-            adList.add(ad);
-        }
-
-        return adList;
-    }
 }
