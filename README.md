@@ -74,25 +74,25 @@ curl -X POST \
     "result": {
         "ads": [
             {
-                "adId": "idea2",
+                "ad_id": "idea1",
                 "h": 1080,
-                "landUrl": "http://www.126.com",
-                "materialType": 2,
-                "slotId": "广告位id",
+                "land_url": "http://www.163.com",
+                "material_type": 1,
+                "slot_id": "广告位id",
                 "url": "http://www.baidu.com/xxx.jpg",
                 "w": 1920
             },
             {
-                "adId": "idea2",
+                "ad_id": "idea1",
                 "h": 1080,
-                "landUrl": "http://www.126.com",
-                "materialType": 2,
-                "slotId": "广告位id2",
+                "land_url": "http://www.163.com",
+                "material_type": 1,
+                "slot_id": "广告位id2",
                 "url": "http://www.baidu.com/xxx.jpg",
                 "w": 1920
             }
         ],
-        "requestId": "hello"
+        "request_id": "hello"
     }
 }
 ```
