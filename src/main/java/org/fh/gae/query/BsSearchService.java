@@ -72,7 +72,7 @@ public class BsSearchService {
             FilterTable.getFilter(IdeaInfo.class).filter(ideaInfoSet, req, profile);
 
             if (!CollectionUtils.isEmpty(ideaInfoSet)) {
-                List<IdeaInfo> infoList = ideaInfoSet.stream().collect(Collectors.toList());
+                List<IdeaInfo> infoList = new ArrayList<>(ideaInfoSet);
                 IdeaInfo target = picker.pickOne(infoList);
                 adList.add(target.toAd(slot.getSlotId()));
             }
