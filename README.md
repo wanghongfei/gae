@@ -38,7 +38,7 @@ curl -X POST \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -d '{
-    "requestId": "hello",
+    "request_id": "hello",
     "auth": {
         "tid": "tid",
         "token": "token"
@@ -51,18 +51,18 @@ curl -X POST \
     },
     "slots": [
         {
-            "slotId": "广告位id",
-            "slotType": 1,
+            "slot_id": "广告位id",
+            "slot_type": 1,
             "w": 1920,
             "h": 1080,
-            "materialType": [1,2]
+            "material_type": [1,2]
         },
         {
-            "slotId": "广告位id2",
-            "slotType": 1,
+            "slot_id": "广告位id2",
+            "slot_type": 1,
             "w": 1920,
             "h": 1080,
-            "materialType": [1,2]
+            "material_type": [1,2]
         }
     ]
 }'
