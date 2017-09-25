@@ -18,6 +18,9 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -32,8 +35,18 @@ public class ThreadPool {
 
     @PostConstruct
     public void initPool() {
-        pool = Executors.newFixedThreadPool(serverProps.getBusinessThreadPoolSize());
-        log.info("business therad pool initialzed, size: {}", serverProps.getBusinessThreadPoolSize());
+        int configSize = serverProps.getBusinessThreadPoolSize();
+
+        pool = new ThreadPoolExecutor(
+                configSize,
+                configSize * 10,
+                30L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(configSize),
+                new ThreadPoolExecutor.DiscardPolicy()
+        );
+
+        log.info("business thread pool initialzed, size: {}", serverProps.getBusinessThreadPoolSize());
 
     }
 
