@@ -15,6 +15,7 @@ import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.profile.ProfileFetcher;
+import org.fh.gae.query.session.ThreadCtx;
 import org.fh.gae.query.vo.Ad;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,8 @@ public class BsSearchService {
         BidResult result = new BidResult();
         result.setRequestId(request.getRequestId());
         result.setAds(adList);
+
+        ThreadCtx.clean();
 
         return result;
     }

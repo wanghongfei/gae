@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.utils.NettyUtils;
+import org.fh.gae.net.vo.BidResponse;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -56,7 +57,7 @@ public class JsonRequestDecoder<T> extends MessageToMessageDecoder<FullHttpReque
             cause.printStackTrace();
         }
 
-        FullHttpResponse resp = NettyUtils.buildResponse(HttpResponseStatus.BAD_REQUEST);
+        FullHttpResponse resp = NettyUtils.buildResponse(BidResponse.error(), HttpResponseStatus.BAD_REQUEST);
         ctx.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
     }
 }

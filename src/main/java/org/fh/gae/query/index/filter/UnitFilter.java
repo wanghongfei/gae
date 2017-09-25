@@ -1,6 +1,5 @@
 package org.fh.gae.query.index.filter;
 
-import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.DataTable;
 import org.fh.gae.query.index.plan.PlanIndex;
@@ -10,6 +9,7 @@ import org.fh.gae.query.index.tag.TagType;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.index.unit.AdUnitStatus;
 import org.fh.gae.query.profile.AudienceProfile;
+import org.fh.gae.query.session.ThreadCtx;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -126,6 +126,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
             if (selectedTags.contains(profileTag)) {
                 // 如果是或逻辑
                 if (or) {
+                    ThreadCtx.addWeight(unitId, 1);
                     return true;
                 }
             } else {
@@ -135,6 +136,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
 
         // 当逻辑为且, 且画像标签被完全包含时
         if (false == or && true == allIncluded) {
+            ThreadCtx.addWeight(unitId, 1);
             return true;
         }
 

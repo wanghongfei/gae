@@ -44,6 +44,13 @@ public class NettyUtils {
         return response;
     }
 
+    public static FullHttpResponse buildResponse(BidResponse bidResponse, HttpResponseStatus status) {
+        FullHttpResponse response = buildResponse(bidResponse);
+        response.setStatus(status);
+
+        return response;
+    }
+
     public static FullHttpResponse buildResponse(HttpResponseStatus status) {
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1,
