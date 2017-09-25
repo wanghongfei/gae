@@ -33,16 +33,19 @@ public class GaeHttpServer {
     @Autowired
     private GaeServerProps serverProps;
 
-    private EventLoopGroup group;
+    private EventLoopGroup bossGroup;
+
+    private EventLoopGroup workerGroup;
 
     public void start() throws Exception {
         log.info("starting GAE server");
 
-        group = new NioEventLoopGroup();
+        bossGroup = new NioEventLoopGroup(1);
+        workerGroup = new NioEventLoopGroup();
 
         try {
             ServerBootstrap boot = new ServerBootstrap();
-            boot.group(group)
+            boot.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(serverProps.getHost(), serverProps.getPort())
                     .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -64,12 +67,12 @@ public class GaeHttpServer {
 
         } catch (Exception e) {
             e.printStackTrace();
-            group.shutdownGracefully().sync();
+            bossGroup.shutdownGracefully().sync();
         }
     }
 
     public void shutdown() throws Exception {
-        group.shutdownGracefully().sync();
+        bossGroup.shutdownGracefully().sync();
 
         log.info("GAE server has been stopped");
     }
