@@ -1,5 +1,6 @@
 package org.fh.gae.net.handler;
 
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -34,7 +35,6 @@ public class GaeBidHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error(cause.getMessage());
 
-        ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error()));
-        ctx.close();
+        ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error())).addListener(ChannelFutureListener.CLOSE);
     }
 }

@@ -97,11 +97,11 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
     private boolean isTagFit(Map<Integer, Set<Long>> profileTagMap,
                              TagIndex tagIndex,
                              Integer unitId,
-                             Integer tagType,
+                             TagType tagType,
                              boolean or) {
 
         // 取出当前tag类型索引数据
-        Map<Integer, Set<Long>> typeTags = tagIndex.byType(tagType);
+        Map<Integer, Set<Long>> typeTags = tagIndex.byType(tagType.code());
 
         // 如果没有该类型的索引数据, 或当前推广单元没有选择该类型的标签
         if (CollectionUtils.isEmpty(typeTags)
@@ -113,7 +113,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
         // 当前单元选择的标签
         Set<Long> selectedTags = typeTags.get(unitId);
         // 画像中的标签
-        Set<Long> profileTags = profileTagMap.get(tagType);
+        Set<Long> profileTags = profileTagMap.get(tagType.code());
 
         if (CollectionUtils.isEmpty(profileTags) && !CollectionUtils.isEmpty(selectedTags)) {
             return false;
@@ -126,7 +126,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
             if (selectedTags.contains(profileTag)) {
                 // 如果是或逻辑
                 if (or) {
-                    ThreadCtx.addWeight(unitId, 1);
+                    tagType.processTrace(unitId);
                     return true;
                 }
             } else {
@@ -136,7 +136,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
 
         // 当逻辑为且, 且画像标签被完全包含时
         if (false == or && true == allIncluded) {
-            ThreadCtx.addWeight(unitId, 1);
+            tagType.processTrace(unitId);
             return true;
         }
 

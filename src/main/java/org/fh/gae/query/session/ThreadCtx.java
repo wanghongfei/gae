@@ -1,5 +1,8 @@
 package org.fh.gae.query.session;
 
+import org.fh.gae.query.WeightTable;
+import org.fh.gae.query.trace.TraceBit;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +20,8 @@ public class ThreadCtx {
      * 推广单元权重
      */
     public static final String KEY_UNIT_WEIGHT = "keyUnitWeight";
+
+    public static final String KEY_TARGETING_TRACE = "keyTargetingTrace";
 
     private static Map<String, Object> initContext() {
         Map<String, Object> map = new HashMap<>();
@@ -47,19 +52,34 @@ public class ThreadCtx {
         threadLocal.set(null);
     }
 
-    /**
-     * 将指定推广单元的权重增加指定值
-     * @param unitId
-     * @param newWeight
-     */
-    public static void addWeight(Integer unitId, Integer newWeight) {
-        Map<Integer, Integer> unitWeightMap = getContext(KEY_UNIT_WEIGHT);
-        if (null == unitWeightMap) {
-            unitWeightMap = new HashMap<>();
-            putContext(KEY_UNIT_WEIGHT, unitWeightMap);
+
+    public static Map<Integer, TraceBit> getTraceMap() {
+        Map<Integer, TraceBit> map = getContext(KEY_TARGETING_TRACE);
+        if (null == map) {
+            map = new HashMap<>();
+            putContext(KEY_TARGETING_TRACE, map);
         }
 
-        Integer oldWeight = unitWeightMap.get(unitId);
-        unitWeightMap.put(unitId, oldWeight == null ? newWeight : oldWeight + newWeight);
+        return map;
+    }
+
+    /**
+     * 获取单元权重Map;
+     *
+     * @return
+     */
+    public static Map<Integer, Integer> getWeightMap() {
+        Map<Integer, TraceBit> traceMap = getTraceMap();
+
+        Map<Integer, Integer> weightMap = new HashMap<>();
+        for (Map.Entry<Integer, TraceBit> entry : traceMap.entrySet()) {
+            Integer unitId = entry.getKey();
+            TraceBit bit = entry.getValue();
+
+            int weight = WeightTable.sum(bit.getBit());
+            weightMap.put(unitId, weight);
+        }
+
+        return weightMap;
     }
 }

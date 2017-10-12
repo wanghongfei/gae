@@ -1,5 +1,6 @@
 package org.fh.gae.net.handler;
 
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -104,11 +105,9 @@ public class GaeAuthHandler extends ChannelInboundHandlerAdapter {
             );
 
             FullHttpResponse http = NettyUtils.buildResponse(response);
-            ctx.writeAndFlush(http);
+            ctx.writeAndFlush(http).addListener(ChannelFutureListener.CLOSE);
         } else {
-            ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error()));
+            ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error())).addListener(ChannelFutureListener.CLOSE);
         }
-
-        ctx.close();
     }
 }

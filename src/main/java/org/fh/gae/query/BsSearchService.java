@@ -11,11 +11,13 @@ import org.fh.gae.query.index.idea.IdeaInfo;
 import org.fh.gae.query.index.idea.UnitIdeaRelIndex;
 import org.fh.gae.query.index.plan.PlanIndex;
 import org.fh.gae.query.index.tag.TagIndex;
+import org.fh.gae.query.index.tag.TagType;
 import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.profile.ProfileFetcher;
 import org.fh.gae.query.session.ThreadCtx;
+import org.fh.gae.query.trace.TraceBit;
 import org.fh.gae.query.vo.Ad;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,10 +48,12 @@ public class BsSearchService {
 
     public BidResult bid(BidRequest request) {
         // 查画像
-        AudienceProfile profile = null;
+/*        AudienceProfile profile = null;
         if (null != profileFetcher) {
             profile = profileFetcher.fetchProfile(request);
-        }
+        }*/
+
+        AudienceProfile profile = mockProfile();
 
         List<Ad> adList = new ArrayList<>(request.getSlots().size());
 
@@ -72,6 +78,12 @@ public class BsSearchService {
             // 过虑创意
             FilterTable.getFilter(IdeaInfo.class).filter(ideaInfoSet, req, profile);
 
+            Map<Integer, TraceBit> map = ThreadCtx.getTraceMap();
+            System.out.println("traceMap = " + map);
+            Map<Integer, Integer> wMap = ThreadCtx.getWeightMap();
+            System.out.println("weigthMap" + wMap);
+
+
             if (!CollectionUtils.isEmpty(ideaInfoSet)) {
                 List<IdeaInfo> infoList = new ArrayList<>(ideaInfoSet);
                 IdeaInfo target = picker.pickOne(infoList);
@@ -93,7 +105,7 @@ public class BsSearchService {
 
         // 使用画像触发
         if (null != profile) {
-            unitIdSet = DataTable.of(TagIndex.class).triggerUnit(profile);
+            unitIdSet.addAll(DataTable.of(TagIndex.class).triggerUnit(profile));
         }
 
         // 补量
@@ -103,5 +115,24 @@ public class BsSearchService {
         }
 
         return unitIdSet;
+    }
+
+    private AudienceProfile mockProfile() {
+        AudienceProfile profile = new AudienceProfile();
+        Map<Integer, Set<Long>> tagMap = new HashMap<>();
+        profile.setTagMap(tagMap);
+
+        Set<Long> genderSet = new HashSet<>();
+        genderSet.add(0L);
+        tagMap.put(TagType.GENDER.code(), genderSet);
+
+        Set<Long> indSet = new HashSet<>();
+        indSet.add(0L);
+        indSet.add(1L);
+        indSet.add(2L);
+        tagMap.put(TagType.INDUSTRY.code(), indSet);
+
+
+        return profile;
     }
 }

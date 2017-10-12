@@ -75,7 +75,9 @@ public class TagIndex implements GaeIndex<TagInfo> {
         for (Set<Long> profileTags : typedTagSet) {
             for (Long profileTag : profileTags) {
                 Set<Integer> unitSet = tagUnitMap.get(profileTag);
-                resultSet.addAll(unitSet);
+                if (!CollectionUtils.isEmpty(unitSet)) {
+                    resultSet.addAll(unitSet);
+                }
             }
         }
 

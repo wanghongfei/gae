@@ -24,7 +24,7 @@ public class UnitFilterTest extends BaseTestClass {
         Map<Integer, Set<Long>> tags = new HashMap<>();
         Set<Long> tagSet = new HashSet<>();
         tagSet.add(1L);
-        tags.put(TagType.GENDER, tagSet);
+        tags.put(TagType.GENDER.code(), tagSet);
 
         AudienceProfile profile = new AudienceProfile(tags);
 

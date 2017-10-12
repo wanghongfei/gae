@@ -32,7 +32,8 @@ public interface GaeFilter<T> {
 
         Iterator<T> it = elems.iterator();
         while (it.hasNext()) {
-            boolean keep = judge.test(it.next());
+            T next = it.next();
+            boolean keep = judge.test(next);
             if (!keep) {
                 it.remove();
             }
