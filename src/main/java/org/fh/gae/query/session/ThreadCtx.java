@@ -1,5 +1,6 @@
 package org.fh.gae.query.session;
 
+import io.netty.util.concurrent.FastThreadLocal;
 import org.fh.gae.query.WeightTable;
 import org.fh.gae.query.trace.TraceBit;
 
@@ -10,16 +11,12 @@ import java.util.Map;
  * 基于线程的session
  */
 public class ThreadCtx {
-    private static ThreadLocal<Map<String, Object>> threadLocal;
+    private static FastThreadLocal<Map<String, Object>> threadLocal;
 
     static {
-        threadLocal = new ThreadLocal<>();
+        threadLocal = new FastThreadLocal<>();
     }
 
-    /**
-     * 推广单元权重
-     */
-    public static final String KEY_UNIT_WEIGHT = "keyUnitWeight";
 
     public static final String KEY_TARGETING_TRACE = "keyTargetingTrace";
 
