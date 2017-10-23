@@ -44,6 +44,11 @@ public class IdeaInfo {
      */
     private Integer status;
 
+    /**
+     * 曝光监测地址
+     */
+    private String[] showUrls;
+
     public Ad toAd(String slotId) {
         Ad ad = new Ad();
 
@@ -54,6 +59,7 @@ public class IdeaInfo {
         ad.setH(h);
         ad.setLandUrl(landUrl);
         ad.setSlotId(slotId);
+        ad.setShowUrls(showUrls);
 
         return ad;
     }

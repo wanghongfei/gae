@@ -9,13 +9,13 @@ import org.fh.gae.query.index.filter.FilterTable;
 import org.fh.gae.query.index.idea.IdeaIndex;
 import org.fh.gae.query.index.idea.IdeaInfo;
 import org.fh.gae.query.index.idea.UnitIdeaRelIndex;
-import org.fh.gae.query.index.plan.PlanIndex;
 import org.fh.gae.query.index.tag.TagIndex;
 import org.fh.gae.query.index.tag.TagType;
 import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.profile.ProfileFetcher;
+import org.fh.gae.query.rank.Ranker;
 import org.fh.gae.query.session.ThreadCtx;
 import org.fh.gae.query.trace.TraceBit;
 import org.fh.gae.query.vo.Ad;
@@ -25,15 +25,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -42,6 +38,9 @@ public class BsSearchService {
 
     @Autowired(required = false)
     private ProfileFetcher profileFetcher;
+
+    @Autowired
+    private Ranker ranker;
 
     @Autowired
     private Picker picker;
@@ -68,6 +67,8 @@ public class BsSearchService {
 
             // 过虑单元
             FilterTable.getFilter(AdUnitInfo.class).filter(unitInfoSet, req, profile);
+
+            unitInfoSet = ranker.rankUnitByWeight(unitInfoSet);
 
             // 获取创意id
             Set<String> ideaIds = DataTable.of(UnitIdeaRelIndex.class).fetchIdeaIds(unitInfoSet);

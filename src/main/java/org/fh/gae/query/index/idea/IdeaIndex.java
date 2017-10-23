@@ -29,7 +29,7 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
 
     @Override
     public int getLength() {
-        return 7;
+        return 8;
     }
 
     public Set<IdeaInfo> fetchInfo(Set<String> idSet) {
@@ -49,6 +49,7 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
         Integer h = Integer.valueOf(tokens[6]);
         String landUrl = tokens[7];
         Integer st = Integer.valueOf(tokens[8]);
+        String[] showUrls = tokens[9].split(";");
 
         IdeaInfo info = new IdeaInfo();
         info.setIdeaId(ideaId);
@@ -58,6 +59,7 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
         info.setH(h);
         info.setLandUrl(landUrl);
         info.setStatus(st);
+        info.setShowUrls(showUrls);
 
         return info;
     }
