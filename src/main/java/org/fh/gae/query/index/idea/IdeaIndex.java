@@ -49,7 +49,7 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
         Integer h = Integer.valueOf(tokens[6]);
         String landUrl = tokens[7];
         Integer st = Integer.valueOf(tokens[8]);
-        String[] showUrls = tokens[9].split(";");
+        String[] showUrls = extractUrls(tokens, ";");
 
         IdeaInfo info = new IdeaInfo();
         info.setIdeaId(ideaId);
@@ -77,5 +77,14 @@ public class IdeaIndex implements GaeIndex<IdeaInfo> {
     @Override
     public void delete(IdeaInfo ideaInfo) {
         infoMap.remove(ideaInfo.getIdeaId());
+    }
+
+    private String[] extractUrls(String[] tokens, String separator) {
+        if (tokens.length > 9) {
+            String[] urls = tokens[9].split(separator);
+            return urls;
+        }
+
+        return null;
     }
 }
