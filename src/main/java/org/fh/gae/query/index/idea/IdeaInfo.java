@@ -3,6 +3,7 @@ package org.fh.gae.query.index.idea;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.fh.gae.query.index.DataTable;
 import org.fh.gae.query.vo.Ad;
 
 @Data
@@ -60,6 +61,9 @@ public class IdeaInfo {
         ad.setLandUrl(landUrl);
         ad.setSlotId(slotId);
         ad.setShowUrls(showUrls);
+
+        String adCode = DataTable.of(IdeaAuditIndex.class).getAuditInfo(ideaId).getAdCode();
+        ad.setAdCode(adCode);
 
         return ad;
     }

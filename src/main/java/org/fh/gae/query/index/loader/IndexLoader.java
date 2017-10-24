@@ -3,6 +3,7 @@ package org.fh.gae.query.index.loader;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.query.index.GaeIndex;
 import org.fh.gae.query.index.auth.AuthIndex;
+import org.fh.gae.query.index.idea.IdeaAuditIndex;
 import org.fh.gae.query.index.idea.IdeaIndex;
 import org.fh.gae.query.index.idea.UnitIdeaRelIndex;
 import org.fh.gae.query.index.idea.UnitIdeaRelInfo;
@@ -45,6 +46,8 @@ public class IndexLoader {
     private IdeaIndex ideaIndex;
     @Autowired
     private UnitIdeaRelIndex unitIdeaRelIndex;
+    @Autowired
+    private IdeaAuditIndex ideaAuditIndex;
 
     @Value("${gae.index.path}")
     private String idxPath;
@@ -64,6 +67,7 @@ public class IndexLoader {
         idxMap.put(TagIndex.LEVEL, tagIndex);
         idxMap.put(IdeaIndex.LEVEL, ideaIndex);
         idxMap.put(UnitIdeaRelIndex.LEVEL, unitIdeaRelIndex);
+        idxMap.put(IdeaAuditIndex.LEVEL, ideaAuditIndex);
 
         loadIndex();
     }

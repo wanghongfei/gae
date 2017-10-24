@@ -3,6 +3,7 @@ package org.fh.gae.query.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 /**
  * 返回的广告信息
@@ -14,7 +15,10 @@ public class Ad {
     /**
      * 广告id
      */
+    @JsonIgnore
     private String adId;
+
+    private String adCode;
 
     /**
      * 广告位id

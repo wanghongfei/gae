@@ -1,6 +1,10 @@
 package org.fh.gae.query.index.filter;
 
 import org.fh.gae.net.vo.RequestInfo;
+import org.fh.gae.query.index.DataTable;
+import org.fh.gae.query.index.idea.IdeaAuditIndex;
+import org.fh.gae.query.index.idea.IdeaAuditInfo;
+import org.fh.gae.query.index.idea.IdeaAuditStatus;
 import org.fh.gae.query.index.idea.IdeaInfo;
 import org.fh.gae.query.index.idea.IdeaStatus;
 import org.fh.gae.query.profile.AudienceProfile;
@@ -28,6 +32,7 @@ public class IdeaFilter implements GaeFilter<IdeaInfo> {
                 ideaInfo -> isStatusFit(ideaInfo)
                         && isMaterialTypeFit(ideaInfo, request)
                         && isSizeFit(ideaInfo, request)
+                        && isAuditFit(ideaInfo)
         );
     }
 
@@ -51,5 +56,14 @@ public class IdeaFilter implements GaeFilter<IdeaInfo> {
         Integer requiredWidth = slot.getW();
 
         return requiredHeight.equals(info.getH()) && requiredWidth.equals(info.getW());
+    }
+
+    protected boolean isAuditFit(IdeaInfo ideaInfo) {
+        IdeaAuditInfo auditInfo = DataTable.of(IdeaAuditIndex.class).getAuditInfo(ideaInfo.getIdeaId());
+        if (null == auditInfo || auditInfo.getStatus() != IdeaAuditStatus.PASS) {
+            return false;
+        }
+
+        return true;
     }
 }

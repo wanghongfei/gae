@@ -74,6 +74,7 @@ curl -X POST \
     "result": {
         "ads": [
             {
+                "ad_code": "adCode1",
                 "ad_id": "idea1",
                 "h": 1080,
                 "land_url": "http://www.163.com",
@@ -87,6 +88,7 @@ curl -X POST \
                 "w": 1920
             },
             {
+                "ad_code": "adCode1",
                 "ad_id": "idea1",
                 "h": 1080,
                 "land_url": "http://www.163.com",
