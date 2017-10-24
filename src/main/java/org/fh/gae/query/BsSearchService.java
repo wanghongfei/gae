@@ -1,6 +1,8 @@
 package org.fh.gae.query;
 
 import lombok.extern.slf4j.Slf4j;
+import org.fh.gae.log.PbLogUtils;
+import org.fh.gae.log.SearchLogWriter;
 import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.net.vo.BidResult;
 import org.fh.gae.net.vo.RequestInfo;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +48,9 @@ public class BsSearchService {
     @Autowired
     private Picker picker;
 
+    @Autowired
+    private SearchLogWriter logWriter;
+
     public BidResult bid(BidRequest request) {
         // 查画像
 /*        AudienceProfile profile = null;
@@ -58,6 +64,8 @@ public class BsSearchService {
 
         for (AdSlot slot : request.getSlots()) {
             RequestInfo req = new RequestInfo(request, slot);
+
+            PbLogUtils.initSearchLog(req);
 
             // 触发单元
             Set<Integer> unitIdSet = triggerUnit(profile);
@@ -82,19 +90,34 @@ public class BsSearchService {
             Map<Integer, TraceBit> map = ThreadCtx.getTraceMap();
             System.out.println("traceMap = " + map);
             Map<Integer, Integer> wMap = ThreadCtx.getWeightMap();
-            System.out.println("weigthMap" + wMap);
+            System.out.println("weightMap" + wMap);
 
 
             if (!CollectionUtils.isEmpty(ideaInfoSet)) {
                 List<IdeaInfo> infoList = new ArrayList<>(ideaInfoSet);
                 IdeaInfo target = picker.pickOne(infoList);
-                adList.add(target.toAd(slot.getSlotId()));
+
+                String slotId = slot.getSlotId();
+                Ad ad = target.toAd(slotId);
+                adList.add(ad);
+
+                // todo 填写后3个参数
+                PbLogUtils.updateAdInfo(slotId, ad, 0, 0, 0);
+
+                try {
+                    logWriter.writeLog(slotId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
+
         }
 
         BidResult result = new BidResult();
         result.setRequestId(request.getRequestId());
         result.setAds(adList);
+
 
         ThreadCtx.clean();
 

@@ -24,4 +24,6 @@ public class GaeServerProps {
      * 业务线程池大小
      */
     private int businessThreadPoolSize = 5;
+
+    private String searchLog = "logs/search.log";
 }

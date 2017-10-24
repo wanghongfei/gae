@@ -1,6 +1,7 @@
 package org.fh.gae.query.session;
 
 import io.netty.util.concurrent.FastThreadLocal;
+import org.fh.gae.log.SearchLog;
 import org.fh.gae.query.WeightTable;
 import org.fh.gae.query.trace.TraceBit;
 
@@ -19,6 +20,8 @@ public class ThreadCtx {
 
 
     public static final String KEY_TARGETING_TRACE = "keyTargetingTrace";
+
+    public static final String KEY_LOG = "keyLog";
 
     private static Map<String, Object> initContext() {
         Map<String, Object> map = new HashMap<>();
@@ -78,5 +81,19 @@ public class ThreadCtx {
         }
 
         return weightMap;
+    }
+
+    public static Map<String, SearchLog.Search.Builder> getSearchLogMap() {
+        Map<String, SearchLog.Search.Builder> map = getContext(KEY_LOG);
+        if (null == map) {
+            map = new HashMap<>();
+            putContext(KEY_LOG, map);
+        }
+
+        return map;
+    }
+
+    public static void putSearchLog(String slotId, SearchLog.Search.Builder pb) {
+        getSearchLogMap().put(slotId, pb);
     }
 }

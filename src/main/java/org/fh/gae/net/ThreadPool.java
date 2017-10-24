@@ -46,7 +46,7 @@ public class ThreadPool {
                 new ThreadPoolExecutor.DiscardPolicy()
         );
 
-        log.info("business thread pool initialzed, size: {}", serverProps.getBusinessThreadPoolSize());
+        log.info("business thread pool initialized, size: {}", serverProps.getBusinessThreadPoolSize());
 
     }
 
