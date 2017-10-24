@@ -36,7 +36,7 @@ import java.util.Set;
 
 @Component
 @Slf4j
-public class BsSearchService {
+public class BasicSearch {
     public static final int MIN_UNIT_AMOUNT = 100;
 
     @Autowired(required = false)
@@ -87,22 +87,26 @@ public class BsSearchService {
             // 过虑创意
             FilterTable.getFilter(IdeaInfo.class).filter(ideaInfoSet, req, profile);
 
+            // debug
             Map<Integer, TraceBit> map = ThreadCtx.getTraceMap();
             System.out.println("traceMap = " + map);
             Map<Integer, Integer> wMap = ThreadCtx.getWeightMap();
             System.out.println("weightMap" + wMap);
 
 
+            // 从创意结果中选择一个
             if (!CollectionUtils.isEmpty(ideaInfoSet)) {
                 List<IdeaInfo> infoList = new ArrayList<>(ideaInfoSet);
                 IdeaInfo target = picker.pickOne(infoList);
 
+                // 构造Ad对象
                 String slotId = slot.getSlotId();
                 Ad ad = target.toAd(slotId);
                 adList.add(ad);
 
-                // todo 填写后3个参数
-                PbLogUtils.updateAdInfo(slotId, ad, 0, 0, 0);
+                AdUnitInfo unit = ThreadCtx.getIdeaMap().get(ad.getAdId());
+
+                PbLogUtils.updateAdInfo(slotId, ad, unit.getPlanId(), unit.getUnitId(), ad.getAdId());
 
                 try {
                     logWriter.writeLog(slotId);

@@ -13,11 +13,11 @@ java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.
 其中gae.idx为索引文件名
 
 ## 项目进度
-基本完成(能跑通):
-授权, 索引, 检索
+基本完成:
+授权, 索引, 检索, 日志(proto格式)
 
 未完成:
-日志,前端反作弊
+前端反作弊
 
 ## 模块说明 org.fh.gae.*
 - net

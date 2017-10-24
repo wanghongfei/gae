@@ -67,9 +67,9 @@ public final class SearchLog {
     boolean hasUnitId();
     int getUnitId();
     
-    // optional int32 ideaId = 15;
+    // optional string ideaId = 15;
     boolean hasIdeaId();
-    int getIdeaId();
+    String getIdeaId();
     
     // optional string adCode = 16;
     boolean hasAdCode();
@@ -398,14 +398,36 @@ public final class SearchLog {
       return unitId_;
     }
     
-    // optional int32 ideaId = 15;
+    // optional string ideaId = 15;
     public static final int IDEAID_FIELD_NUMBER = 15;
-    private int ideaId_;
+    private java.lang.Object ideaId_;
     public boolean hasIdeaId() {
       return ((bitField0_ & 0x00004000) == 0x00004000);
     }
-    public int getIdeaId() {
-      return ideaId_;
+    public String getIdeaId() {
+      java.lang.Object ref = ideaId_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          ideaId_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getIdeaIdBytes() {
+      java.lang.Object ref = ideaId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        ideaId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional string adCode = 16;
@@ -455,7 +477,7 @@ public final class SearchLog {
       ip_ = "";
       planId_ = 0;
       unitId_ = 0;
-      ideaId_ = 0;
+      ideaId_ = "";
       adCode_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -525,7 +547,7 @@ public final class SearchLog {
         output.writeInt32(14, unitId_);
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeInt32(15, ideaId_);
+        output.writeBytes(15, getIdeaIdBytes());
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         output.writeBytes(16, getAdCodeBytes());
@@ -597,7 +619,7 @@ public final class SearchLog {
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(15, ideaId_);
+          .computeBytesSize(15, getIdeaIdBytes());
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
@@ -755,7 +777,7 @@ public final class SearchLog {
         bitField0_ = (bitField0_ & ~0x00001000);
         unitId_ = 0;
         bitField0_ = (bitField0_ & ~0x00002000);
-        ideaId_ = 0;
+        ideaId_ = "";
         bitField0_ = (bitField0_ & ~0x00004000);
         adCode_ = "";
         bitField0_ = (bitField0_ & ~0x00008000);
@@ -1038,9 +1060,9 @@ public final class SearchLog {
               unitId_ = input.readInt32();
               break;
             }
-            case 120: {
+            case 122: {
               bitField0_ |= 0x00004000;
-              ideaId_ = input.readInt32();
+              ideaId_ = input.readBytes();
               break;
             }
             case 130: {
@@ -1453,25 +1475,40 @@ public final class SearchLog {
         return this;
       }
       
-      // optional int32 ideaId = 15;
-      private int ideaId_ ;
+      // optional string ideaId = 15;
+      private java.lang.Object ideaId_ = "";
       public boolean hasIdeaId() {
         return ((bitField0_ & 0x00004000) == 0x00004000);
       }
-      public int getIdeaId() {
-        return ideaId_;
+      public String getIdeaId() {
+        java.lang.Object ref = ideaId_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          ideaId_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setIdeaId(int value) {
-        bitField0_ |= 0x00004000;
+      public Builder setIdeaId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00004000;
         ideaId_ = value;
         onChanged();
         return this;
       }
       public Builder clearIdeaId() {
         bitField0_ = (bitField0_ & ~0x00004000);
-        ideaId_ = 0;
+        ideaId_ = getDefaultInstance().getIdeaId();
         onChanged();
         return this;
+      }
+      void setIdeaId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00004000;
+        ideaId_ = value;
+        onChanged();
       }
       
       // optional string adCode = 16;
@@ -1542,7 +1579,7 @@ public final class SearchLog {
       "\030\007 \001(\005\022\r\n\005width\030\010 \001(\005\022\016\n\006height\030\t \001(\005\022\024\n" +
       "\014materialType\030\n \001(\t\022\013\n\003mac\030\013 \001(\t\022\n\n\002ip\030\014" +
       " \001(\t\022\016\n\006planId\030\r \001(\005\022\016\n\006unitId\030\016 \001(\005\022\016\n\006" +
-      "ideaId\030\017 \001(\005\022\016\n\006adCode\030\020 \001(\t"
+      "ideaId\030\017 \001(\t\022\016\n\006adCode\030\020 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

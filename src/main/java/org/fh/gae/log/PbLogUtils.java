@@ -15,6 +15,10 @@ public class PbLogUtils {
         return SearchLog.Search.getDefaultInstance().toBuilder();
     }
 
+    /**
+     * 创建log对象并保存到session
+     * @param request
+     */
     public static void initSearchLog(RequestInfo request) {
         SearchLog.Search.Builder pb = makeSearchLogBuilder();
         updateBasicInfo(pb, request);
@@ -22,6 +26,11 @@ public class PbLogUtils {
         ThreadCtx.putSearchLog(request.getSlot().getSlotId(), pb);
     }
 
+    /**
+     * 填写日志对象中的基本请求字段
+     * @param pbLog
+     * @param request
+     */
     public static void updateBasicInfo(SearchLog.Search.Builder pbLog, RequestInfo request) {
         pbLog.setTid(request.getAuth().getTid());
         pbLog.setRequestId(request.getRequestId());
@@ -31,13 +40,21 @@ public class PbLogUtils {
         pbLog.setIp(request.getDevice().getIp());
     }
 
-    public static void updateAdInfo(String slotId, Ad ad, int planId, int unitId, int ideaId) {
+    /**
+     * 填写日志中的广告相关字段
+     * @param slotId
+     * @param ad
+     * @param planId
+     * @param unitId
+     * @param ideaId
+     */
+    public static void updateAdInfo(String slotId, Ad ad, int planId, int unitId, String ideaId) {
         SearchLog.Search.Builder pbLog = ThreadCtx.getSearchLogMap().get(slotId);
 
         pbLog.setWidth(ad.getW());
         pbLog.setHeight(ad.getH());
         pbLog.setMaterialType(ad.getMaterialType().toString());
-        pbLog.setAdCode(ad.getAdId());
+        pbLog.setAdCode(ad.getAdId().toString());
 
         pbLog.setPlanId(planId);
         pbLog.setUnitId(unitId);

@@ -9,15 +9,12 @@ import org.fh.gae.net.utils.NettyUtils;
 import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.net.vo.BidResponse;
 import org.fh.gae.net.vo.BidResult;
-import org.fh.gae.query.BsSearchService;
-import org.fh.gae.query.vo.Ad;
+import org.fh.gae.query.BasicSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +28,7 @@ public class ThreadPool {
     private GaeServerProps serverProps;
 
     @Autowired
-    private BsSearchService bsSearchService;
+    private BasicSearch bsSearchService;
 
     @PostConstruct
     public void initPool() {

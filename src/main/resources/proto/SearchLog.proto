@@ -30,7 +30,7 @@ message Search {
     //  推广单元id
     optional int32 unitId = 14;
     //  创意id
-    optional int32 ideaId = 15;
+    optional string ideaId = 15;
 
     optional string adCode = 16;
 }
