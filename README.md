@@ -78,6 +78,10 @@ curl -X POST \
                 "h": 1080,
                 "land_url": "http://www.163.com",
                 "material_type": 1,
+                "show_urls": [
+                    "http://www.gae.com/showMonitor.gif?sid=a",
+                    "http://www.gae.com/showMonitor.gif?sid=b"
+                ],
                 "slot_id": "广告位id",
                 "url": "http://www.baidu.com/xxx.jpg",
                 "w": 1920
@@ -87,6 +91,10 @@ curl -X POST \
                 "h": 1080,
                 "land_url": "http://www.163.com",
                 "material_type": 1,
+                "show_urls": [
+                    "http://www.gae.com/showMonitor.gif?sid=a",
+                    "http://www.gae.com/showMonitor.gif?sid=b"
+                ],
                 "slot_id": "广告位id2",
                 "url": "http://www.baidu.com/xxx.jpg",
                 "w": 1920
