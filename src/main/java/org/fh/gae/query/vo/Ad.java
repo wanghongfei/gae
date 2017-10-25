@@ -1,9 +1,9 @@
 package org.fh.gae.query.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 /**
  * 返回的广告信息
@@ -15,7 +15,7 @@ public class Ad {
     /**
      * 广告id
      */
-    @JsonIgnore
+    @JSONField(serialize = false)
     private String adId;
 
     private String adCode;

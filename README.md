@@ -75,7 +75,6 @@ curl -X POST \
         "ads": [
             {
                 "ad_code": "adCode1",
-                "ad_id": "idea1",
                 "h": 1080,
                 "land_url": "http://www.163.com",
                 "material_type": 1,
@@ -89,7 +88,6 @@ curl -X POST \
             },
             {
                 "ad_code": "adCode1",
-                "ad_id": "idea1",
                 "h": 1080,
                 "land_url": "http://www.163.com",
                 "material_type": 1,
