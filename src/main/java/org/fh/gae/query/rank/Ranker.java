@@ -30,6 +30,9 @@ public class Ranker {
         for (AdUnitInfo unit : unitSet) {
             Integer unitId = unit.getUnitId();
             Integer weight = wMap.get(unitId);
+            if (null == weight) {
+                continue;
+            }
 
             Set<AdUnitInfo> infoSet = GaeCollectionUtils.getAndCreateIfNeed(
                     weight,

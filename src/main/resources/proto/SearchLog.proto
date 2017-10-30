@@ -31,6 +31,8 @@ message Search {
     optional int32 unitId = 14;
     //  创意id
     optional string ideaId = 15;
-
+    // 广告唯一标识
     optional string adCode = 16;
+    // 命中的标签信息,tagType:tagId逗号分隔, 如 1:1200,2:2100,3:4500
+    optional string tagIds = 17;
 }

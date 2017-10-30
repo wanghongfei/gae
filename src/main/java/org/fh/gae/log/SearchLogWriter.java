@@ -1,6 +1,7 @@
 package org.fh.gae.log;
 
 import com.google.protobuf.Message;
+import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeServerProps;
 import org.fh.gae.query.session.ThreadCtx;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Service
+@Slf4j
 public class SearchLogWriter {
     @Autowired
     private GaeServerProps props;
 
     public void writeLog(String slotId) throws IOException {
         Message pbLog = ThreadCtx.getSearchLogMap().get(slotId).build();
+        log.info("search_log\t{}", pbLog.toString());
+
         writeLog(pbLog);
     }
 

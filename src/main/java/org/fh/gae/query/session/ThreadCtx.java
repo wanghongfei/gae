@@ -5,9 +5,11 @@ import org.fh.gae.log.SearchLog;
 import org.fh.gae.query.WeightTable;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.trace.TraceBit;
+import org.fh.gae.query.utils.GaeCollectionUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 基于线程的session
@@ -20,11 +22,25 @@ public class ThreadCtx {
     }
 
 
+    /**
+     * 定向追踪
+     */
     public static final String KEY_TARGETING_TRACE = "keyTargetingTrace";
 
+    /**
+     * 检索日志
+     */
     public static final String KEY_LOG = "keyLog";
 
+    /**
+     * 创意->单元映射
+     */
     public static final String KEY_IDEA = "keyIdea";
+
+    /**
+     * 命中的标签
+     */
+    public static final String KEY_TAG = "keyTag";
 
     private static Map<String, Object> initContext() {
         Map<String, Object> map = new HashMap<>();
@@ -112,5 +128,40 @@ public class ThreadCtx {
         }
 
         return map;
+    }
+
+    public static Map<String, StringBuilder> getTagMap() {
+        Map<String, StringBuilder> map = getContext(KEY_TAG);
+        if (null == map) {
+            map = new HashMap<>();
+            putContext(KEY_TAG, map);
+        }
+
+        return map;
+    }
+
+    public static void addTag(String slotCode, Integer tagType, Long tagId) {
+        StringBuilder tagBuilder = getTagBuilder(slotCode);
+
+        tagBuilder.append(tagType).append(":").append(tagId).append(",");
+    }
+
+    public static void addTags(String slotCode, Integer tagType, Set<Long> tagIds) {
+        StringBuilder tagBuilder = getTagBuilder(slotCode);
+
+        for (Long tagId : tagIds) {
+            tagBuilder.append(tagType).append(":").append(tagId).append(",");
+        }
+    }
+
+    private static StringBuilder getTagBuilder(String slotCode) {
+        Map<String, StringBuilder> map = getTagMap();
+        StringBuilder tagBuilder = GaeCollectionUtils.getAndCreateIfNeed(
+                slotCode,
+                map,
+                () -> new StringBuilder()
+        );
+
+        return tagBuilder;
     }
 }

@@ -59,9 +59,10 @@ public class PbLogUtils {
         pbLog.setPlanId(planId);
         pbLog.setUnitId(unitId);
         pbLog.setIdeaId(ideaId);
-    }
 
-    public static void updateProfileInfo(SearchLog.Search.Builder pbLog) {
-
+        StringBuilder tagBuilder = ThreadCtx.getTagMap().get(slotId);
+        if (null != tagBuilder) {
+            pbLog.setTagIds(tagBuilder.toString());
+        }
     }
 }

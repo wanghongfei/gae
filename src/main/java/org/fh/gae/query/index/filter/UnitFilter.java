@@ -33,7 +33,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
     @Override
     public void filter(Collection<AdUnitInfo> infos, RequestInfo request, AudienceProfile profile) {
         traverse(infos, info -> {
-            boolean ok = isStatusFit(info) && isTagFit(info, profile);
+            boolean ok = isStatusFit(info) && isTagFit(info, profile, request);
             ok = ok && isPlanFit(info.getPlanId(), request, profile);
 
             return ok;
@@ -66,18 +66,19 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
      * 按标签过虑
      * @return
      */
-    private boolean isTagFit(AdUnitInfo info, AudienceProfile profile) {
+    private boolean isTagFit(AdUnitInfo info, AudienceProfile profile, RequestInfo request) {
         TagIndex tagIndex = DataTable.of(TagIndex.class);
         Map<Integer, Set<Long>> profileTagMap = profile == null ? Collections.emptyMap() : profile.getTagMap();
 
         Integer unitId = info.getUnitId();
+        String slotCode = request.getSlot().getSlotId();
         // 匹配性别, 或
-        if (!isTagFit(profileTagMap, tagIndex, unitId, TagType.GENDER, true)) {
+        if (!isTagFit(profileTagMap, tagIndex, unitId, TagType.GENDER, true, slotCode)) {
             return false;
         }
 
         // 匹配行业, 或
-        if (!isTagFit(profileTagMap, tagIndex, unitId, TagType.INDUSTRY, true)) {
+        if (!isTagFit(profileTagMap, tagIndex, unitId, TagType.INDUSTRY, true, slotCode)) {
             return false;
         }
 
@@ -98,7 +99,8 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
                              TagIndex tagIndex,
                              Integer unitId,
                              TagType tagType,
-                             boolean or) {
+                             boolean or,
+                             String slotCode) {
 
         // 取出当前tag类型索引数据
         Map<Integer, Set<Long>> typeTags = tagIndex.byType(tagType.code());
@@ -127,6 +129,8 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
                 // 如果是或逻辑
                 if (or) {
                     tagType.processTrace(unitId);
+                    ThreadCtx.addTag(slotCode, tagType.code(), profileTag);
+
                     return true;
                 }
             } else {
@@ -137,6 +141,7 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
         // 当逻辑为且, 且画像标签被完全包含时
         if (false == or && true == allIncluded) {
             tagType.processTrace(unitId);
+            ThreadCtx.addTags(slotCode, tagType.code(), profileTags);
             return true;
         }
 

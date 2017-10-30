@@ -74,6 +74,10 @@ public final class SearchLog {
     // optional string adCode = 16;
     boolean hasAdCode();
     String getAdCode();
+    
+    // optional string tagIds = 17;
+    boolean hasTagIds();
+    String getTagIds();
   }
   public static final class Search extends
       com.google.protobuf.GeneratedMessage
@@ -462,6 +466,38 @@ public final class SearchLog {
       }
     }
     
+    // optional string tagIds = 17;
+    public static final int TAGIDS_FIELD_NUMBER = 17;
+    private java.lang.Object tagIds_;
+    public boolean hasTagIds() {
+      return ((bitField0_ & 0x00010000) == 0x00010000);
+    }
+    public String getTagIds() {
+      java.lang.Object ref = tagIds_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          tagIds_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getTagIdsBytes() {
+      java.lang.Object ref = tagIds_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        tagIds_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
       sid_ = "";
       timestamp_ = 0L;
@@ -479,6 +515,7 @@ public final class SearchLog {
       unitId_ = 0;
       ideaId_ = "";
       adCode_ = "";
+      tagIds_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -552,6 +589,9 @@ public final class SearchLog {
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         output.writeBytes(16, getAdCodeBytes());
       }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeBytes(17, getTagIdsBytes());
+      }
       getUnknownFields().writeTo(output);
     }
     
@@ -624,6 +664,10 @@ public final class SearchLog {
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(16, getAdCodeBytes());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(17, getTagIdsBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -781,6 +825,8 @@ public final class SearchLog {
         bitField0_ = (bitField0_ & ~0x00004000);
         adCode_ = "";
         bitField0_ = (bitField0_ & ~0x00008000);
+        tagIds_ = "";
+        bitField0_ = (bitField0_ & ~0x00010000);
         return this;
       }
       
@@ -883,6 +929,10 @@ public final class SearchLog {
           to_bitField0_ |= 0x00008000;
         }
         result.adCode_ = adCode_;
+        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        result.tagIds_ = tagIds_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -946,6 +996,9 @@ public final class SearchLog {
         }
         if (other.hasAdCode()) {
           setAdCode(other.getAdCode());
+        }
+        if (other.hasTagIds()) {
+          setTagIds(other.getTagIds());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1068,6 +1121,11 @@ public final class SearchLog {
             case 130: {
               bitField0_ |= 0x00008000;
               adCode_ = input.readBytes();
+              break;
+            }
+            case 138: {
+              bitField0_ |= 0x00010000;
+              tagIds_ = input.readBytes();
               break;
             }
           }
@@ -1547,6 +1605,42 @@ public final class SearchLog {
         onChanged();
       }
       
+      // optional string tagIds = 17;
+      private java.lang.Object tagIds_ = "";
+      public boolean hasTagIds() {
+        return ((bitField0_ & 0x00010000) == 0x00010000);
+      }
+      public String getTagIds() {
+        java.lang.Object ref = tagIds_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          tagIds_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setTagIds(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00010000;
+        tagIds_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearTagIds() {
+        bitField0_ = (bitField0_ & ~0x00010000);
+        tagIds_ = getDefaultInstance().getTagIds();
+        onChanged();
+        return this;
+      }
+      void setTagIds(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00010000;
+        tagIds_ = value;
+        onChanged();
+      }
+      
       // @@protoc_insertion_point(builder_scope:org.fh.gae.log.Search)
     }
     
@@ -1572,14 +1666,15 @@ public final class SearchLog {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017SearchLog.proto\022\016org.fh.gae.log\"\220\002\n\006Se" +
+      "\n\017SearchLog.proto\022\016org.fh.gae.log\"\240\002\n\006Se" +
       "arch\022\013\n\003sid\030\001 \001(\t\022\021\n\ttimestamp\030\002 \002(\003\022\013\n\003" +
       "tid\030\003 \002(\t\022\021\n\trequestId\030\004 \002(\t\022\024\n\014resource" +
       "Type\030\005 \001(\005\022\020\n\010slotCode\030\006 \001(\t\022\020\n\010slotType" +
       "\030\007 \001(\005\022\r\n\005width\030\010 \001(\005\022\016\n\006height\030\t \001(\005\022\024\n" +
       "\014materialType\030\n \001(\t\022\013\n\003mac\030\013 \001(\t\022\n\n\002ip\030\014" +
       " \001(\t\022\016\n\006planId\030\r \001(\005\022\016\n\006unitId\030\016 \001(\005\022\016\n\006" +
-      "ideaId\030\017 \001(\t\022\016\n\006adCode\030\020 \001(\t"
+      "ideaId\030\017 \001(\t\022\016\n\006adCode\030\020 \001(\t\022\016\n\006tagIds\030\021" +
+      " \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1591,7 +1686,7 @@ public final class SearchLog {
           internal_static_org_fh_gae_log_Search_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_fh_gae_log_Search_descriptor,
-              new java.lang.String[] { "Sid", "Timestamp", "Tid", "RequestId", "ResourceType", "SlotCode", "SlotType", "Width", "Height", "MaterialType", "Mac", "Ip", "PlanId", "UnitId", "IdeaId", "AdCode", },
+              new java.lang.String[] { "Sid", "Timestamp", "Tid", "RequestId", "ResourceType", "SlotCode", "SlotType", "Width", "Height", "MaterialType", "Mac", "Ip", "PlanId", "UnitId", "IdeaId", "AdCode", "TagIds", },
               org.fh.gae.log.SearchLog.Search.class,
               org.fh.gae.log.SearchLog.Search.Builder.class);
           return null;
