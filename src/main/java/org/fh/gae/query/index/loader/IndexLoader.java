@@ -8,6 +8,7 @@ import org.fh.gae.query.index.idea.IdeaIndex;
 import org.fh.gae.query.index.idea.UnitIdeaRelIndex;
 import org.fh.gae.query.index.idea.UnitIdeaRelInfo;
 import org.fh.gae.query.index.plan.PlanIndex;
+import org.fh.gae.query.index.region.RegionIndex;
 import org.fh.gae.query.index.tag.TagIndex;
 import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.query.index.user.UserIndex;
@@ -48,6 +49,8 @@ public class IndexLoader {
     private UnitIdeaRelIndex unitIdeaRelIndex;
     @Autowired
     private IdeaAuditIndex ideaAuditIndex;
+    @Autowired
+    private RegionIndex regionIndex;
 
     @Value("${gae.index.path}")
     private String idxPath;
@@ -68,6 +71,7 @@ public class IndexLoader {
         idxMap.put(IdeaIndex.LEVEL, ideaIndex);
         idxMap.put(UnitIdeaRelIndex.LEVEL, unitIdeaRelIndex);
         idxMap.put(IdeaAuditIndex.LEVEL, ideaAuditIndex);
+        idxMap.put(RegionIndex.LEVEL, regionIndex);
 
         loadIndex();
     }

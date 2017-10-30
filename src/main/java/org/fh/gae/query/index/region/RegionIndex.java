@@ -1,48 +1,62 @@
 package org.fh.gae.query.index.region;
 
+import org.fh.gae.query.index.GaeIndex;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 地域索引
  */
 @Component
-public class RegionIndex {
-    public IPRegion[] ipRegions;
-
-    public IPRegion match(LongValue ip) {
-        return doMatch(0, ipRegions.length - 1, ip);
-    }
+public class RegionIndex implements GaeIndex<RegionInfo> {
+    public static final int LEVEL = 9;
 
     /**
-     * 二分查找ip属于哪个region
-     * @param start
-     * @param end
-     * @param ip
-     * @return
+     * 单元id->地域
      */
-    private IPRegion doMatch(int start, int end, LongValue ip) {
-        if (start >= end) {
-            return null;
-        }
+    private Map<Integer, RegionInfo> unitRegionMap;
 
-        if (0 == ipRegions[start].compareTo(ip)) {
-            return ipRegions[start];
-        }
-        if (0 == ipRegions[end].compareTo(ip)) {
-            return ipRegions[end];
-        }
+    @PostConstruct
+    public void init() {
+        unitRegionMap = new ConcurrentHashMap<>();
+    }
 
-        int middle = (start + end) / 2;
-        int diff = ipRegions[middle].compareTo(ip);
 
-        if (diff == 0) {
-            return ipRegions[middle];
-        }
+    @Override
+    public int getLevel() {
+        return LEVEL;
+    }
 
-        if (diff > 0) {
-            return doMatch(start, middle - 1, ip);
-        }
+    @Override
+    public int getLength() {
+        return 4;
+    }
 
-        return doMatch(middle + 1, end, ip);
+    @Override
+    public RegionInfo packageInfo(String[] tokens) {
+        Integer unitId = Integer.valueOf(tokens[2]);
+        Integer l1Region = Integer.valueOf(tokens[3]);
+        Integer l2Region = Integer.valueOf(tokens[4]);
+
+
+        return new RegionInfo(unitId, l1Region, l2Region);
+    }
+
+    @Override
+    public void add(RegionInfo regionInfo) {
+        unitRegionMap.put(regionInfo.getUnitId(), regionInfo);
+    }
+
+    @Override
+    public void update(RegionInfo regionInfo) {
+        add(regionInfo);
+    }
+
+    @Override
+    public void delete(RegionInfo regionInfo) {
+        unitRegionMap.remove(regionInfo.getUnitId());
     }
 }
