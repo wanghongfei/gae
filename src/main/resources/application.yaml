@@ -6,7 +6,7 @@ logging:
   level:
     org.fh.gae: debug
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss}: [%t] - [%level] %c{40} - %m%n"
+    console: "[%d{yyyy-MM-dd HH:mm:ss}] - [%t] - [%level] %c{40} - %m%n"
 
 
 gae:

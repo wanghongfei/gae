@@ -9,8 +9,10 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.vo.BidResponse;
 
+@Slf4j
 public class NettyUtils {
     public static SerializeConfig jsonSnakeConfig;
     public static SerializeConfig jsonCamelConfig;
@@ -28,18 +30,21 @@ public class NettyUtils {
     }
 
     public static FullHttpResponse buildResponse(BidResponse bidResponse) {
-        byte[] buf = JSON.toJSONBytes(bidResponse, jsonSnakeConfig);
+        String respJson = JSON.toJSONString(bidResponse, jsonSnakeConfig);
+        // byte[] buf = JSON.toJSONBytes(bidResponse, jsonSnakeConfig);
 
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1,
                 HttpResponseStatus.OK,
-                Unpooled.wrappedBuffer(buf)
+                Unpooled.wrappedBuffer(respJson.getBytes())
         );
 
         response.headers().set(
                 HttpHeaderNames.CONTENT_TYPE.toString(),
                 "application/json;charset=utf8"
         );
+
+        log.info("gae_response\t{}", respJson);
 
         return response;
     }

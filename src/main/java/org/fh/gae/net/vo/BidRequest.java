@@ -1,5 +1,6 @@
 package org.fh.gae.net.vo;
 
+import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,9 @@ public class BidRequest {
     private Device device;
 
     private List<AdSlot> slots;
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
+    }
 }

@@ -89,9 +89,9 @@ public class BasicSearch {
 
             // debug
             Map<Integer, TraceBit> map = ThreadCtx.getTraceMap();
-            System.out.println("traceMap = " + map);
+            log.debug("traceMap = {}", map);
             Map<Integer, Integer> wMap = ThreadCtx.getWeightMap();
-            System.out.println("weightMap" + wMap);
+            log.debug("weightMap = {}", wMap);
 
 
             // 从创意结果中选择一个
