@@ -30,6 +30,10 @@ public class RegionTest {
         target = index.match(ip);
         Assert.assertEquals(new IPRegion(401, 500, 0, 4), target);
 
+        ip = new LongValue(400);
+        target = index.match(ip);
+        Assert.assertEquals(new IPRegion(301, 400, 0, 3), target);
+
         ip = new LongValue(500);
         target = index.match(ip);
         Assert.assertEquals(new IPRegion(401, 500, 0, 4), target);
@@ -53,5 +57,6 @@ public class RegionTest {
         ip = new LongValue(101);
         target = index.match(ip);
         Assert.assertEquals(new IPRegion(101, 200, 0, 1), target);
+
     }
 }
