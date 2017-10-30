@@ -1,6 +1,12 @@
-# GAE - General Advertising Engine
-GAE旨在创建一个**开箱即用**的通用广告投放引擎,只需要按规定格式灌输索引文件,即可直接上线使用,同时预留出开发者自定义的空间。
+# GAE-DSP - General Advertising Engine
+GAE旨在创建一个**开箱即用**的通用广告投放引擎,业务模型适用于DSP平台,只需要按规定格式灌输索引文件即可直接上线使用,且具备基本的定向功能。
 网络通讯层使用Netty,应用层SpringBoot。
+
+# 关于定向
+- 地域定向
+GAE通过请求参数中的IP字段实现按地域匹配广告功能
+- 人群标签定向
+GAE支持人群标签定向,但标签的获取需要自己现(已预留出接口),GAE只负责通过标签进行触发和过虑广告。
 
 ## 功能
 ![function](http://ovbyjzegm.bkt.clouddn.com/GAE.png)
