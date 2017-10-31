@@ -1,6 +1,7 @@
 package org.fh.gae.test.other;
 
 import org.fh.gae.query.WeightTable;
+import org.fh.gae.query.index.region.RegionDict;
 import org.fh.gae.query.utils.BitUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,5 +31,12 @@ public class BitTest {
         traceBit = 0x04 | 0x01;
         w = WeightTable.sum(traceBit);
         Assert.assertEquals(5, w);
+    }
+
+    @Test
+    public void testIp2long() {
+        String ip = "1.1.1.8";
+        long ipL = RegionDict.ip2long(ip);
+        System.out.println(Long.toString(ipL, 2));
     }
 }

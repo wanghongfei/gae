@@ -4,7 +4,7 @@ GAE旨在创建一个**开箱即用**的通用广告投放引擎,业务模型适
 
 # 关于定向
 - 地域定向
-GAE通过请求参数中的IP字段实现按地域匹配广告功能
+GAE通过请求参数中的IP字段实现按地域匹配广告功能,**需要下载ip字典**
 - 人群标签定向
 GAE支持人群标签定向,但标签的获取需要自己现(已预留出接口),GAE只负责通过标签进行触发和过虑广告。
 
@@ -12,11 +12,17 @@ GAE支持人群标签定向,但标签的获取需要自己现(已预留出接口
 ![function](http://ovbyjzegm.bkt.clouddn.com/GAE.png)
 
 ## 构建运行
+### 下载IP字典
+```
+wget http://ovbyjzegm.bkt.clouddn.com/ipdict.tar.gz
+tar -zxvf ipdict.tar.gz
+```
+### 运行
 ```
 mvn clean package
-java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.name=gae.idx
+java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.name=gae.idx --gae.dict.ip=IP字典文件名
 ```
-其中gae.idx为索引文件名
+其中gae.idx为索引文件名. 地域ID与城市名称的对应关系见: `wget http://ovbyjzegm.bkt.clouddn.com/reg.txt`
 
 ## 项目进度
 基本完成:

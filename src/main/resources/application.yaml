@@ -19,3 +19,5 @@ gae:
     incr-path: /Users/whf/projects/open/gae/src/main/resources/mock
     incr-name: gae.idx.incr
     incr-interval: 500
+  dict:
+    ip: data/ipdict.txt
