@@ -1,27 +1,39 @@
 package org.fh.gae.query.index.region;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.query.index.GaeIndex;
+import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * 地域索引
  */
 @Component
+@Slf4j
 public class RegionIndex implements GaeIndex<RegionInfo> {
     public static final int LEVEL = 9;
 
     /**
      * 单元id->地域
      */
-    private Map<Integer, RegionInfo> unitRegionMap;
+    private Map<Integer, Set<RegionInfo>> unitRegionMap;
+
+    private Map<RegionInfo, Set<Integer>> regionUnitMap;
 
     @PostConstruct
     public void init() {
         unitRegionMap = new ConcurrentHashMap<>();
+        regionUnitMap = new ConcurrentHashMap<>();
+    }
+
+    public Set<RegionInfo> getRegion(Integer unitId) {
+        return unitRegionMap.get(unitId);
     }
 
 
@@ -32,7 +44,7 @@ public class RegionIndex implements GaeIndex<RegionInfo> {
 
     @Override
     public int getLength() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -47,16 +59,28 @@ public class RegionIndex implements GaeIndex<RegionInfo> {
 
     @Override
     public void add(RegionInfo regionInfo) {
-        unitRegionMap.put(regionInfo.getUnitId(), regionInfo);
+        Set<RegionInfo> infoSet = GaeCollectionUtils.getAndCreateIfNeed(
+                regionInfo.getUnitId(),
+                unitRegionMap,
+                () -> new ConcurrentSkipListSet<>()
+        );
+
+        infoSet.add(regionInfo);
     }
 
     @Override
     public void update(RegionInfo regionInfo) {
-        add(regionInfo);
+        log.error("region cannot be updated");
     }
 
     @Override
     public void delete(RegionInfo regionInfo) {
-        unitRegionMap.remove(regionInfo.getUnitId());
+        Set<RegionInfo> infoSet = GaeCollectionUtils.getAndCreateIfNeed(
+                regionInfo.getUnitId(),
+                unitRegionMap,
+                () -> new ConcurrentSkipListSet<>()
+        );
+
+        infoSet.remove(regionInfo);
     }
 }

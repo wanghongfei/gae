@@ -56,7 +56,7 @@ curl -X POST \
         "token": "token"
     },
     "device": {
-        "ip": "102.168.1.1",
+        "ip": "61.135.169.78",
         "mac": "AA:BB:CC:DD:EE:FF",
         "id": "IDFA",
         "type": 1

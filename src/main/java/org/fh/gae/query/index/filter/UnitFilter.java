@@ -1,15 +1,21 @@
 package org.fh.gae.query.index.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.DataTable;
 import org.fh.gae.query.index.plan.PlanIndex;
 import org.fh.gae.query.index.plan.PlanInfo;
+import org.fh.gae.query.index.region.IPRegion;
+import org.fh.gae.query.index.region.RegionDict;
+import org.fh.gae.query.index.region.RegionIndex;
+import org.fh.gae.query.index.region.RegionInfo;
 import org.fh.gae.query.index.tag.TagIndex;
 import org.fh.gae.query.index.tag.TagType;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.index.unit.AdUnitStatus;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.session.ThreadCtx;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -23,7 +29,10 @@ import java.util.Set;
 
 @Component
 @DependsOn("filterTable")
+@Slf4j
 public class UnitFilter implements GaeFilter<AdUnitInfo> {
+    @Autowired
+    private RegionDict regionDict;
 
     @PostConstruct
     public void init() {
@@ -32,12 +41,9 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
 
     @Override
     public void filter(Collection<AdUnitInfo> infos, RequestInfo request, AudienceProfile profile) {
-        traverse(infos, info -> {
-            boolean ok = isStatusFit(info) && isTagFit(info, profile, request);
-            ok = ok && isPlanFit(info.getPlanId(), request, profile);
-
-            return ok;
-        });
+        traverse(infos, info -> isStatusFit(info) && isTagFit(info, profile, request)
+                && isPlanFit(info.getPlanId(), request, profile)
+                && isRegionFit(request, info.getUnitId()));
 
 
     }
@@ -145,6 +151,46 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
             return true;
         }
 
+        return false;
+    }
+
+    /**
+     * 匹配地域
+     * @param request
+     * @param unitId
+     * @return
+     */
+    private boolean isRegionFit(RequestInfo request, Integer unitId) {
+        // 解析ip
+        String ip = request.getDevice().getIp();
+        IPRegion ipRegion = regionDict.match(ip);
+        if (null == ipRegion) {
+            log.warn("unidentified ip:{}", ip);
+        }
+
+        int ipL1 = ipRegion.getL1Region();
+        int ipL2 = ipRegion.getL2Region();
+        log.debug("ip = {}, l1 = {}, l2 = {}", ip, ipL1, ipL2);
+
+        Set<RegionInfo> infos = DataTable.of(RegionIndex.class).getRegion(unitId);
+        // 没有选择地域定向
+        if (CollectionUtils.isEmpty(infos)) {
+            return true;
+        }
+
+        for (RegionInfo info : infos) {
+            int l1 = info.getL1Region();
+            int l2 = info.getL2Region();
+
+            if (l1 == ipL1) {
+                if (l2 == ipL2 || -1 == l2) {
+                    return true;
+                }
+            }
+
+        }
+
+        log.debug("filter by region, unit = {}", unitId);
         return false;
     }
 

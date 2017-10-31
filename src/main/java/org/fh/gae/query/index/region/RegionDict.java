@@ -23,6 +23,10 @@ public class RegionDict {
     @Value("${gae.dict.ip}")
     private String dictPath;
 
+    public IPRegion match(String ip) {
+        long ipL = ip2long(ip);
+        return match(new LongValue(ipL));
+    }
 
     public IPRegion match(LongValue ip) {
         return doMatch(0, ipRegions.length - 1, ip);
