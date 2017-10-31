@@ -2,6 +2,8 @@
 GAE旨在创建一个**开箱即用**的通用广告投放引擎,业务模型适用于DSP平台,只需要按规定格式灌输索引文件即可直接上线使用,且具备基本的定向功能。
 网络通讯层使用Netty,应用层SpringBoot。
 
+后续还会有数据传输系统GAE-DAS,通过监听mysql binlog来自动生成投放引擎所需的索引数据。
+
 # 关于定向
 - 地域定向
 GAE通过请求参数中的IP字段实现按地域匹配广告功能,**需要下载ip字典**
@@ -26,10 +28,7 @@ java -jar target/gae.jar --gae.server.port=9000 --gae.index.path=./ --gae.index.
 
 ## 项目进度
 基本完成:
-授权, 索引, 检索, 日志(proto格式)
-
-未完成:
-前端反作弊
+所有功能ready, 在做最后的测试
 
 ## 模块说明 org.fh.gae.*
 - net
