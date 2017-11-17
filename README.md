@@ -15,7 +15,7 @@ GAE支持人群标签定向,但标签的获取需要自己实现(如可以调DMP
 GAE并没有规定必须用哪些类型的标, 只负责通过标签进行触发和过虑广告。
 
 ## 功能
-![function](http://ovbyjzegm.bkt.clouddn.com/GAE.png)
+![function](http://ovbyjzegm.bkt.clouddn.com/gae-route.png)
 
 ## 构建运行
 ### 下载IP字典
