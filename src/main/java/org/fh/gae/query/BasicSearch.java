@@ -76,6 +76,7 @@ public class BasicSearch {
             // 过虑单元
             FilterTable.getFilter(AdUnitInfo.class).filter(unitInfoSet, req, profile);
 
+            // 取权重最高单元
             unitInfoSet = ranker.rankUnitByWeight(unitInfoSet);
 
             // 获取创意id

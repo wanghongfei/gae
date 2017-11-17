@@ -1,7 +1,8 @@
 package org.fh.gae.query.index.region;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.fh.gae.config.GaeDictProps;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,8 +21,8 @@ import java.util.List;
 public class RegionDict {
     public IPRegion[] ipRegions;
 
-    @Value("${gae.dict.ip}")
-    private String dictPath;
+    @Autowired
+    private GaeDictProps dictProps;
 
     public IPRegion match(String ip) {
         long ipL = ip2long(ip);
@@ -73,7 +74,7 @@ public class RegionDict {
     private void loadIpDict() throws IOException {
         log.info("start loading ip dict");
 
-        try (FileInputStream fis = new FileInputStream(dictPath)) {
+        try (FileInputStream fis = new FileInputStream(dictProps.getIp())) {
             InputStreamReader r = new InputStreamReader(fis);
             BufferedReader reader = new BufferedReader(r);
 

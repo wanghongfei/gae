@@ -1,19 +1,18 @@
 package org.fh.gae.query.index.loader;
 
 import lombok.extern.slf4j.Slf4j;
+import org.fh.gae.config.GaeIndexProps;
 import org.fh.gae.query.index.GaeIndex;
 import org.fh.gae.query.index.auth.AuthIndex;
 import org.fh.gae.query.index.idea.IdeaAuditIndex;
 import org.fh.gae.query.index.idea.IdeaIndex;
 import org.fh.gae.query.index.idea.UnitIdeaRelIndex;
-import org.fh.gae.query.index.idea.UnitIdeaRelInfo;
 import org.fh.gae.query.index.plan.PlanIndex;
 import org.fh.gae.query.index.region.RegionIndex;
 import org.fh.gae.query.index.tag.TagIndex;
 import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.query.index.user.UserIndex;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -52,11 +51,8 @@ public class IndexLoader {
     @Autowired
     private RegionIndex regionIndex;
 
-    @Value("${gae.index.path}")
-    private String idxPath;
-
-    @Value("${gae.index.name}")
-    private String idxName;
+    @Autowired
+    private GaeIndexProps indexProps;
 
     private Map<Integer, GaeIndex> idxMap;
 
@@ -77,7 +73,7 @@ public class IndexLoader {
     }
 
     private void loadIndex() throws IOException {
-        try (FileInputStream fis = new FileInputStream(idxPath + File.separator + idxName + ".0")) {
+        try (FileInputStream fis = new FileInputStream(indexProps.getPath() + File.separator + indexProps.getName() + ".0")) {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(fis)
             );

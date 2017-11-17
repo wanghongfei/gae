@@ -1,9 +1,8 @@
 package org.fh.gae.query.index.loader;
 
 import lombok.extern.slf4j.Slf4j;
+import org.fh.gae.config.GaeIndexProps;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,14 +19,8 @@ public class IndexIncrementLoader implements Runnable {
     @Autowired
     private IndexLoader indexLoader;
 
-    @Value("${gae.index.incr-path}")
-    private String idxPath;
-
-    @Value("${gae.index.incr-name}")
-    private String idxName;
-
-    @Value("${gae.index.incr-interval}")
-    private long interval = 500;
+    @Autowired
+    private GaeIndexProps indexProps;
 
     /**
      * 上次加载完成后增量文件指针位置
@@ -41,7 +34,8 @@ public class IndexIncrementLoader implements Runnable {
 
     @Override
     public void run() {
-        String filename = idxPath + File.separator + idxName;
+        String filename = indexProps.getIncrPath() + File.separator + indexProps.getIncrName();
+        int interval = indexProps.getIncrInterval();
 
         while (true) {
             File file = new File(filename);
