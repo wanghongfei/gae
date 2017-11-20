@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "gae.index")
+@ConfigurationProperties(prefix = "gae.index.file")
 @Data
 @NoArgsConstructor
 public class GaeIndexProps {

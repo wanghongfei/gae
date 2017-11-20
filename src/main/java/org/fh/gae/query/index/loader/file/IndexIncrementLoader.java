@@ -1,8 +1,10 @@
-package org.fh.gae.query.index.loader;
+package org.fh.gae.query.index.loader.file;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeIndexProps;
+import org.fh.gae.query.index.loader.IndexLoader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +16,7 @@ import java.io.RandomAccessFile;
  * 增量索引加载器
  */
 @Component
+@ConditionalOnProperty(prefix = "gae.index.file", name = "enable", matchIfMissing = true, havingValue = "true")
 @Slf4j
 public class IndexIncrementLoader implements Runnable {
     @Autowired
@@ -29,6 +32,7 @@ public class IndexIncrementLoader implements Runnable {
 
     @PostConstruct
     public void startWatch() {
+        log.info("file index applied");
         new Thread(this).start();
     }
 
