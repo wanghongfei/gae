@@ -45,8 +45,8 @@
 7	0	1	2002	1
 
 # 创意外审层级
-8	0	idea1	adCode1	0
-8	0	idea2	adCode2	0
+8	0	idea1	adCode1	0	tid
+8	0	idea2	adCode2	0	tid
 
 # 地域定向
 9	0	2003	1	-1

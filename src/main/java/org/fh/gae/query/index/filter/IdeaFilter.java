@@ -7,6 +7,7 @@ import org.fh.gae.query.index.idea.IdeaAuditInfo;
 import org.fh.gae.query.index.idea.IdeaAuditStatus;
 import org.fh.gae.query.index.idea.IdeaInfo;
 import org.fh.gae.query.index.idea.IdeaStatus;
+import org.fh.gae.query.index.region.RegionInfo;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.context.annotation.DependsOn;
@@ -32,7 +33,7 @@ public class IdeaFilter implements GaeFilter<IdeaInfo> {
                 ideaInfo -> isStatusFit(ideaInfo)
                         && isMaterialTypeFit(ideaInfo, request)
                         && isSizeFit(ideaInfo, request)
-                        && isAuditFit(ideaInfo)
+                        && isAuditFit(ideaInfo, request)
         );
     }
 
@@ -58,9 +59,11 @@ public class IdeaFilter implements GaeFilter<IdeaInfo> {
         return requiredHeight.equals(info.getH()) && requiredWidth.equals(info.getW());
     }
 
-    protected boolean isAuditFit(IdeaInfo ideaInfo) {
+    protected boolean isAuditFit(IdeaInfo ideaInfo, RequestInfo request) {
         IdeaAuditInfo auditInfo = DataTable.of(IdeaAuditIndex.class).getAuditInfo(ideaInfo.getIdeaId());
-        if (null == auditInfo || auditInfo.getStatus() != IdeaAuditStatus.PASS) {
+        if (null == auditInfo
+                || auditInfo.getStatus() != IdeaAuditStatus.PASS
+                || !auditInfo.getTid().equals(request.getAuth().getTid())) {
             return false;
         }
 

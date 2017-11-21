@@ -19,4 +19,6 @@ public class IdeaAuditInfo {
     private String adCode;
 
     private Integer status;
+
+    private String tid;
 }

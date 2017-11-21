@@ -32,7 +32,7 @@ public class IdeaAuditIndex implements GaeIndex<IdeaAuditInfo> {
 
     @Override
     public int getLength() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -40,8 +40,9 @@ public class IdeaAuditIndex implements GaeIndex<IdeaAuditInfo> {
         String ideaId = tokens[2];
         String adCode = tokens[3];
         Integer status = Integer.valueOf(tokens[4]);
+        String tid = tokens[5];
 
-        return new IdeaAuditInfo(ideaId, adCode, status);
+        return new IdeaAuditInfo(ideaId, adCode, status, tid);
     }
 
     @Override
