@@ -53,7 +53,6 @@ HTTP网络通讯逻辑, netty启动入口`net.GaeHttpServer`
 广告检索逻辑
 
 
-
 ## 测试
 一次可请求多个广告位:
 ```
@@ -128,3 +127,4 @@ curl -X POST \
     }
 }
 ```
+可以通过`IndexGenerator.genIndex()`方法随机生成全量索引文件进行测试
