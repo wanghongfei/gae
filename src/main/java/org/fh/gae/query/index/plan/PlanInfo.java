@@ -12,4 +12,13 @@ public class PlanInfo {
     private Long userId;
     private Integer stauts;
     private String timeBit;
+
+    public String toIndexString() {
+        final StringBuilder sb = new StringBuilder(10);
+        sb.append(planId).append('\t');
+        sb.append(userId).append('\t');
+        sb.append(stauts).append('\t');
+        sb.append(timeBit);
+        return sb.toString();
+    }
 }

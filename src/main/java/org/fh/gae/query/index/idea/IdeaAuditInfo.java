@@ -21,4 +21,13 @@ public class IdeaAuditInfo {
     private Integer status;
 
     private String tid;
+
+    public String toIndexString() {
+        final StringBuilder sb = new StringBuilder(10);
+        sb.append(ideaId).append('\t');
+        sb.append(adCode).append('\t');
+        sb.append(status).append('\t');
+        sb.append(tid);
+        return sb.toString();
+    }
 }

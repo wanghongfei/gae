@@ -67,4 +67,17 @@ public class IdeaInfo {
 
         return ad;
     }
+
+    public String toIndexString() {
+        final StringBuilder sb = new StringBuilder(100);
+        sb.append(ideaId).append('\t');
+        sb.append(materialType).append('\t');
+        sb.append(url).append('\t');
+        sb.append(w).append('\t');
+        sb.append(h).append('\t');
+        sb.append(landUrl).append('\t');
+        sb.append(status).append('\t');
+        sb.append(showUrls[0]);
+        return sb.toString();
+    }
 }

@@ -16,8 +16,8 @@ gae:
   index:
     file:
       enable: true
-      path: /Users/whf/projects/open/gae/src/main/resources/mock
-      name: gae.idx
+      path: .
+      name: mock-idx.txt
       incr-path: /Users/whf/projects/open/gae/src/main/resources/mock
       incr-name: gae.idx.incr
       incr-interval: 500
