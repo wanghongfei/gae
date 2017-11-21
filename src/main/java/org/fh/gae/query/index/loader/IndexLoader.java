@@ -78,6 +78,8 @@ public class IndexLoader {
                     new InputStreamReader(fis)
             );
 
+            int okTot = 0;
+            int errTot = 0;
             String line;
             while ( (line = reader.readLine()) != null ) {
                 // 跳过空行
@@ -92,15 +94,22 @@ public class IndexLoader {
                 }
 
                 log.info("{}", line);
-                processLine(line);
+                int result = processLine(line);
+                if (0 == result) {
+                    ++okTot;
+                } else {
+                    ++errTot;
+                }
             }
+
+            log.info("index loaded, ok = {}, err = {}", okTot, errTot);
 
         } catch (IOException e) {
             throw e;
         }
     }
 
-    public void processLine(String line) {
+    public int processLine(String line) {
         try {
 
             String[] tokens = line.split(TOKEN_SEPARATOR);
@@ -113,7 +122,7 @@ public class IndexLoader {
 
             if (tokens.length != index.getLength() + 2) {
                 log.error("invalid index line: {}", line);
-                return;
+                return -1;
             }
 
             Object info = index.packageInfo(tokens);
@@ -129,13 +138,15 @@ public class IndexLoader {
                     break;
 
                 default:
-                    log.error("invalid index line: {}", line);
-                    return;
+                    log.error("invalid index line(wrong op type): {}", line);
+                    return -1;
             }
 
         } catch (Exception e) {
             log.error("invalid index line: {}", line);
+            return -1;
         }
 
+        return 0;
     }
 }
