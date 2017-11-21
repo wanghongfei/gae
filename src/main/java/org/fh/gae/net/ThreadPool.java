@@ -50,8 +50,11 @@ public class ThreadPool {
     public void execute(final BidRequest bidRequest, final ChannelHandlerContext ctx) {
         pool.execute( () -> {
             try {
+                long start = System.currentTimeMillis();
                 BidResult result = bsSearchService.bid(bidRequest);
-                ctx.writeAndFlush(NettyUtils.buildResponse(new BidResponse(result)));
+                long end = System.currentTimeMillis();
+
+                ctx.writeAndFlush(NettyUtils.buildResponse(new BidResponse(result, end - start)));
 
             } catch (Exception e) {
                 e.printStackTrace();

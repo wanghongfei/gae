@@ -4,7 +4,7 @@ spring:
 
 logging:
   level:
-    org.fh.gae: debug
+    org.fh.gae: info
   pattern:
     console: "[%d{yyyy-MM-dd HH:mm:ss}] - [%t] - [%level] %c{40} - %m%n"
 
