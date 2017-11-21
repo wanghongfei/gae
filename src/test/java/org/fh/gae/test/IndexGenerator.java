@@ -65,6 +65,8 @@ public class IndexGenerator {
                     bos.write(("8\t0\t" + audit.toIndexString() + "\n").getBytes());
                 }
             }
+
+            bos.flush();
         }
 
         // 生成单元

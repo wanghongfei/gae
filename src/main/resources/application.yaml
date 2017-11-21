@@ -13,6 +13,7 @@ gae:
   server:
     port: 9000
     host: 0.0.0.0
+
   index:
     file:
       enable: true
@@ -28,3 +29,5 @@ gae:
       topic: gae-idx
   dict:
     ip: data/ipdict.txt
+
+  min-unit-amount: 10000

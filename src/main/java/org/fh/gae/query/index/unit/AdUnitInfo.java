@@ -23,9 +23,9 @@ public class AdUnitInfo {
 
     public String toIndexString() {
         final StringBuilder sb = new StringBuilder(10);
+        sb.append(unitId).append('\t');
         sb.append(userId).append('\t');
         sb.append(planId).append('\t');
-        sb.append(userId).append('\t');
         sb.append(status).append('\t');
         sb.append(bid).append('\t');
         sb.append(priority);

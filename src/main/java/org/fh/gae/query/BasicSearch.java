@@ -23,6 +23,7 @@ import org.fh.gae.query.trace.TraceBit;
 import org.fh.gae.query.vo.Ad;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -37,7 +38,8 @@ import java.util.Set;
 @Component
 @Slf4j
 public class BasicSearch {
-    public static final int MIN_UNIT_AMOUNT = 100;
+    @Value("${gae.min-unit-amount}")
+    private int MIN_UNIT_AMOUNT;
 
     @Autowired(required = false)
     private ProfileFetcher profileFetcher;

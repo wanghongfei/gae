@@ -31,7 +31,7 @@ public class Ranker {
             Integer unitId = unit.getUnitId();
             Integer weight = wMap.get(unitId);
             if (null == weight) {
-                continue;
+                weight = Integer.valueOf(0);
             }
 
             Set<AdUnitInfo> infoSet = GaeCollectionUtils.getAndCreateIfNeed(

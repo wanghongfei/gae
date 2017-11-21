@@ -57,10 +57,13 @@ public class UnitIdeaRelIndex implements GaeIndex<UnitIdeaRelInfo> {
                     if (null == info) {
                         ideaInfoMap.put(ideaId, unitInfo);
                     } else {
-                        int oldWeight = wMap.get(info.getUnitId());
-                        int newWeight = wMap.get(unitInfo.getUnitId());
+                        Integer oldWeight = wMap.get(info.getUnitId());
+                        Integer newWeight = wMap.get(unitInfo.getUnitId());
 
-                        ideaInfoMap.put(ideaId, newWeight > oldWeight ? unitInfo :info);
+                        if (null != oldWeight && null != newWeight) {
+                            ideaInfoMap.put(ideaId, newWeight > oldWeight ? unitInfo :info);
+                        }
+
                     }
                 }
             }

@@ -11,7 +11,7 @@
 1	0	200	1
 
 # 推广计划层级
-# 层级	操作类型	计划id	计划状态	计划投放时间段
+# 层级	操作类型	计划id	广告主id	计划状态	计划投放时间段
 2	0	2000	100	0	374144419156711147060143317175368453031918731001855
 2	0	2001	200	0	374144419156711147060143317175368453031918731001855
 
@@ -23,7 +23,7 @@
 3	0	2003	200	2000	0	500	0
 
 # 创意
-# 层级	操作类型	创意id	物料类型	物料地址	物料宽px	物料高px	落地页URL	创意状态
+# 层级	操作类型	创意id	物料类型	物料地址	物料宽px	物料高px	落地页URL	创意状态	曝光监测地址
 4	0	idea1	1	http://www.baidu.com/xxx.jpg	1920	1080	http://www.163.com	0	http://www.gae.com/showMonitor.gif?sid=a;http://www.gae.com/showMonitor.gif?sid=b
 4	0	idea2	2	http://www.baidu.com/xxx.jpg	1920	1080	http://www.126.com	0	http://www.gae.com/showMonitor.gif?sid=chttp://www.gae.com/showMonitor.gif?sid=d
 
