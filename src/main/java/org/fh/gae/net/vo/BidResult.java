@@ -20,4 +20,10 @@ public class BidResult {
      * 广告
      */
     private List<Ad> ads;
+
+    public BidResult merge(BidResult other) {
+        this.ads.addAll(other.ads);
+
+        return this;
+    }
 }

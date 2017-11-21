@@ -20,6 +20,7 @@ import org.fh.gae.query.profile.ProfileFetcher;
 import org.fh.gae.query.rank.Ranker;
 import org.fh.gae.query.session.ThreadCtx;
 import org.fh.gae.query.trace.TraceBit;
+import org.fh.gae.query.utils.BenchTimer;
 import org.fh.gae.query.vo.Ad;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,30 +66,40 @@ public class BasicSearch {
         List<Ad> adList = new ArrayList<>(request.getSlots().size());
 
         for (AdSlot slot : request.getSlots()) {
+            BenchTimer timer = new BenchTimer();
+
             RequestInfo req = new RequestInfo(request, slot);
 
             PbLogUtils.initSearchLog(req);
+            timer.recordTime("init-searchLog");
 
             // 触发单元
             Set<Integer> unitIdSet = triggerUnit(profile);
+            timer.recordTime("trigger-unit");
 
             // 获取单元info
             Set<AdUnitInfo> unitInfoSet = DataTable.of(AdUnitIndex.class).fetchInfo(unitIdSet);
+            timer.recordTime("fetch-unitinfo");
 
             // 过虑单元
             FilterTable.getFilter(AdUnitInfo.class).filter(unitInfoSet, req, profile);
+            timer.recordTime("filter-unitinfo");
 
             // 取权重最高单元
             unitInfoSet = ranker.rankUnitByWeight(unitInfoSet);
+            timer.recordTime("rank-unitinfo");
 
             // 获取创意id
             Set<String> ideaIds = DataTable.of(UnitIdeaRelIndex.class).fetchIdeaIds(unitInfoSet);
+            timer.recordTime("fetch-ideaid");
 
             // 获取创意信息
             Set<IdeaInfo> ideaInfoSet = DataTable.of(IdeaIndex.class).fetchInfo(ideaIds);
+            timer.recordTime("fetch-ideainfo");
 
             // 过虑创意
             FilterTable.getFilter(IdeaInfo.class).filter(ideaInfoSet, req, profile);
+            timer.recordTime("filter-ideainfo");
 
             // debug
             Map<Integer, TraceBit> map = ThreadCtx.getTraceMap();
@@ -113,6 +124,7 @@ public class BasicSearch {
 
                 try {
                     logWriter.writeLog(slotId);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

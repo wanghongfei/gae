@@ -12,12 +12,18 @@ import org.fh.gae.net.vo.BidResult;
 import org.fh.gae.query.BasicSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Component
 @Slf4j
@@ -35,8 +41,8 @@ public class ThreadPool {
         int configSize = serverProps.getBusinessThreadPoolSize();
 
         pool = new ThreadPoolExecutor(
-                configSize,
-                configSize * 10,
+                serverProps.getMinBizThread(),
+                serverProps.getMaxBizThread(),
                 30L,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(configSize),
@@ -52,6 +58,7 @@ public class ThreadPool {
             try {
                 long start = System.currentTimeMillis();
                 BidResult result = bsSearchService.bid(bidRequest);
+                // BidResult result = doExecute(bidRequest);
                 long end = System.currentTimeMillis();
 
                 ctx.writeAndFlush(NettyUtils.buildResponse(new BidResponse(result, end - start)));
@@ -65,6 +72,56 @@ public class ThreadPool {
             ctx.close();
 
         } );
+    }
+
+    private BidResult doExecute(BidRequest bidRequest) {
+        List<BidResult> resultList = executeMultiSlots(bidRequest);
+        return mergeResults(resultList);
+    }
+
+    private BidResult mergeResults(List<BidResult> results) {
+        if (CollectionUtils.isEmpty(results)) {
+            return null;
+        }
+
+        BidResult result = results.get(0);
+        int len = results.size();
+        if (len > 1) {
+            for (int ix = 1; ix < len; ++ix) {
+                result.merge(results.get(ix));
+            }
+        }
+
+        return result;
+    }
+
+    private List<BidResult> executeMultiSlots(BidRequest bidRequest) {
+        List<BidRequest> reqList = bidRequest.splitBySlot();
+
+        List<Future<BidResult>> resultFutureList = new ArrayList<>(reqList.size());
+        reqList.forEach( req -> {
+            Future<BidResult> f = pool.submit( () -> bsSearchService.bid(req));
+            resultFutureList.add(f);
+        } );
+
+        List<BidResult> resultList = new ArrayList<>(reqList.size());
+        resultFutureList.forEach( f -> {
+            try {
+                BidResult result = f.get(1L, TimeUnit.SECONDS);
+                resultList.add(result);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            }
+        } );
+
+        return resultList;
     }
 
     public void shudown(boolean gracefully) {

@@ -26,4 +26,15 @@ public class GaeServerProps {
     private int businessThreadPoolSize = 5;
 
     private String searchLog = "logs/search.log";
+
+    /**
+     * 业务线程池最大线程数;
+     * 如果没有IO操作, 最好与CPU核心数相同
+     */
+    private int maxBizThread = 4;
+
+    /**
+     * 业务线程池最小线程数
+     */
+    private int minBizThread = 2;
 }
