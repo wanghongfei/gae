@@ -30,7 +30,7 @@ public class IndexGenerator {
      */
     @Test
     public void genIndex() throws IOException {
-        FileOutputStream fos = new FileOutputStream("mock-idx.txt.0");
+        FileOutputStream fos = new FileOutputStream("mock-idx.txt");
         BufferedOutputStream bos = new BufferedOutputStream(fos);
 
         String mediaIndex = "0\t0\ttid\ttoken\t0\tNORMAL\n";

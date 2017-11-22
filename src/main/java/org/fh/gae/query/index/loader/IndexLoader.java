@@ -73,7 +73,7 @@ public class IndexLoader {
     }
 
     private void loadIndex() throws IOException {
-        try (FileInputStream fis = new FileInputStream(indexProps.getPath() + File.separator + indexProps.getName() + ".0")) {
+        try (FileInputStream fis = new FileInputStream(indexProps.getPath() + File.separator + indexProps.getName())) {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(fis)
             );
