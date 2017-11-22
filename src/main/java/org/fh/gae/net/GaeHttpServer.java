@@ -71,6 +71,7 @@ public class GaeHttpServer {
 
     public void shutdown() throws Exception {
         bossGroup.shutdownGracefully().sync();
+        workerGroup.shutdownGracefully().sync();
 
         log.info("GAE server has been stopped");
     }

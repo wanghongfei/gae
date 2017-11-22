@@ -3,6 +3,7 @@ package org.fh.gae;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.GaeHttpServer;
 import org.fh.gae.net.ThreadPool;
+import org.fh.gae.query.index.loader.file.IndexIncrementLoader;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
@@ -27,9 +28,14 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
             GaeHttpServer server = event.getApplicationContext().getBean(GaeHttpServer.class);
             ThreadPool pool = event.getApplicationContext().getBean(ThreadPool.class);
 
+            IndexIncrementLoader loader = event.getApplicationContext().getBean(IndexIncrementLoader.class);
+
             try {
                 server.shutdown();
                 pool.shudown(true);
+                if (null != loader) {
+                    loader.shutdown();
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

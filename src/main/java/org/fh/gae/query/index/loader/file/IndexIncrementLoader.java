@@ -25,6 +25,8 @@ public class IndexIncrementLoader implements Runnable {
     @Autowired
     private GaeIndexProps indexProps;
 
+    private volatile boolean shutdown = false;
+
     private int fileIndex = 0;
 
     /**
@@ -56,7 +58,7 @@ public class IndexIncrementLoader implements Runnable {
     public void run() {
         int interval = indexProps.getIncrInterval();
 
-        while (true) {
+        while (shutdown) {
             File file = new File(currentFileName.toString());
             if (false == file.exists()) {
                 try {
@@ -77,6 +79,10 @@ public class IndexIncrementLoader implements Runnable {
                 loadIncrement(file);
             }
         }
+    }
+
+    public void shutdown() {
+        this.shutdown = true;
     }
 
     private void loadIncrement(File file) {
