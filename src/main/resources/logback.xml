@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
+  -->
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="system"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/gae.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/gae.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{HH:mm:ss}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{HH:mm:ss}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="org.fh.gae" level="info" additivity="false">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="system"/>
+    </logger>
+
+    <logger name="org.springframework.boot" level="error" additivity="false">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="system"/>
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="system"/>
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration>
