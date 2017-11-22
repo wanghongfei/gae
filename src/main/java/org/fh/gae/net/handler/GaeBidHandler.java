@@ -6,11 +6,14 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.net.ThreadPool;
+import org.fh.gae.net.error.ErrCode;
 import org.fh.gae.net.utils.NettyUtils;
 import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.net.vo.BidResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * bid请求处理器
@@ -35,6 +38,13 @@ public class GaeBidHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.error(cause.getMessage());
 
-        ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.error())).addListener(ChannelFutureListener.CLOSE);
+        if (cause instanceof RejectedExecutionException) {
+            ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.errorOf(ErrCode.SERVER_BUSY)))
+                    .addListener(ChannelFutureListener.CLOSE);
+            return;
+        }
+
+        ctx.writeAndFlush(NettyUtils.buildResponse(BidResponse.errorOf(ErrCode.SERVER_ERROR)))
+                .addListener(ChannelFutureListener.CLOSE);
     }
 }

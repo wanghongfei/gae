@@ -3,6 +3,7 @@ package org.fh.gae.net.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.fh.gae.net.error.ErrCode;
 
 @Data
 @NoArgsConstructor
@@ -30,5 +31,13 @@ public class BidResponse {
 
     public static BidResponse error() {
         return errorResp;
+    }
+
+    public static BidResponse errorOf(ErrCode error) {
+        BidResponse response = new BidResponse();
+        response.code = error.code();
+        response.msg = error.msg();
+
+        return response;
     }
 }

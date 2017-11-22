@@ -14,10 +14,10 @@ gae:
     port: 9000
     host: 0.0.0.0
 
-    max-biz-thread: 10
-    min-biz-thread: 2
+    max-biz-thread: 8
+    min-biz-thread: 4
 
-    max-wait: 10
+    max-wait: 20
 
   index:
     file:
