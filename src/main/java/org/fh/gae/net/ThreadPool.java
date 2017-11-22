@@ -38,18 +38,18 @@ public class ThreadPool {
 
     @PostConstruct
     public void initPool() {
-        int configSize = serverProps.getBusinessThreadPoolSize();
+        int maxWait = serverProps.getMaxWait();
 
         pool = new ThreadPoolExecutor(
                 serverProps.getMinBizThread(),
                 serverProps.getMaxBizThread(),
                 30L,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(configSize),
+                new LinkedBlockingQueue<>(maxWait),
                 new ThreadPoolExecutor.AbortPolicy()
         );
 
-        log.info("business thread pool initialized, size: {}", serverProps.getBusinessThreadPoolSize());
+        log.info("business thread pool initialized");
 
     }
 

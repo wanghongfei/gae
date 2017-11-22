@@ -17,6 +17,8 @@ gae:
     max-biz-thread: 10
     min-biz-thread: 2
 
+    max-wait: 10
+
   index:
     file:
       enable: true
