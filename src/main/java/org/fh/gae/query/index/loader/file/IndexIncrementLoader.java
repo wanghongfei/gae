@@ -25,6 +25,18 @@ public class IndexIncrementLoader implements Runnable {
     @Autowired
     private GaeIndexProps indexProps;
 
+    private int fileIndex = 0;
+
+    /**
+     * 当前增量文件名
+     */
+    private String currentFileName;
+
+    /**
+     * 下一个增量文件名
+     */
+    private String nextFileName;
+
     /**
      * 上次加载完成后增量文件指针位置
      */
@@ -33,16 +45,19 @@ public class IndexIncrementLoader implements Runnable {
     @PostConstruct
     public void startWatch() {
         log.info("file index applied");
+
+        currentFileName = indexProps.getIncrPath() + File.separator + indexProps.getIncrName() + "." + fileIndex;
+        nextFileName = genNextFileName();
+
         new Thread(this).start();
     }
 
     @Override
     public void run() {
-        String filename = indexProps.getIncrPath() + File.separator + indexProps.getIncrName();
         int interval = indexProps.getIncrInterval();
 
         while (true) {
-            File file = new File(filename);
+            File file = new File(currentFileName.toString());
             if (false == file.exists()) {
                 try {
                     Thread.sleep(interval);
@@ -54,6 +69,13 @@ public class IndexIncrementLoader implements Runnable {
             }
 
             loadIncrement(file);
+
+            // 尝试读取下一个增量文件
+            File nextFile = tryNextFile();
+            if (null != nextFile) {
+                log.info("loading new index file:{}", currentFileName);
+                loadIncrement(file);
+            }
         }
     }
 
@@ -74,5 +96,26 @@ public class IndexIncrementLoader implements Runnable {
             log.error(e.getMessage());
         }
 
+    }
+
+    private File tryNextFile() {
+        File f = new File(nextFileName);
+        if (!f.exists()) {
+            return null;
+        }
+
+        // 重置文件名
+        currentFileName = nextFileName;
+        ++fileIndex;
+        nextFileName = genNextFileName();
+
+        // 重置文件指针位置
+        lastSeek = 0;
+
+        return f;
+    }
+
+    private String genNextFileName() {
+        return indexProps.getIncrPath() + File.separator + indexProps.getIncrName() + "." + (fileIndex + 1);
     }
 }
