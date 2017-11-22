@@ -40,13 +40,15 @@ public class JsonRequestDecoder<T> extends MessageToMessageDecoder<FullHttpReque
         // 取出body
         byte[] body = fullHttpRequest.content().copy().array();
 
-        log.info("gae_request\t{}", new String(body));
+        if (log.isDebugEnabled()) {
+            log.debug("gae_request\t{}", new String(body));
+        }
 
         // 反序列化
         T requestObj = JSON.parseObject(body, 0, body.length, Charset.forName("utf-8"), type);
         out.add(requestObj);
 
-        log.debug("decode result: {}", requestObj);
+        log.info("decode result: {}", requestObj);
 
     }
 

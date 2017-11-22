@@ -20,7 +20,9 @@ public class SearchLogWriter {
 
     public void writeLog(String slotId) throws IOException {
         Message pbLog = ThreadCtx.getSearchLogMap().get(slotId).build();
-        log.info("search_log\t{}", pbLog.toString());
+        if (log.isDebugEnabled()) {
+            log.debug("search_log\t{}", pbLog.toString());
+        }
 
         writeLog(pbLog);
     }

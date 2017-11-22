@@ -46,7 +46,7 @@ public class ThreadPool {
                 30L,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(configSize),
-                new ThreadPoolExecutor.DiscardPolicy()
+                new ThreadPoolExecutor.AbortPolicy()
         );
 
         log.info("business thread pool initialized, size: {}", serverProps.getBusinessThreadPoolSize());

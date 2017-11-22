@@ -14,7 +14,7 @@ gae:
     port: 9000
     host: 0.0.0.0
 
-    max-biz-thread: 4
+    max-biz-thread: 10
     min-biz-thread: 2
 
   index:
