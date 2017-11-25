@@ -164,19 +164,22 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
         // 解析ip
         String ip = request.getDevice().getIp();
         IPRegion ipRegion = regionDict.match(ip);
+
+        Set<RegionInfo> infos = DataTable.of(RegionIndex.class).getRegion(unitId);
+        boolean isTargetingChosen = !CollectionUtils.isEmpty(infos);
+        // 没有选择地域定向
+        if (!isTargetingChosen) {
+            return true;
+        }
+
         if (null == ipRegion) {
             log.warn("unidentified ip:{}", ip);
+            return false;
         }
 
         int ipL1 = ipRegion.getL1Region();
         int ipL2 = ipRegion.getL2Region();
         log.debug("ip = {}, l1 = {}, l2 = {}", ip, ipL1, ipL2);
-
-        Set<RegionInfo> infos = DataTable.of(RegionIndex.class).getRegion(unitId);
-        // 没有选择地域定向
-        if (CollectionUtils.isEmpty(infos)) {
-            return true;
-        }
 
         for (RegionInfo info : infos) {
             int l1 = info.getL1Region();
