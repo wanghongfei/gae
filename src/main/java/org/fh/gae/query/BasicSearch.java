@@ -56,12 +56,12 @@ public class BasicSearch {
 
     public BidResult bid(BidRequest request) {
         // 查画像
-/*        AudienceProfile profile = null;
+        AudienceProfile profile = null;
         if (null != profileFetcher) {
             profile = profileFetcher.fetchProfile(request);
-        }*/
+        }
 
-        AudienceProfile profile = mockProfile();
+        // AudienceProfile profile = mockProfile();
 
         List<Ad> adList = new ArrayList<>(request.getSlots().size());
 

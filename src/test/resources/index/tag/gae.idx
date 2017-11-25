@@ -1,0 +1,37 @@
+# 媒体层级
+# 层级	操作类型	媒体id	token	媒体类型	媒体状态
+0	0	tid	token	0	NORMAL
+
+# 广告主账户层级
+# 层级	操作类型	账户id	账户状态
+1	0	100	0
+
+# 推广计划层级
+# 层级	操作类型	计划id	广告主id	计划状态	计划投放时间段
+2	0	2000	100	0	374144419156711147060143317175368453031918731001855
+
+# 推广单元层级
+# 层级	操作类型	单元id	账户id	计划id	单元状态	出价(分/CPM)	优先级
+3	0	2000	100	2000	0	500	0
+3	0	2001	100	2000	0	500	0
+
+# 创意
+# 层级	操作类型	创意id	物料类型	物料地址	物料宽px	物料高px	落地页URL	创意状态	曝光监测地址
+4	0	idea1	1	http://www.baidu.com/xxx.jpg	1920	1080	http://www.163.com	0	http://www.gae.com/showMonitor.gif?sid=a;http://www.gae.com/showMonitor.gif?sid=b
+4	0	idea2	1	http://www.baidu.com/xxx.jpg	1920	1080	http://www.126.com	0	http://www.gae.com/showMonitor.gif?sid=chttp://www.gae.com/showMonitor.gif?sid=d
+
+# 单元 - 创意关联
+# 层级	操作类型	单元id	创意id
+5	0	2000	idea1
+5	0	2001	idea2
+
+# 人群标签层级
+# 层级	操作类型	标签id	单元id	标签类型
+7	0	5000	2000	1
+7	0	5001	2000	1
+7	0	6000	2001	0
+7	0	6001	2001	0
+
+# 创意外审层级
+8	0	idea1	adCode1	0	tid
+8	0	idea2	adCode2	0	tid
