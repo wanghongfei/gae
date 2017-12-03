@@ -32,26 +32,52 @@ GAE并没有规定必须用哪些类型的标, 只负责通过标签进行触发
 ![function](http://ovbyjzegm.bkt.clouddn.com/gae-route.png)
 
 ## 构建运行
+构建：
+
+```
+mvn clean package -Dmaven.test.skip=true
+```
+
+GAE运行有几项重要配置，分别为
+
+- IP字典路径 gae.dict.ip
+- 全量索引所在目录 gae.index.file.path
+- 全量索引文件名 gae.index.file.name
+- 增量索引所在目录 gae.index.incr-path
+- 增量索引文件名 gae.index.incr-name
+
+
+
 ### 下载IP字典
+
 ```
 wget http://ovbyjzegm.bkt.clouddn.com/ipdict.tar.gz
 tar -zxvf ipdict.tar.gz
 ```
-### 运行
-```
-mvn clean package -Dmaven.test.skip=true
-```
-GAE的增量索引加载有两种方式，监控索引文件增量或从kafka中读取. 当从文件中加载时, 需在运行时打开kafka开关(kafka连接配置详见`application.yaml`):
-```
-java -jar target/gae.jar --gae.server.port=9000 --gae.index.kafka=true --gae.index.file.path=./ --gae.index.file.name=gae.idx --gae.dict.ip=IP字典文件名
-```
-其中`--gae-index.kafka`控制是否从kafka中读取增量索引, `gae.idx`为全量索引文件名. 地域ID与城市名称的对应关系见: `wget http://ovbyjzegm.bkt.clouddn.com/reg.txt`
 
-当从文件中加载增量索引时, 则不需要打开kafka开关(无需指定`--gae.index.kafka=true`), 默认为关闭。
+
+### 运行
+
+GAE的增量索引加载有两种方式，监控索引文件增量或从kafka中读取. 当从文件中加载时, 需在运行时打开kafka开关(kafka连接配置详见`application.yaml`)，下面kafka配置示例：
+
+```
+java -jar target/gae.jar \
+--gae.server.port=9000 \
+--gae.index.kafka=true \
+--gae.index.file.path=./ \
+--gae.index.file.name=gae.idx \
+--gae.dict.ip=IP字典文件名
+```
+其中`--gae-index.kafka`控制是否从kafka中读取增量索引，当指定从kafka读取时不需要指定增量文件相关配置。
+
+地域ID与城市名称的对应关系见: `wget http://ovbyjzegm.bkt.clouddn.com/reg.txt`
+
+当从文件中加载增量索引时, 则不需要打开kafka开关(无需指定`--gae.index.kafka=true`), 默认为关闭，但必须指定`gae.index.incr-path`和`gae.index.incr-name`
 
 ## 项目进度
-基本完成:
-所有功能ready, 在做最后的测试
+v1.0.0已发布。
+
+
 
 ## 模块说明 org.fh.gae.*
 - net
