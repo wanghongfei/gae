@@ -31,7 +31,22 @@ GAE并没有规定必须用哪些类型的标, 只负责通过标签进行触发
 ## 功能
 ![function](http://ovbyjzegm.bkt.clouddn.com/gae-route.png)
 
+## 线程模型
+
+![thread](http://ovbyjzegm.bkt.clouddn.com/thread.png)
+
+其中业务线程池的大小和堵塞队列的配置对GAE整体吞吐起着决定性作用。
+
+
+
+## 业务流程
+
+![biz](http://ovbyjzegm.bkt.clouddn.com/biz.png)
+
+
+
 ## 构建运行
+
 构建：
 
 ```
