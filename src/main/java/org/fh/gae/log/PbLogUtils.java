@@ -11,33 +11,29 @@ public class PbLogUtils {
 
     }
 
-    public static SearchLog.Search.Builder makeSearchLogBuilder() {
-        return SearchLog.Search.getDefaultInstance().toBuilder();
-    }
-
     /**
      * 创建log对象并保存到session
      * @param request
      */
     public static void initSearchLog(RequestInfo request) {
-        SearchLog.Search.Builder pb = makeSearchLogBuilder();
-        updateBasicInfo(pb, request);
+        SearchLog searchLog = new SearchLog();
+        updateBasicInfo(searchLog, request);
 
-        ThreadCtx.putSearchLog(request.getSlot().getSlotId(), pb);
+        ThreadCtx.putSearchLog(request.getSlot().getSlotId(), searchLog);
     }
 
     /**
      * 填写日志对象中的基本请求字段
-     * @param pbLog
+     * @param searchLog
      * @param request
      */
-    public static void updateBasicInfo(SearchLog.Search.Builder pbLog, RequestInfo request) {
-        pbLog.setTid(request.getAuth().getTid());
-        pbLog.setRequestId(request.getRequestId());
-        pbLog.setTimestamp(new Date().getTime());
+    public static void updateBasicInfo(SearchLog searchLog, RequestInfo request) {
+        searchLog.setTid(request.getAuth().getTid());
+        searchLog.setRequestId(request.getRequestId());
+        searchLog.setTimestamp(new Date().getTime());
 
-        pbLog.setMac(request.getDevice().getMac());
-        pbLog.setIp(request.getDevice().getIp());
+        searchLog.setMac(request.getDevice().getMac());
+        searchLog.setIp(request.getDevice().getIp());
     }
 
     /**
@@ -49,20 +45,20 @@ public class PbLogUtils {
      * @param ideaId
      */
     public static void updateAdInfo(String slotId, Ad ad, int planId, int unitId, String ideaId) {
-        SearchLog.Search.Builder pbLog = ThreadCtx.getSearchLogMap().get(slotId);
+        SearchLog searchLog = ThreadCtx.getSearchLogMap().get(slotId);
 
-        pbLog.setWidth(ad.getW());
-        pbLog.setHeight(ad.getH());
-        pbLog.setMaterialType(ad.getMaterialType().toString());
-        pbLog.setAdCode(ad.getAdId().toString());
+        searchLog.setWidth(ad.getW());
+        searchLog.setHeight(ad.getH());
+        searchLog.setMaterialType(ad.getMaterialType().toString());
+        searchLog.setAdCode(ad.getAdId().toString());
 
-        pbLog.setPlanId(planId);
-        pbLog.setUnitId(unitId);
-        pbLog.setIdeaId(ideaId);
+        searchLog.setPlanId(planId);
+        searchLog.setUnitId(unitId);
+        searchLog.setIdeaId(ideaId);
 
         StringBuilder tagBuilder = ThreadCtx.getTagMap().get(slotId);
         if (null != tagBuilder) {
-            pbLog.setTagIds(tagBuilder.toString());
+            searchLog.setTagIds(tagBuilder.toString());
         }
     }
 }

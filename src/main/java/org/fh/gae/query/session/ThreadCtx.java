@@ -102,8 +102,8 @@ public class ThreadCtx {
         return weightMap;
     }
 
-    public static Map<String, SearchLog.Search.Builder> getSearchLogMap() {
-        Map<String, SearchLog.Search.Builder> map = getContext(KEY_LOG);
+    public static Map<String, SearchLog> getSearchLogMap() {
+        Map<String, SearchLog> map = getContext(KEY_LOG);
         if (null == map) {
             map = new HashMap<>();
             putContext(KEY_LOG, map);
@@ -112,8 +112,8 @@ public class ThreadCtx {
         return map;
     }
 
-    public static void putSearchLog(String slotId, SearchLog.Search.Builder pb) {
-        getSearchLogMap().put(slotId, pb);
+    public static void putSearchLog(String slotId, SearchLog searchLog) {
+        getSearchLogMap().put(slotId, searchLog);
     }
 
     /**

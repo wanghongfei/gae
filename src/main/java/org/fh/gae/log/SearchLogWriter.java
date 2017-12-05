@@ -1,6 +1,5 @@
 package org.fh.gae.log;
 
-import com.google.protobuf.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeServerProps;
 import org.fh.gae.query.session.ThreadCtx;
@@ -19,22 +18,22 @@ public class SearchLogWriter {
     private GaeServerProps props;
 
     public void writeLog(String slotId) throws IOException {
-        Message pbLog = ThreadCtx.getSearchLogMap().get(slotId).build();
+        SearchLog searchLog = ThreadCtx.getSearchLogMap().get(slotId);
         if (log.isDebugEnabled()) {
-            log.debug("search_log\t{}", pbLog.toString());
+            log.debug("search_log\t{}", searchLog.toString());
         }
 
-        writeLog(pbLog);
+        writeLog(searchLog);
     }
 
-    public synchronized void writeLog(Message pbLog) throws IOException {
+    public synchronized void writeLog(SerializableLog serializableLog) throws IOException {
         File file = getFile();
 
         try (FileOutputStream fos = new FileOutputStream(file, true)) {
             BufferedOutputStream out = new BufferedOutputStream(fos);
 
-            out.write(pbLog.getSerializedSize());
-            out.write(pbLog.toByteArray());
+            out.write(serializableLog.serializeLog());
+            out.write('\n');
 
             out.flush();
 
