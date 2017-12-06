@@ -45,7 +45,7 @@ public class PbLogUtils {
      * @param unitId
      * @param ideaId
      */
-    public static void updateAdInfo(String slotId, Ad ad, int planId, int unitId, String ideaId, int instanceId) {
+    public static void updateAdInfo(String slotId, Ad ad, int planId, int unitId, String ideaId, int instanceId, Integer regionId) {
         SearchLog searchLog = ThreadCtx.getSearchLogMap().get(slotId);
         searchLog.setSid(Sid.genSid(instanceId));
 
@@ -57,6 +57,10 @@ public class PbLogUtils {
         searchLog.setPlanId(planId);
         searchLog.setUnitId(unitId);
         searchLog.setIdeaId(ideaId);
+
+        if (null != regionId) {
+            searchLog.setRegionId(regionId);
+        }
 
         StringBuilder tagBuilder = ThreadCtx.getTagMap().get(slotId);
         if (null != tagBuilder) {

@@ -187,6 +187,8 @@ public class UnitFilter implements GaeFilter<AdUnitInfo> {
 
             if (l1 == ipL1) {
                 if (l2 == ipL2 || -1 == l2) {
+                    // 命中
+                    ThreadCtx.getUnitRegionMap().put(unitId, ipL1);
                     return true;
                 }
             }

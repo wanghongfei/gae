@@ -121,8 +121,9 @@ public class BasicSearch {
                 adList.add(ad);
 
                 AdUnitInfo unit = ThreadCtx.getIdeaMap().get(ad.getAdId());
+                Integer regionId = ThreadCtx.getUnitRegionMap().get(unit.getUnitId());
 
-                PbLogUtils.updateAdInfo(slotId, ad, unit.getPlanId(), unit.getUnitId(), ad.getAdId(), instanceId);
+                PbLogUtils.updateAdInfo(slotId, ad, unit.getPlanId(), unit.getUnitId(), ad.getAdId(), instanceId, regionId);
 
                 try {
                     logWriter.writeLog(slotId);

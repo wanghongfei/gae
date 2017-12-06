@@ -38,9 +38,14 @@ public class ThreadCtx {
     public static final String KEY_IDEA = "keyIdea";
 
     /**
-     * 命中的标签
+     * 单元命中的标签
      */
     public static final String KEY_TAG = "keyTag";
+
+    /**
+     * 单元命中的地域
+     */
+    public static final String KEY_REGION = "keyRegion";
 
     private static Map<String, Object> initContext() {
         Map<String, Object> map = new HashMap<>();
@@ -135,6 +140,16 @@ public class ThreadCtx {
         if (null == map) {
             map = new HashMap<>();
             putContext(KEY_TAG, map);
+        }
+
+        return map;
+    }
+
+    public static Map<Integer, Integer> getUnitRegionMap() {
+        Map<Integer, Integer> map = getContext(KEY_REGION);
+        if (null == map) {
+            map = new HashMap<>();
+            putContext(KEY_REGION, map);
         }
 
         return map;
