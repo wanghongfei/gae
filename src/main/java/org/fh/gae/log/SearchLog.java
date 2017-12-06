@@ -42,6 +42,8 @@ public class SearchLog implements SerializableLog {
     private String tagIds = "-";
     // 地域id
     private int regionId = 0;
+    // 出价, cpm
+    private long bid = 0;
 
 
     @Override
@@ -69,7 +71,8 @@ public class SearchLog implements SerializableLog {
         sb.append(ideaId).append('\t');
         sb.append(adCode).append('\t');
         sb.append(tagIds).append('\t');
-        sb.append(regionId);
+        sb.append(regionId).append('\t');
+        sb.append(bid);
 
         return sb.toString();
     }

@@ -120,10 +120,20 @@ public class BasicSearch {
                 Ad ad = target.toAd(slotId);
                 adList.add(ad);
 
+                // 取出单元信息记日志
                 AdUnitInfo unit = ThreadCtx.getIdeaMap().get(ad.getAdId());
                 Integer regionId = ThreadCtx.getUnitRegionMap().get(unit.getUnitId());
 
-                PbLogUtils.updateAdInfo(slotId, ad, unit.getPlanId(), unit.getUnitId(), ad.getAdId(), instanceId, regionId);
+                PbLogUtils.updateAdInfo(
+                        slotId,
+                        ad,
+                        unit.getPlanId(),
+                        unit.getUnitId(),
+                        ad.getAdId(),
+                        instanceId,
+                        regionId,
+                        unit.getBid()
+                );
 
                 try {
                     logWriter.writeLog(slotId);
