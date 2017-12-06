@@ -40,6 +40,8 @@ public class SearchLog implements SerializableLog {
     private String adCode = "-";
     // 命中的标签信息,tagType:tagId逗号分隔, 如 1:1200,2:2100,3:4500
     private String tagIds = "-";
+    // 地域id
+    private int regionId = 0;
 
 
     @Override
@@ -67,6 +69,7 @@ public class SearchLog implements SerializableLog {
         sb.append(ideaId).append('\t');
         sb.append(adCode).append('\t');
         sb.append(tagIds).append('\t');
+        sb.append(regionId);
 
         return sb.toString();
     }

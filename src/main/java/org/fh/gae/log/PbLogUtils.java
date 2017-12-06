@@ -1,6 +1,7 @@
 package org.fh.gae.log;
 
 import org.fh.gae.net.vo.RequestInfo;
+import org.fh.gae.query.Sid;
 import org.fh.gae.query.session.ThreadCtx;
 import org.fh.gae.query.vo.Ad;
 
@@ -44,8 +45,9 @@ public class PbLogUtils {
      * @param unitId
      * @param ideaId
      */
-    public static void updateAdInfo(String slotId, Ad ad, int planId, int unitId, String ideaId) {
+    public static void updateAdInfo(String slotId, Ad ad, int planId, int unitId, String ideaId, int instanceId) {
         SearchLog searchLog = ThreadCtx.getSearchLogMap().get(slotId);
+        searchLog.setSid(Sid.genSid(instanceId));
 
         searchLog.setWidth(ad.getW());
         searchLog.setHeight(ad.getH());

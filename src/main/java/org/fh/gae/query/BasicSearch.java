@@ -20,7 +20,6 @@ import org.fh.gae.query.profile.ProfileFetcher;
 import org.fh.gae.query.rank.Ranker;
 import org.fh.gae.query.session.ThreadCtx;
 import org.fh.gae.query.trace.TraceBit;
-import org.fh.gae.query.utils.BenchTimer;
 import org.fh.gae.query.vo.Ad;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,9 @@ import java.util.Set;
 public class BasicSearch {
     @Value("${gae.min-unit-amount}")
     private int MIN_UNIT_AMOUNT;
+
+    @Value("${gae.instance-id}")
+    private byte instanceId;
 
     @Autowired(required = false)
     private ProfileFetcher profileFetcher;
@@ -120,7 +122,7 @@ public class BasicSearch {
 
                 AdUnitInfo unit = ThreadCtx.getIdeaMap().get(ad.getAdId());
 
-                PbLogUtils.updateAdInfo(slotId, ad, unit.getPlanId(), unit.getUnitId(), ad.getAdId());
+                PbLogUtils.updateAdInfo(slotId, ad, unit.getPlanId(), unit.getUnitId(), ad.getAdId(), instanceId);
 
                 try {
                     logWriter.writeLog(slotId);

@@ -89,10 +89,6 @@ java -jar target/gae.jar \
 
 当从文件中加载增量索引时, 则不需要打开kafka开关(无需指定`--gae.index.kafka=true`), 默认为关闭，但必须指定`gae.index.incr-path`和`gae.index.incr-name`
 
-## 项目进度
-v1.0.0已发布。
-
-
 
 ## 模块说明 org.fh.gae.*
 - net
