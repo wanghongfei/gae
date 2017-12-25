@@ -1,20 +1,15 @@
 package org.fh.gae.net;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
+import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpServer;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeServerProps;
-import org.fh.gae.net.coder.JsonRequestDecoder;
-import org.fh.gae.net.handler.GaeAuthHandler;
-import org.fh.gae.net.handler.GaeBidHandler;
-import org.fh.gae.net.vo.BidRequest;
+import org.fh.gae.net.handler.GaeAuthHandlerVertx;
+import org.fh.gae.net.handler.GaeBidHandlerVertx;
+import org.fh.gae.net.handler.GaeErrorHandlerVertx;
+import org.fh.gae.net.handler.GaeJsonHandlerVertx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,55 +18,39 @@ import org.springframework.stereotype.Component;
 public class GaeHttpServer {
 
     @Autowired
-    private GaeBidHandler bidHandler;
+    private GaeJsonHandlerVertx jsonHandlerVertx;
 
     @Autowired
-    private GaeAuthHandler authHandler;
+    private GaeAuthHandlerVertx authHandlerVertx;
+
+    @Autowired
+    private GaeBidHandlerVertx bidHandlerVertx;
+
+    @Autowired
+    private GaeErrorHandlerVertx errorHandlerVertx;
 
     @Autowired
     private GaeServerProps serverProps;
 
-    private EventLoopGroup bossGroup;
-
-    private EventLoopGroup workerGroup;
-
     public void start() throws Exception {
         log.info("starting GAE server");
 
-        bossGroup = new NioEventLoopGroup(1);
-        workerGroup = new NioEventLoopGroup();
+        Vertx vertx = Vertx.vertx();
+        HttpServer server = vertx.createHttpServer();
 
-        try {
-            ServerBootstrap boot = new ServerBootstrap();
-            boot.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .localAddress(serverProps.getHost(), serverProps.getPort())
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast("codec", new HttpServerCodec());
-                            socketChannel.pipeline().addLast("aggregator", new HttpObjectAggregator(512 * 1024));
-                            socketChannel.pipeline().addLast("bidDecoder", new JsonRequestDecoder<>(BidRequest.class));
-                            socketChannel.pipeline().addLast("auth", authHandler);
-                            socketChannel.pipeline().addLast("bid", bidHandler);
-                        }
-                    });
+        Router router = Router.router(vertx);
+        router.route().handler(BodyHandler.create());
+        router.route("/")
+                .handler(jsonHandlerVertx)
+                .handler(authHandlerVertx)
+                .handler(bidHandlerVertx)
+                .failureHandler(errorHandlerVertx);
 
-            ChannelFuture f = boot.bind().sync();
+        server.requestHandler(router::accept).listen(serverProps.getPort());
 
-            log.info("GAE server started at {}:{}", serverProps.getHost(), serverProps.getPort());
-
-            // f.channel().closeFuture().sync();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            bossGroup.shutdownGracefully().sync();
-        }
     }
 
     public void shutdown() throws Exception {
-        bossGroup.shutdownGracefully().sync();
-        workerGroup.shutdownGracefully().sync();
 
         log.info("GAE server has been stopped");
     }
