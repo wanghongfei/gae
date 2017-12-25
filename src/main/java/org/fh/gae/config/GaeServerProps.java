@@ -29,11 +29,6 @@ public class GaeServerProps {
     private int maxBizThread = 4;
 
     /**
-     * 业务线程池最小线程数
-     */
-    private int minBizThread = 2;
-
-    /**
      * 最大等待任务数
      */
     private int maxWait = 1;

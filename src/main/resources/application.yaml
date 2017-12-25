@@ -20,7 +20,6 @@ gae:
     host: 0.0.0.0
 
     max-biz-thread: 8
-    min-biz-thread: 4
 
     max-wait: 20
 

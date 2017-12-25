@@ -1,6 +1,7 @@
 package org.fh.gae.net;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -38,6 +39,11 @@ public class GaeHttpServer {
     public void start() throws Exception {
         log.info("starting GAE server");
 
+        VertxOptions options = new VertxOptions();
+        options.setEventLoopPoolSize(Runtime.getRuntime().availableProcessors());
+        options.setWorkerPoolSize(serverProps.getMaxBizThread());
+        options.setMaxWorkerExecuteTime(1000);
+
         Vertx vertx = Vertx.vertx();
         HttpServer server = vertx.createHttpServer();
 
@@ -46,7 +52,7 @@ public class GaeHttpServer {
         router.route("/")
                 .handler(jsonHandlerVertx)
                 .handler(authHandlerVertx)
-                .handler(bidHandlerVertx)
+                .blockingHandler(bidHandlerVertx)
                 .failureHandler(errorHandlerVertx);
 
         server.requestHandler(router::accept).listen(serverProps.getPort());
