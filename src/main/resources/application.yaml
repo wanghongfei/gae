@@ -19,9 +19,11 @@ gae:
     port: 9000
     host: 0.0.0.0
 
-    max-biz-thread: 8
+    # 用于处理长时间业务的worker线程池最大线程数;
+    max-worker-thread: 10
+    # NIO线程数, 默认为CPU核心数
+    nio-thread: 4
 
-    max-wait: 20
 
   index:
     file:

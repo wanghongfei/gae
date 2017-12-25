@@ -23,13 +23,13 @@ public class GaeServerProps {
     private String searchLog = "logs/search.log";
 
     /**
-     * 业务线程池最大线程数;
+     * 用于处理长时间业务的worker线程池最大线程数;
      * 如果没有IO操作, 最好与CPU核心数相同
      */
-    private int maxBizThread = 4;
+    private int maxWorkerThread = 4;
 
     /**
-     * 最大等待任务数
+     * NIO线程数, 默认为CPU核心数
      */
-    private int maxWait = 1;
+    private int nioThread = 0;
 }

@@ -1,7 +1,6 @@
 package org.fh.gae.net;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -11,40 +10,34 @@ import org.fh.gae.net.handler.GaeAuthHandlerVertx;
 import org.fh.gae.net.handler.GaeBidHandlerVertx;
 import org.fh.gae.net.handler.GaeErrorHandlerVertx;
 import org.fh.gae.net.handler.GaeJsonHandlerVertx;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.ApplicationContext;
 
-@Component
 @Slf4j
-public class GaeHttpServer {
-    private Vertx vertx;
+public class GaeHttpServer extends AbstractVerticle {
+    public static ApplicationContext springCtx;
 
-    private HttpServer httpServer;
-
-    @Autowired
     private GaeJsonHandlerVertx jsonHandlerVertx;
 
-    @Autowired
     private GaeAuthHandlerVertx authHandlerVertx;
 
-    @Autowired
     private GaeBidHandlerVertx bidHandlerVertx;
 
-    @Autowired
     private GaeErrorHandlerVertx errorHandlerVertx;
 
-    @Autowired
     private GaeServerProps serverProps;
 
+    public GaeHttpServer() {
+        this.jsonHandlerVertx = springCtx.getBean(GaeJsonHandlerVertx.class);
+        this.authHandlerVertx = springCtx.getBean(GaeAuthHandlerVertx.class);
+        this.bidHandlerVertx = springCtx.getBean(GaeBidHandlerVertx.class);
+        this.errorHandlerVertx = springCtx.getBean(GaeErrorHandlerVertx.class);
+        this.serverProps = springCtx.getBean(GaeServerProps.class);
+    }
+
+    @Override
     public void start() throws Exception {
         log.info("starting GAE server");
 
-        VertxOptions options = new VertxOptions();
-        options.setEventLoopPoolSize(Runtime.getRuntime().availableProcessors());
-        options.setWorkerPoolSize(serverProps.getMaxBizThread());
-        options.setMaxWorkerExecuteTime(1000);
-
-        Vertx vertx = Vertx.vertx();
         HttpServer server = vertx.createHttpServer();
 
         Router router = Router.router(vertx);
@@ -56,15 +49,6 @@ public class GaeHttpServer {
                 .failureHandler(errorHandlerVertx);
 
         server.requestHandler(router::accept).listen(serverProps.getPort());
-
-        this.vertx = vertx;
-        this.httpServer = server;
     }
 
-    public void shutdown() throws Exception {
-        httpServer.close();
-        vertx.close();
-
-        log.info("GAE server has been stopped");
-    }
 }
