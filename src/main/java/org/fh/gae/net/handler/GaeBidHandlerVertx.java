@@ -23,7 +23,10 @@ public class GaeBidHandlerVertx implements Handler<RoutingContext> {
             BidResult result = bsSearchService.bid(ctx.get("_req"));
             long end = System.currentTimeMillis();
 
-            ctx.response().end(JSON.toJSONString(new BidResponse(result, end - start)));
+            String json = JSON.toJSONString(new BidResponse(result, end - start));
+            ctx.response().end(json);
+
+            log.info(json);
 
         } catch (Exception e) {
             ctx.put("_err", e);

@@ -2,7 +2,7 @@ gae:
   index:
     file:
       enable: true
-      path: /Users/whf/projects/open/gae/src/test/resources/index/region
-      name: gae.idx
+      path: /Users/whf/projects/open/gae
+      name: mock-idx.txt
       incr-path: /Users/whf/projects/open/gae/src/test/resources/index/region
       incr-name: gae.idx.incr
