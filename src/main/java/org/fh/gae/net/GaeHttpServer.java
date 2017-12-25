@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class GaeHttpServer {
+    private Vertx vertx;
+
+    private HttpServer httpServer;
 
     @Autowired
     private GaeJsonHandlerVertx jsonHandlerVertx;
@@ -48,9 +51,13 @@ public class GaeHttpServer {
 
         server.requestHandler(router::accept).listen(serverProps.getPort());
 
+        this.vertx = vertx;
+        this.httpServer = server;
     }
 
     public void shutdown() throws Exception {
+        httpServer.close();
+        vertx.close();
 
         log.info("GAE server has been stopped");
     }
