@@ -35,8 +35,8 @@ public class GaeHttpServer extends AbstractVerticle {
     }
 
     @Override
-    public void start() throws Exception {
-        log.info("starting GAE server");
+    public void start() {
+        log.info("deploying GAE server(verticle)");
 
         HttpServer server = vertx.createHttpServer();
 
@@ -45,7 +45,7 @@ public class GaeHttpServer extends AbstractVerticle {
         router.route("/")
                 .handler(jsonHandlerVertx)
                 .handler(authHandlerVertx)
-                .blockingHandler(bidHandlerVertx)
+                .blockingHandler(bidHandlerVertx, false)
                 .failureHandler(errorHandlerVertx);
 
         server.requestHandler(router::accept).listen(serverProps.getPort());
