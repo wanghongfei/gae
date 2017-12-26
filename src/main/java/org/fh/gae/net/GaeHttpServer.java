@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.ResponseTimeHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeServerProps;
 import org.fh.gae.net.handler.GaeAuthHandlerVertx;
@@ -42,6 +43,7 @@ public class GaeHttpServer extends AbstractVerticle {
 
         Router router = Router.router(vertx);
         router.route().handler(BodyHandler.create());
+        router.route().handler(ResponseTimeHandler.create());
         router.route("/")
                 .handler(jsonHandlerVertx)
                 .handler(authHandlerVertx)

@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
+import org.fh.gae.net.error.ErrCode;
+import org.fh.gae.net.error.GaeException;
 import org.fh.gae.net.vo.BidRequest;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,8 @@ public class GaeJsonHandlerVertx implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext ctx) {
+        ctx.response().putHeader("Content-Type", "application/json;charset=utf8");
+
         try {
             parseJson(ctx);
 
@@ -34,6 +38,9 @@ public class GaeJsonHandlerVertx implements Handler<RoutingContext> {
 
         // 反序列化
         BidRequest requestObj = JSON.parseObject(body, 0, body.length, Charset.forName("utf-8"), BidRequest.class);
+        if (null == requestObj) {
+            throw new GaeException(ErrCode.INVALID_ARG);
+        }
 
         ctx.put("_req", requestObj);
         ctx.next();

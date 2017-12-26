@@ -52,7 +52,6 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
         options.setWorkerPoolSize(props.getMaxWorkerThread());
         options.setMaxWorkerExecuteTime(1000);
 
-        System.out.println(options);
         Vertx vertx = Vertx.vertx(options);
         DeploymentOptions depOptions = new DeploymentOptions();
         depOptions.setInstances(Runtime.getRuntime().availableProcessors());

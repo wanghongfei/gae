@@ -84,16 +84,16 @@ public class IndexLoader {
             while ( (line = reader.readLine()) != null ) {
                 // 跳过空行
                 if (0 == line.length()) {
-                    log.info("skip empty line");
+                    // log.info("skip empty line");
                     continue;
                 }
 
                 if (line.startsWith("#")) {
-                    log.info("skip comment line");
+                    // log.info("skip comment line");
                     continue;
                 }
 
-                log.info("{}", line);
+                // log.info("{}", line);
                 int result = processLine(line);
                 if (0 == result) {
                     ++okTot;
