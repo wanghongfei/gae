@@ -3,7 +3,7 @@ GAE是[Advertising Develop Kit](https://github.com/ad-dev-kit)中的广告投放
 
 
 
-技术层面上，GAE的设计语言虽然是Java, 但架构上尽量做到轻量化，其轻量化体现在非必要时**不进行过度工程化(over engineering)**、使用HTTP协议但**摒弃Servlet**、使用Spring但**摒弃SpringMVC**。最终GAE使用了Vert.x + SpringBoot。使用vert.x是因为它是Java生态中性能突出([Techempower Benchmark](https://www.techempower.com/benchmarks/#section=data-r14&hw=ph&test=db&l=8vn05b))且编程模型简单的网络通讯框架，使用SpringBoot则是为了利用其 all-in-one 的可执行jar和灵活的配置文件等特性方便部署。
+技术层面上，GAE的设计语言虽然是Java, 但架构上尽量做到轻量化，其轻量化体现在非必要时**不进行过度工程化(over engineering)**、使用HTTP协议但**摒弃Servlet**、使用Spring但**摒弃SpringMVC**。最终GAE使用了Vert.x + SpringBoot。使用vert.x是因为它是Java生态中性能突出([Techempower Benchmark](https://www.techempower.com/benchmarks/#section=data-r14&hw=ph&test=db&l=8vn05b))且编程模型简单的异步框架，使用SpringBoot则是为了利用其 all-in-one 的可执行jar和灵活的配置文件等特性方便部署。
 
 
 
