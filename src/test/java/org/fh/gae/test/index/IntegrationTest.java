@@ -5,10 +5,8 @@ import org.fh.gae.net.vo.BidResult;
 import org.fh.gae.query.BasicSearch;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.profile.ProfileFetcher;
-import org.fh.gae.test.BaseTestClass;
 import org.fh.gae.test.RequestBuilder;
 import org.junit.Assert;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ReflectionUtils;
 
@@ -18,14 +16,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class IntegrationTest extends BaseTestClass {
+public class IntegrationTest {
     @Autowired
     private BasicSearch bs;
 
     /**
      * index/common
      */
-    @Test
+    // @Test
     public void testNoTargetingAndMaterialType() {
         BidRequest req = RequestBuilder.buildRequest();
         req.getDevice().setIp("45.124.44.68");
@@ -43,7 +41,7 @@ public class IntegrationTest extends BaseTestClass {
     /**
      * /index/tag
      */
-    @Test
+    // @Test
     public void testTagTargetingAndWeight() {
         BidRequest req = RequestBuilder.buildRequest();
         req.getDevice().setIp("45.124.44.68");
@@ -133,7 +131,7 @@ public class IntegrationTest extends BaseTestClass {
     /**
      * index/region
      */
-    @Test
+    // @Test
     public void testRegionTargeting() {
         BidRequest req = RequestBuilder.buildRequest();
         req.getDevice().setIp("45.124.44.68"); // 北京IP

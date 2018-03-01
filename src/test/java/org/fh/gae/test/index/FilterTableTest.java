@@ -5,17 +5,15 @@ import org.fh.gae.query.index.filter.FilterTable;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.index.unit.AdUnitStatus;
 import org.fh.gae.query.profile.AudienceProfile;
-import org.fh.gae.test.BaseTestClass;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FilterTableTest extends BaseTestClass {
+public class FilterTableTest {
 
-    @Test
+    // @Test
     public void testFilterTable() {
         List<AdUnitInfo> infos = new ArrayList<>(Arrays.asList(
                 new AdUnitInfo(1L, 1, 1, AdUnitStatus.NORMAL, 1L, 1),

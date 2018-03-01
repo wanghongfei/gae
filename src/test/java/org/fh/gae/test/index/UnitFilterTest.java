@@ -5,8 +5,6 @@ import org.fh.gae.query.index.tag.TagType;
 import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.index.unit.AdUnitStatus;
 import org.fh.gae.query.profile.AudienceProfile;
-import org.fh.gae.test.BaseTestClass;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -14,11 +12,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class UnitFilterTest extends BaseTestClass {
+public class UnitFilterTest {
     @Autowired
     private UnitFilter unitFilter;
 
-    @Test
+    // @Test
     public void testGenderFilter() {
         // mock
         Map<Integer, Set<Long>> tags = new HashMap<>();
