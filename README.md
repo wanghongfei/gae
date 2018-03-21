@@ -31,9 +31,17 @@ GAE并没有规定必须用哪些类型的标, 只负责通过标签进行触发
 例如,只有`gae.idx.incr.0`存在时则会一直监控、读取该文件，当`gae.idx.incr.1`出现时会切换从新文件开始读取。
 
 ## 功能
-![function](http://ovbyjzegm.bkt.clouddn.com/gae-route.png)
+![function](http://ovbyjzegm.bkt.clouddn.com/gae-route2.png)
 
 ## 线程模型
+
+vert.x版(Now)：
+
+![vertx](http://ovbyjzegm.bkt.clouddn.com/vertx.png)
+
+
+
+Netty版(old)：
 
 ![thread](http://ovbyjzegm.bkt.clouddn.com/thread.png)
 
