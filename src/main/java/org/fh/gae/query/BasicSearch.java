@@ -63,7 +63,7 @@ public class BasicSearch {
     @Autowired
     private SearchLogWriter logWriter;
 
-    @Autowired
+    @Autowired(required = false)
     private GaeThreadPool threadPool;
 
     public BidResult bid(BidRequest request) {
@@ -78,32 +78,13 @@ public class BasicSearch {
         // 广告结果List
         List<Ad> adList = new ArrayList<>(request.getSlots().size());
 
-        // 如果只有一个广告位, 则直接执行bid逻辑
-        if (1 == adList.size()) {
-            Ad ad = bidSlot(request.getSlots().get(0), profile, request);
-            adList.add(ad);
+        // 如果只有一个广告位或没有threadpool, 串行检索
+        if (null == threadPool || 1 == adList.size()) {
+            serialQuery(request, profile, adList);
 
         } else {
             // 如果有多个广告位, 并发
-            List<Future<Ad>> adFutureList = new ArrayList<>(adList.size());
-
-            // 遍历每个广告位
-            for (AdSlot slot : request.getSlots()) {
-                // 提交任务
-                Future<Ad> adFuture = threadPool.submitBidTask(new SlotBidTask(slot, profile, request), true);
-                adFutureList.add(adFuture);
-            }
-
-            for (Future<Ad> adf : adFutureList) {
-                try {
-                    // 最多等100ms
-                    Ad ad = adf.get(100L, TimeUnit.MILLISECONDS);
-                    adList.add(ad);
-
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    log.error("failed to bid concurrent slot, reason = {}", e);
-                }
-            }
+            concurrentQueryIfNecessary(request, profile, adList);
         }
 
 
@@ -115,6 +96,36 @@ public class BasicSearch {
         ThreadCtx.clean();
 
         return result;
+    }
+
+    private void serialQuery(BidRequest request, AudienceProfile profile, List<Ad> resultList) {
+        for (AdSlot slot : request.getSlots()) {
+            Ad ad = bidSlot(slot, profile, request);
+            resultList.add(ad);
+        }
+    }
+
+    private void concurrentQueryIfNecessary(BidRequest request, AudienceProfile profile, List<Ad> resultList) {
+        List<Future<Ad>> adFutureList = new ArrayList<>(resultList.size());
+
+        // 遍历每个广告位
+        for (AdSlot slot : request.getSlots()) {
+            // 提交任务
+            Future<Ad> adFuture = threadPool.submitBidTask(new SlotBidTask(slot, profile, request), true);
+            adFutureList.add(adFuture);
+        }
+
+        for (Future<Ad> adf : adFutureList) {
+            try {
+                // 最多等100ms
+                Ad ad = adf.get(100L, TimeUnit.MILLISECONDS);
+                resultList.add(ad);
+
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                log.error("failed to bid concurrent slot, reason = {}", e);
+            }
+        }
+
     }
 
     private Set<Integer> triggerUnit(AudienceProfile profile) {

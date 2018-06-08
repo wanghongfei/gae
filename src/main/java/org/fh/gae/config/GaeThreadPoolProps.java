@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 public class GaeThreadPoolProps {
+    private Boolean enable = Boolean.TRUE;
+
     /**
      * 线程池core线程数量
      */

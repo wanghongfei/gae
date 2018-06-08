@@ -4,6 +4,7 @@ import org.fh.gae.config.GaeThreadPoolProps;
 import org.fh.gae.query.session.ThreadCtx;
 import org.fh.gae.query.vo.Ad;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
+@ConditionalOnProperty(prefix = "gae.thread-pool", name = "enable", havingValue = "true", matchIfMissing = false)
 public class GaeThreadPool {
     @Autowired
     private GaeThreadPoolProps poolProps;
