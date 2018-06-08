@@ -24,6 +24,12 @@ gae:
     # NIO线程数, 默认为CPU核心数
     nio-thread: 4
 
+  # 如果一个请求有多个广告位, 则会并发检索
+  # 此配置控制用于执行此逻辑的线程池参数
+  thread-pool:
+    core-size: 4
+    max-size: 8
+    queue-size: 1000
 
   index:
     file:

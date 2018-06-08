@@ -7,6 +7,7 @@ import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.trace.TraceBit;
 import org.fh.gae.query.utils.GaeCollectionUtils;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -54,6 +55,14 @@ public class ThreadCtx {
         return map;
     }
 
+    public static Map<String, Object> getOriginContext() {
+        return threadLocal.get();
+    }
+
+    public static void putOriginContext(Map<String, Object> map) {
+        threadLocal.set(map);
+    }
+
     public static void putContext(String key, Object val) {
         Map<String, Object> ctx = threadLocal.get();
         if (null == ctx) {
@@ -73,7 +82,7 @@ public class ThreadCtx {
     }
 
     public static void clean() {
-        threadLocal.set(null);
+        threadLocal.remove();
     }
 
 
