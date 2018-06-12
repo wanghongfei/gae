@@ -6,7 +6,7 @@ import io.vertx.core.VertxOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeServerProps;
 import org.fh.gae.net.GaeHttpServer;
-import org.fh.gae.query.index.loader.file.IndexIncrementLoader;
+import org.fh.gae.query.index.memory.loader.file.IndexIncrementLoader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;

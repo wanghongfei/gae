@@ -2,8 +2,8 @@ package org.fh.gae.test.index;
 
 import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.filter.FilterTable;
-import org.fh.gae.query.index.unit.AdUnitInfo;
-import org.fh.gae.query.index.unit.AdUnitStatus;
+import org.fh.gae.query.index.memory.unit.AdUnitInfo;
+import org.fh.gae.query.index.memory.unit.AdUnitStatus;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.junit.Assert;
 

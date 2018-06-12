@@ -1,9 +1,9 @@
 package org.fh.gae.test.index;
 
 import org.fh.gae.query.index.filter.UnitFilter;
-import org.fh.gae.query.index.tag.TagType;
-import org.fh.gae.query.index.unit.AdUnitInfo;
-import org.fh.gae.query.index.unit.AdUnitStatus;
+import org.fh.gae.query.index.memory.tag.TagType;
+import org.fh.gae.query.index.memory.unit.AdUnitInfo;
+import org.fh.gae.query.index.memory.unit.AdUnitStatus;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 

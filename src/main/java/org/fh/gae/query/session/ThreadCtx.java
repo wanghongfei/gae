@@ -3,11 +3,10 @@ package org.fh.gae.query.session;
 import io.netty.util.concurrent.FastThreadLocal;
 import org.fh.gae.log.SearchLog;
 import org.fh.gae.query.WeightTable;
-import org.fh.gae.query.index.unit.AdUnitInfo;
+import org.fh.gae.query.index.memory.unit.AdUnitInfo;
 import org.fh.gae.query.trace.TraceBit;
 import org.fh.gae.query.utils.GaeCollectionUtils;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

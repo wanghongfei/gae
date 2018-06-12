@@ -2,14 +2,14 @@ package org.fh.gae.test;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.fh.gae.query.index.idea.IdeaAuditInfo;
-import org.fh.gae.query.index.idea.IdeaAuditStatus;
-import org.fh.gae.query.index.idea.IdeaInfo;
-import org.fh.gae.query.index.idea.IdeaStatus;
-import org.fh.gae.query.index.idea.UnitIdeaRelInfo;
-import org.fh.gae.query.index.plan.PlanInfo;
-import org.fh.gae.query.index.unit.AdUnitInfo;
-import org.fh.gae.query.index.unit.AdUnitStatus;
+import org.fh.gae.query.index.memory.idea.IdeaAuditInfo;
+import org.fh.gae.query.index.memory.idea.IdeaAuditStatus;
+import org.fh.gae.query.index.memory.idea.IdeaInfo;
+import org.fh.gae.query.index.memory.idea.IdeaStatus;
+import org.fh.gae.query.index.memory.idea.UnitIdeaRelInfo;
+import org.fh.gae.query.index.memory.plan.PlanInfo;
+import org.fh.gae.query.index.memory.unit.AdUnitInfo;
+import org.fh.gae.query.index.memory.unit.AdUnitStatus;
 import org.junit.Test;
 
 import java.io.BufferedOutputStream;

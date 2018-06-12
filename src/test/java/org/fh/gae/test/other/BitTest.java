@@ -1,7 +1,7 @@
 package org.fh.gae.test.other;
 
 import org.fh.gae.query.WeightTable;
-import org.fh.gae.query.index.region.RegionDict;
+import org.fh.gae.query.index.memory.region.RegionDict;
 import org.fh.gae.query.utils.BitUtils;
 import org.junit.Assert;
 import org.junit.Test;

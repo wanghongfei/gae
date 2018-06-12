@@ -1,9 +1,8 @@
 package org.fh.gae.query.index.filter;
 
-import org.fh.gae.net.vo.BidRequest;
 import org.fh.gae.net.vo.RequestInfo;
-import org.fh.gae.query.index.plan.PlanInfo;
-import org.fh.gae.query.index.plan.PlanStatus;
+import org.fh.gae.query.index.memory.plan.PlanInfo;
+import org.fh.gae.query.index.memory.plan.PlanStatus;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;

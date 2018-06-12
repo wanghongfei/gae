@@ -1,8 +1,8 @@
 package org.fh.gae.test.index;
 
-import org.fh.gae.query.index.region.IPRegion;
-import org.fh.gae.query.index.region.LongValue;
-import org.fh.gae.query.index.region.RegionDict;
+import org.fh.gae.query.index.memory.region.IPRegion;
+import org.fh.gae.query.index.memory.region.LongValue;
+import org.fh.gae.query.index.memory.region.RegionDict;
 import org.junit.Assert;
 import org.junit.Test;
 
