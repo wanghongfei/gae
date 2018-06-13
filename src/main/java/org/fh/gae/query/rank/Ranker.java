@@ -1,6 +1,6 @@
 package org.fh.gae.query.rank;
 
-import org.fh.gae.query.index.memory.unit.AdUnitInfo;
+import org.fh.gae.query.index.unit.AdUnitInfo;
 import org.fh.gae.query.session.ThreadCtx;
 import org.fh.gae.query.utils.GaeCollectionUtils;
 import org.springframework.stereotype.Service;

@@ -45,6 +45,10 @@ gae:
       enable: false
       addr: host:port
       topic: gae-idx
+
+    redis:
+      enable: false
+
   dict:
     ip: data/ipdict.txt
 

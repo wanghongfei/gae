@@ -1,7 +1,7 @@
 package org.fh.gae.test.index;
 
 import org.fh.gae.query.index.DataTable;
-import org.fh.gae.query.index.memory.unit.AdUnitIndex;
+import org.fh.gae.query.index.unit.AdUnitIndex;
 import org.fh.gae.test.BaseTestClass;
 import org.junit.Assert;
 import org.junit.Test;

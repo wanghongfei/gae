@@ -2,11 +2,11 @@ package org.fh.gae.query.index.filter;
 
 import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.DataTable;
-import org.fh.gae.query.index.memory.idea.IdeaAuditIndex;
-import org.fh.gae.query.index.memory.idea.IdeaAuditInfo;
-import org.fh.gae.query.index.memory.idea.IdeaAuditStatus;
-import org.fh.gae.query.index.memory.idea.IdeaInfo;
-import org.fh.gae.query.index.memory.idea.IdeaStatus;
+import org.fh.gae.query.index.idea.IdeaAuditIndex;
+import org.fh.gae.query.index.idea.IdeaAuditInfo;
+import org.fh.gae.query.index.idea.IdeaAuditStatus;
+import org.fh.gae.query.index.idea.IdeaInfo;
+import org.fh.gae.query.index.idea.IdeaStatus;
 import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.vo.AdSlot;
 import org.springframework.context.annotation.DependsOn;
