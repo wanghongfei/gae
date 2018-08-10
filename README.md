@@ -13,6 +13,103 @@ GAE是[Advertising Develop Kit](https://github.com/ad-dev-kit)中的广告投放
 
 
 
+## 通过Docker运行
+
+拉取镜像:
+
+```dockerfile
+docker pull registry.cn-beijing.aliyuncs.com/open-adv/gae:1.2
+```
+
+启动容器:
+
+```dockerfile
+docker run -p 9000:9000 -d f2f2df6361e4 /opt/gae/start.sh
+```
+
+此时可通过`9000`端口访问容器中的服务, 镜像中默认已经有1.5w条随机生成的广告索引。
+
+一次可请求多个广告位:
+
+```
+curl -X POST \
+  http://127.0.0.1:9000/ \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+    "request_id": "hello",
+    "auth": {
+        "tid": "tid",
+        "token": "token"
+    },
+    "device": {
+        "ip": "61.135.169.78",
+        "mac": "AA:BB:CC:DD:EE:FF",
+        "id": "IDFA",
+        "type": 1
+    },
+    "slots": [
+        {
+            "slot_id": "广告位id",
+            "slot_type": 1,
+            "w": 1920,
+            "h": 1080,
+            "material_type": [1,2]
+        },
+        {
+            "slot_id": "广告位id2",
+            "slot_type": 1,
+            "w": 1920,
+            "h": 1080,
+            "material_type": [1,2]
+        }
+    ]
+}'
+```
+
+响应:
+
+```
+{
+    "code": 0,
+    "result": {
+        "ads": [
+            {
+                "ad_code": "adCode1",
+                "h": 1080,
+                "land_url": "http://www.163.com",
+                "material_type": 1,
+                "show_urls": [
+                    "http://www.gae.com/showMonitor.gif?sid=a",
+                    "http://www.gae.com/showMonitor.gif?sid=b"
+                ],
+                "slot_id": "广告位id",
+                "url": "http://www.baidu.com/xxx.jpg",
+                "w": 1920
+            },
+            {
+                "ad_code": "adCode1",
+                "h": 1080,
+                "land_url": "http://www.163.com",
+                "material_type": 1,
+                "show_urls": [
+                    "http://www.gae.com/showMonitor.gif?sid=a",
+                    "http://www.gae.com/showMonitor.gif?sid=b"
+                ],
+                "slot_id": "广告位id2",
+                "url": "http://www.baidu.com/xxx.jpg",
+                "w": 1920
+            }
+        ],
+        "request_id": "hello"
+    }
+}
+```
+
+>  可以通过`IndexGenerator.genIndex()`方法随机生成全量索引文件进行测试
+
+
+
 ## 关于定向
 
 - 地域定向
@@ -118,77 +215,4 @@ HTTP网络通讯逻辑, vertx-web启动入口`net.GaeHttpServer`
 
 
 ## 测试
-一次可请求多个广告位:
-```
-curl -X POST \
-  http://127.0.0.1:9000/ \
-  -H 'cache-control: no-cache' \
-  -H 'content-type: application/json' \
-  -d '{
-    "request_id": "hello",
-    "auth": {
-        "tid": "tid",
-        "token": "token"
-    },
-    "device": {
-        "ip": "61.135.169.78",
-        "mac": "AA:BB:CC:DD:EE:FF",
-        "id": "IDFA",
-        "type": 1
-    },
-    "slots": [
-        {
-            "slot_id": "广告位id",
-            "slot_type": 1,
-            "w": 1920,
-            "h": 1080,
-            "material_type": [1,2]
-        },
-        {
-            "slot_id": "广告位id2",
-            "slot_type": 1,
-            "w": 1920,
-            "h": 1080,
-            "material_type": [1,2]
-        }
-    ]
-}'
-```
-响应:
-```
-{
-    "code": 0,
-    "result": {
-        "ads": [
-            {
-                "ad_code": "adCode1",
-                "h": 1080,
-                "land_url": "http://www.163.com",
-                "material_type": 1,
-                "show_urls": [
-                    "http://www.gae.com/showMonitor.gif?sid=a",
-                    "http://www.gae.com/showMonitor.gif?sid=b"
-                ],
-                "slot_id": "广告位id",
-                "url": "http://www.baidu.com/xxx.jpg",
-                "w": 1920
-            },
-            {
-                "ad_code": "adCode1",
-                "h": 1080,
-                "land_url": "http://www.163.com",
-                "material_type": 1,
-                "show_urls": [
-                    "http://www.gae.com/showMonitor.gif?sid=a",
-                    "http://www.gae.com/showMonitor.gif?sid=b"
-                ],
-                "slot_id": "广告位id2",
-                "url": "http://www.baidu.com/xxx.jpg",
-                "w": 1920
-            }
-        ],
-        "request_id": "hello"
-    }
-}
-```
-可以通过`IndexGenerator.genIndex()`方法随机生成全量索引文件进行测试
+
