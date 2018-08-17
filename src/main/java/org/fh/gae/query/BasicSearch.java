@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -232,14 +231,8 @@ public class BasicSearch {
                     unit.getBid()
             );
 
-            try {
-                logWriter.writeLog(slotId);
-                return ad;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            logWriter.writeLog(slotId);
+            return ad;
         }
 
         return null;

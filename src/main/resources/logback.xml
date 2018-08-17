@@ -18,6 +18,18 @@
         </encoder>
     </appender>
 
+    <appender name="search_log_appender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/search.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/search.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{HH:mm:ss}] [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -34,6 +46,10 @@
         <appender-ref ref="system"/>
     </appender>
 
+    <!-- 检索日志 -->
+    <logger name="search_logger" level="info" additivity="false">
+        <appender-ref ref="search_log_appender"/>
+    </logger>
 
     <logger name="org.fh.gae" level="info" additivity="false">
         <appender-ref ref="stdout"/>
