@@ -13,6 +13,8 @@ import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 @Slf4j
 public class GaeAppEventListener implements ApplicationListener<ApplicationContextEvent> {
     private Vertx vertx;
@@ -46,16 +48,36 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
         GaeHttpServer.springCtx = springCtx;
 
 
+        // worker线程池选项
         VertxOptions options = new VertxOptions();
         int nioThreads = props.getNioThread();
         options.setEventLoopPoolSize(nioThreads > 0 ? nioThreads : Runtime.getRuntime().availableProcessors());
         options.setWorkerPoolSize(props.getMaxWorkerThread());
         options.setMaxWorkerExecuteTime(1000);
 
+        // 部署选项
         Vertx vertx = Vertx.vertx(options);
         DeploymentOptions depOptions = new DeploymentOptions();
         depOptions.setInstances(Runtime.getRuntime().availableProcessors());
-        vertx.deployVerticle(GaeHttpServer.class.getName(), depOptions);
+
+        // 部署
+        CompletableFuture<Integer> deployF = new CompletableFuture<>();
+        vertx.deployVerticle(GaeHttpServer.class.getName(), depOptions, ar -> {
+            if (ar.failed()) {
+                log.warn("deploy failed, msg = {}", ar.cause());
+            }
+
+            deployF.complete(0);
+        });
+
+        try {
+            // 等待部署完成
+            deployF.get();
+            log.info("deploy succeeded");
+
+        } catch (Exception e) {
+            log.error("{}", e);
+        }
 
         this.vertx = vertx;
     }
