@@ -13,7 +13,7 @@ import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 
 @Slf4j
 public class GaeAppEventListener implements ApplicationListener<ApplicationContextEvent> {
@@ -61,21 +61,21 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
         depOptions.setInstances(Runtime.getRuntime().availableProcessors());
 
         // 部署
-        CompletableFuture<Integer> deployF = new CompletableFuture<>();
+        CountDownLatch latch = new CountDownLatch(1);
         vertx.deployVerticle(GaeHttpServer.class.getName(), depOptions, ar -> {
             if (ar.failed()) {
                 log.warn("deploy failed, msg = {}", ar.cause());
             }
 
-            deployF.complete(0);
+            latch.countDown();
         });
 
         try {
             // 等待部署完成
-            deployF.get();
+            latch.await();
             log.info("deploy succeeded");
 
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             log.error("{}", e);
         }
 
