@@ -37,8 +37,6 @@ public class GaeHttpServer extends AbstractVerticle {
 
     @Override
     public void start() {
-        log.info("deploy GAE HTTP verticle");
-
         HttpServer server = vertx.createHttpServer();
 
         Router router = Router.router(vertx);

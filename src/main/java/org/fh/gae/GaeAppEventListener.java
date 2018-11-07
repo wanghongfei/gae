@@ -50,15 +50,17 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
 
         // worker线程池选项
         VertxOptions options = new VertxOptions();
-        int nioThreads = props.getNioThread();
-        options.setEventLoopPoolSize(nioThreads > 0 ? nioThreads : Runtime.getRuntime().availableProcessors());
-        options.setWorkerPoolSize(props.getMaxWorkerThread());
+        int nioThreads = props.getNioThread() > 0 ? props.getNioThread() : Runtime.getRuntime().availableProcessors();
+        options.setEventLoopPoolSize(nioThreads);
         options.setMaxWorkerExecuteTime(1000);
+        // options.setWorkerPoolSize(nioThreads * 2);
 
         // 部署选项
         Vertx vertx = Vertx.vertx(options);
         DeploymentOptions depOptions = new DeploymentOptions();
-        depOptions.setInstances(Runtime.getRuntime().availableProcessors());
+        // 设置verticle数量为NIO线程数的2倍
+        int verticleCount = nioThreads > 0 ? nioThreads * 2 : Runtime.getRuntime().availableProcessors();
+        depOptions.setInstances(verticleCount);
 
         // 部署
         CountDownLatch latch = new CountDownLatch(1);
@@ -73,7 +75,7 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
         try {
             // 等待部署完成
             latch.await();
-            log.info("deploy succeeded");
+            log.info("deploy succeeded, nioThread = {}, verticles = {}", nioThreads, verticleCount);
 
         } catch (InterruptedException e) {
             log.error("{}", e);
