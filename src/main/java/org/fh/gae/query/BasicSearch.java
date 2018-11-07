@@ -1,11 +1,9 @@
 package org.fh.gae.query;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.log.PbLogUtils;
 import org.fh.gae.log.SearchLogWriter;
 import org.fh.gae.net.vo.BidRequest;
-import org.fh.gae.net.vo.BidResult;
 import org.fh.gae.net.vo.RequestInfo;
 import org.fh.gae.query.index.DataTable;
 import org.fh.gae.query.index.filter.FilterTable;
@@ -20,7 +18,6 @@ import org.fh.gae.query.profile.AudienceProfile;
 import org.fh.gae.query.profile.ProfileFetcher;
 import org.fh.gae.query.rank.Ranker;
 import org.fh.gae.query.session.ThreadCtx;
-import org.fh.gae.query.threadpool.GaeThreadPool;
 import org.fh.gae.query.trace.TraceBit;
 import org.fh.gae.query.vo.Ad;
 import org.fh.gae.query.vo.AdSlot;
@@ -35,11 +32,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @Component
 @Slf4j
@@ -62,108 +54,8 @@ public class BasicSearch {
     @Autowired
     private SearchLogWriter logWriter;
 
-    @Autowired(required = false)
-    private GaeThreadPool threadPool;
 
-    public BidResult bid(BidRequest request) {
-        // 查画像
-        AudienceProfile profile = null;
-        if (null != profileFetcher) {
-            profile = profileFetcher.fetchProfile(request);
-        }
-
-        // AudienceProfile profile = mockProfile();
-
-        // 广告结果List
-        List<Ad> adList = new ArrayList<>(request.getSlots().size());
-
-        // 如果只有一个广告位或没有threadpool, 串行检索
-        if (null == threadPool || 1 == adList.size()) {
-            serialQuery(request, profile, adList);
-
-        } else {
-            // 如果有多个广告位, 并发
-            concurrentQueryIfNecessary(request, profile, adList);
-        }
-
-
-        BidResult result = new BidResult();
-        result.setRequestId(request.getRequestId());
-        result.setAds(adList);
-
-
-        ThreadCtx.clean();
-
-        return result;
-    }
-
-    private void serialQuery(BidRequest request, AudienceProfile profile, List<Ad> resultList) {
-        for (AdSlot slot : request.getSlots()) {
-            Ad ad = bidSlot(slot, profile, request);
-            resultList.add(ad);
-        }
-    }
-
-    private void concurrentQueryIfNecessary(BidRequest request, AudienceProfile profile, List<Ad> resultList) {
-        List<Future<Ad>> adFutureList = new ArrayList<>(resultList.size());
-
-        // 遍历每个广告位
-        for (AdSlot slot : request.getSlots()) {
-            // 提交任务
-            Future<Ad> adFuture = threadPool.submitBidTask(new SlotBidTask(slot, profile, request), true);
-            adFutureList.add(adFuture);
-        }
-
-        for (Future<Ad> adf : adFutureList) {
-            try {
-                // 最多等100ms
-                Ad ad = adf.get(100L, TimeUnit.MILLISECONDS);
-                resultList.add(ad);
-
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                log.error("failed to bid concurrent slot, reason = {}", e);
-            }
-        }
-
-    }
-
-    private Set<Integer> triggerUnit(AudienceProfile profile) {
-        Set<Integer> unitIdSet = new HashSet<>();
-
-        // 使用画像触发
-        if (null != profile) {
-            unitIdSet.addAll(DataTable.of(TagIndex.class).triggerUnit(profile));
-        }
-
-        // 补量
-        if (unitIdSet.size() < MIN_UNIT_AMOUNT) {
-            Set<Integer> addedUnits = DataTable.of(AdUnitIndex.class).fetchRandom(MIN_UNIT_AMOUNT - unitIdSet.size());
-            unitIdSet.addAll(addedUnits);
-        }
-
-        return unitIdSet;
-    }
-
-    private AudienceProfile mockProfile() {
-        AudienceProfile profile = new AudienceProfile();
-        Map<Integer, Set<Long>> tagMap = new HashMap<>();
-        profile.setTagMap(tagMap);
-
-        Set<Long> genderSet = new HashSet<>();
-        genderSet.add(0L);
-        tagMap.put(TagType.GENDER.code(), genderSet);
-
-        Set<Long> indSet = new HashSet<>();
-        indSet.add(0L);
-        indSet.add(1L);
-        indSet.add(2L);
-        tagMap.put(TagType.INDUSTRY.code(), indSet);
-
-
-        return profile;
-    }
-
-    private Ad bidSlot(AdSlot slot, AudienceProfile profile, BidRequest request) {
+    public Ad bidSlot(AdSlot slot, AudienceProfile profile, BidRequest request) {
         // BenchTimer timer = new BenchTimer();
 
         RequestInfo req = new RequestInfo(request, slot);
@@ -238,17 +130,39 @@ public class BasicSearch {
         return null;
     }
 
-    @AllArgsConstructor
-    private class SlotBidTask implements Callable<Ad> {
-        private AdSlot slot;
+    private Set<Integer> triggerUnit(AudienceProfile profile) {
+        Set<Integer> unitIdSet = new HashSet<>();
 
-        private AudienceProfile profile;
-
-        private BidRequest request;
-
-        @Override
-        public Ad call() throws Exception {
-            return bidSlot(slot, profile, request);
+        // 使用画像触发
+        if (null != profile) {
+            unitIdSet.addAll(DataTable.of(TagIndex.class).triggerUnit(profile));
         }
+
+        // 补量
+        if (unitIdSet.size() < MIN_UNIT_AMOUNT) {
+            Set<Integer> addedUnits = DataTable.of(AdUnitIndex.class).fetchRandom(MIN_UNIT_AMOUNT - unitIdSet.size());
+            unitIdSet.addAll(addedUnits);
+        }
+
+        return unitIdSet;
+    }
+
+    private AudienceProfile mockProfile() {
+        AudienceProfile profile = new AudienceProfile();
+        Map<Integer, Set<Long>> tagMap = new HashMap<>();
+        profile.setTagMap(tagMap);
+
+        Set<Long> genderSet = new HashSet<>();
+        genderSet.add(0L);
+        tagMap.put(TagType.GENDER.code(), genderSet);
+
+        Set<Long> indSet = new HashSet<>();
+        indSet.add(0L);
+        indSet.add(1L);
+        indSet.add(2L);
+        tagMap.put(TagType.INDUSTRY.code(), indSet);
+
+
+        return profile;
     }
 }

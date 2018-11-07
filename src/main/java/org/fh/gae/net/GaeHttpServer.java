@@ -47,7 +47,8 @@ public class GaeHttpServer extends AbstractVerticle {
         router.route("/")
                 .handler(jsonHandlerVertx)
                 .handler(authHandlerVertx)
-                .blockingHandler(bidHandlerVertx, false)
+                // .blockingHandler(bidHandlerVertx, false)
+                .handler(bidHandlerVertx)
                 .failureHandler(errorHandlerVertx);
 
         server.requestHandler(router::accept).listen(serverProps.getPort());

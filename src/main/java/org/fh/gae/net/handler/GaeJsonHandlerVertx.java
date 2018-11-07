@@ -41,6 +41,7 @@ public class GaeJsonHandlerVertx implements Handler<RoutingContext> {
         if (null == requestObj) {
             throw new GaeException(ErrCode.INVALID_ARG);
         }
+        log.info("request = {}", requestObj);
 
         ctx.put("_req", requestObj);
         ctx.next();
