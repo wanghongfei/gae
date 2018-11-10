@@ -7,31 +7,31 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.ResponseTimeHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.fh.gae.config.GaeServerProps;
-import org.fh.gae.net.handler.GaeAuthHandlerVertx;
-import org.fh.gae.net.handler.GaeBidHandlerVertx;
-import org.fh.gae.net.handler.GaeErrorHandlerVertx;
-import org.fh.gae.net.handler.GaeJsonHandlerVertx;
+import org.fh.gae.net.handler.GaeAuthHandler;
+import org.fh.gae.net.handler.GaeBidHandler;
+import org.fh.gae.net.handler.GaeErrorHandler;
+import org.fh.gae.net.handler.GaeJsonHandler;
 import org.springframework.context.ApplicationContext;
 
 @Slf4j
 public class GaeHttpServer extends AbstractVerticle {
     public static ApplicationContext springCtx;
 
-    private GaeJsonHandlerVertx jsonHandlerVertx;
+    private GaeJsonHandler jsonHandlerVertx;
 
-    private GaeAuthHandlerVertx authHandlerVertx;
+    private GaeAuthHandler authHandlerVertx;
 
-    private GaeBidHandlerVertx bidHandlerVertx;
+    private GaeBidHandler bidHandlerVertx;
 
-    private GaeErrorHandlerVertx errorHandlerVertx;
+    private GaeErrorHandler errorHandlerVertx;
 
     private GaeServerProps serverProps;
 
     public GaeHttpServer() {
-        this.jsonHandlerVertx = springCtx.getBean(GaeJsonHandlerVertx.class);
-        this.authHandlerVertx = springCtx.getBean(GaeAuthHandlerVertx.class);
-        this.bidHandlerVertx = springCtx.getBean(GaeBidHandlerVertx.class);
-        this.errorHandlerVertx = springCtx.getBean(GaeErrorHandlerVertx.class);
+        this.jsonHandlerVertx = springCtx.getBean(GaeJsonHandler.class);
+        this.authHandlerVertx = springCtx.getBean(GaeAuthHandler.class);
+        this.bidHandlerVertx = springCtx.getBean(GaeBidHandler.class);
+        this.errorHandlerVertx = springCtx.getBean(GaeErrorHandler.class);
         this.serverProps = springCtx.getBean(GaeServerProps.class);
     }
 

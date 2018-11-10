@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class GaeBidHandlerVertx implements Handler<RoutingContext> {
+public class GaeBidHandler implements Handler<RoutingContext> {
     @Autowired
     private BasicSearch bsSearchService;
 
     @Override
     public void handle(RoutingContext ctx) {
-        BidRequest request = ctx.get("_req");
+        BidRequest request = ctx.get(ContextConst.REQUEST);
         long start = System.currentTimeMillis();
 
         List<Future> futList = buildAsyncTask(ctx, request);
@@ -61,7 +61,7 @@ public class GaeBidHandlerVertx implements Handler<RoutingContext> {
         CompositeFuture.all(adFutureList).setHandler(ar -> {
             if (ar.failed()) {
                 Throwable cause = ar.cause();
-                ctx.put("_err", cause);
+                ctx.put(ContextConst.EXCEPTION, cause);
                 ctx.fail(500);
 
                 return;

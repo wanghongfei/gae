@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class GaeErrorHandlerVertx implements Handler<RoutingContext> {
+public class GaeErrorHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext ctx) {
-        Exception e = ctx.get("_err");
+        Exception e = ctx.get(ContextConst.EXCEPTION);
 
         if (e instanceof GaeException) {
             GaeException ex = (GaeException) e;

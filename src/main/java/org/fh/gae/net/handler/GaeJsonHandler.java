@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 
 @Component
 @Slf4j
-public class GaeJsonHandlerVertx implements Handler<RoutingContext> {
+public class GaeJsonHandler implements Handler<RoutingContext> {
 
     @Override
     public void handle(RoutingContext ctx) {
@@ -23,7 +23,7 @@ public class GaeJsonHandlerVertx implements Handler<RoutingContext> {
             parseJson(ctx);
 
         } catch (Exception e) {
-            ctx.put("_err", e);
+            ctx.put(ContextConst.EXCEPTION, e);
             ctx.fail(400);
         }
     }
@@ -43,7 +43,7 @@ public class GaeJsonHandlerVertx implements Handler<RoutingContext> {
         }
         log.info("request = {}", requestObj);
 
-        ctx.put("_req", requestObj);
+        ctx.put(ContextConst.REQUEST, requestObj);
         ctx.next();
 
     }

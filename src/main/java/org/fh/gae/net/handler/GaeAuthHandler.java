@@ -20,7 +20,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class GaeAuthHandlerVertx implements Handler<RoutingContext> {
+public class GaeAuthHandler implements Handler<RoutingContext> {
     @Autowired
     private AuthIndex authIndex;
 
@@ -28,13 +28,13 @@ public class GaeAuthHandlerVertx implements Handler<RoutingContext> {
     public void handle(RoutingContext ctx) {
         GaeException e = doAuth(ctx);
         if (null != e) {
-            ctx.put("_err", e);
+            ctx.put(ContextConst.EXCEPTION, e);
             ctx.fail(401);
         }
     }
 
     private GaeException doAuth(RoutingContext ctx) {
-        BidRequest bidRequest = ctx.get("_req");
+        BidRequest bidRequest = ctx.get(ContextConst.REQUEST);
 
         // 取出授权字段
         Auth auth = bidRequest.getAuth();
