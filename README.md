@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/OpenAdv/gae.svg?branch=master)](https://travis-ci.org/OpenAdv/gae)
 # GAE-DSP - General Advertising Engine
+**因七牛域名问题, 先前文档里的图片全部无法访问，也找不回来了**
 
 GAE是[Advertising Develop Kit](https://github.com/ad-dev-kit)中的广告投放引擎，业务模型适合于DSP(需求方平台)。
 
