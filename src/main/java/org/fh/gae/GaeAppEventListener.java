@@ -66,7 +66,7 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
         CountDownLatch latch = new CountDownLatch(1);
         vertx.deployVerticle(GaeHttpServer.class.getName(), depOptions, ar -> {
             if (ar.failed()) {
-                log.warn("deploy failed, msg = {}", ar.cause());
+                log.warn("deploy failed, msg:", ar.cause());
             }
 
             latch.countDown();
@@ -78,7 +78,7 @@ public class GaeAppEventListener implements ApplicationListener<ApplicationConte
             log.info("deploy succeeded, nioThread = {}, verticles = {}", nioThreads, verticleCount);
 
         } catch (InterruptedException e) {
-            log.error("{}", e);
+            log.error("", e);
         }
 
         this.vertx = vertx;
