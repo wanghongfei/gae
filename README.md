@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/OpenAdv/gae.svg?branch=master)](https://travis-ci.org/OpenAdv/gae)
 # GAE-DSP - General Advertising Engine
-**因七牛域名问题, 先前文档里的图片全部无法访问，也找不回来了**
+**因七牛域名问题, 先前文档里的多数图片全部无法访问，也找不回来了**
 
 GAE是[Advertising Develop Kit](https://github.com/ad-dev-kit)中的广告投放引擎，业务模型适合于DSP(需求方平台)。
 
@@ -136,7 +136,7 @@ GAE并没有规定必须用哪些类型的标, 只负责通过标签进行触发
 
 
 ## 功能
-![function](http://ovbyjzegm.bkt.clouddn.com/gae-route2.png)
+![function](https://s2.ax1x.com/2019/06/26/ZewfAK.png)
 
 ## 线程模型
 
